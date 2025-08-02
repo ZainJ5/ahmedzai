@@ -117,14 +117,27 @@ export default function ContactSection() {
                 <h4 className="text-lg font-medium text-gray-800">Follow Us</h4>
                 <div className="flex space-x-4 mt-2">
                   {[
-                    { icon: FaFacebook, href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd' },
-                    { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd' },
-                    { icon: FaInstagram, href: 'https://www.instagram.com/ahmedzaitradingjapan/' },
+                    {
+                      icon: FaFacebook,
+                      href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd',
+                      label: 'Facebook'
+                    },
+                    {
+                      icon: FaYoutube,
+                      href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd',
+                      label: 'YouTube'
+                    },
+                    {
+                      icon: FaInstagram,
+                      href: 'https://www.instagram.com/ahmedzaitradingjapan/',
+                      label: 'Instagram'
+                    },
                   ].map(({ href, icon: Icon, label }) => (
                     <Link key={label} href={href} aria-label={label} className="text-gray-600 hover:text-blue-600 transform hover:scale-110 transition-all duration-200">
                       <Icon className="w-6 h-6" />
                     </Link>
                   ))}
+
                 </div>
               </div>
             </div>
