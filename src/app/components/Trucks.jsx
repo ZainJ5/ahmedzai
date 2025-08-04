@@ -19,7 +19,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/products?limit=10&sortBy=createdAt&sortOrder=desc&category=688d89ae479c8c0bc467b25e');
+                const response = await fetch('/api/products?limit=10&sortBy=createdAt&sortOrder=desc&category=6890ae47d1f3719edf5910a9');
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch trucks');
@@ -215,7 +215,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
 
                 <div className="flex justify-center mt-10">
                     <Link
-                        href="/products?category=688d89ae479c8c0bc467b25e"
+                        href="/products?category=6890ae47d1f3719edf5910a9"
                         className="text-gray-800 font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1"
                     >
                         View All Trucks
