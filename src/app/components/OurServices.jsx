@@ -2,13 +2,15 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { 
-  MdShoppingCart, 
-  MdOutlineVerified,
-  MdGroups, 
-  MdBuild, 
-  MdLanguage, 
-  MdLocalShipping, 
-  MdInventory,
+  HiOutlineTruck, 
+  HiOutlineBanknotes,
+  HiOutlineUserGroup, 
+  HiOutlineWrenchScrewdriver, 
+  HiOutlineGlobeAmericas, 
+  HiOutlineShieldCheck, 
+  HiOutlineCube 
+} from "react-icons/hi2";
+import { 
   MdKeyboardArrowLeft, 
   MdKeyboardArrowRight 
 } from "react-icons/md";
@@ -21,43 +23,43 @@ export default function OurServices() {
 
   const services = [
     {
-      icon: <MdShoppingCart size={36} />,
+      icon: <HiOutlineTruck size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Stock Buying & Export",
       description:
         "Seamlessly purchase vehicles from our curated stock and export them globally with ease.",
     },
     {
-      icon: <MdOutlineVerified size={36} />,
+      icon: <HiOutlineBanknotes size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Auction Buying Access",
       description:
         "Gain exclusive access to premium car auctions to discover your perfect vehicle.",
     },
     {
-      icon: <MdGroups size={36} />,
+      icon: <HiOutlineUserGroup size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Auction with Assistance",
       description:
         "Benefit from expert guidance to confidently navigate and bid at vehicle auctions.",
     },
     {
-      icon: <MdBuild size={36} />,
+      icon: <HiOutlineWrenchScrewdriver size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Car Buying for Parts",
       description:
         "Source high-quality vehicles specifically for parts and components with precision.",
     },
     {
-      icon: <MdLanguage size={36} />,
+      icon: <HiOutlineGlobeAmericas size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Third-Party Outsourcing",
       description:
         "Leverage our expertise for streamlined logistics and procurement outsourcing.",
     },
     {
-      icon: <MdLocalShipping size={36} />,
+      icon: <HiOutlineShieldCheck size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "RORO Buying & Export",
       description:
         "Efficient Roll-on/Roll-off vehicle buying and export services tailored to your needs.",
     },
     {
-      icon: <MdInventory size={36} />,
+      icon: <HiOutlineCube size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
       title: "Container Buying",
       description:
         "Comprehensive solutions for full container vehicle buying and global export.",
@@ -150,7 +152,7 @@ export default function OurServices() {
                 whileHover={{ y: -10, scale: 1.02 }}
               >
                 <div className="p-8 h-full flex flex-col">
-                  <div className="text-[#3e6db5] flex justify-center mb-6">
+                  <div className="flex justify-center mb-6">
                     {service.icon}
                   </div>
                   <h3 className="text-xl font-bold text-[#1a3760] mb-3 text-center">

@@ -10,35 +10,20 @@ import {
   FaWhatsapp, 
   FaChevronLeft, 
   FaChevronRight, 
-  FaArrowLeft, 
-  FaWeightHanging, 
-  FaCalendarAlt, 
-  FaBoxes,
+  FaArrowLeft,
   FaSearch,
+  FaDownload,
+  FaPrint,
+  FaShareAlt,
   FaShieldAlt,
   FaTruckMoving,
-  FaCheckCircle,
-  FaInfoCircle,
-  FaHeart,
-  FaShareAlt,
-  FaPrint,
-  FaDownload,
-  FaMoneyBillWave,
-  FaCreditCard,
-  FaPaypal,
-  FaMapMarkedAlt,
   FaCar,
-  FaCubes,
-  FaTag,
-  FaTags,
-  FaClock,
-  FaClipboardCheck
+  FaInfoCircle
 } from 'react-icons/fa';
-import { MdCategory, MdVerified } from 'react-icons/md';
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { motion, AnimatePresence } from 'framer-motion';
+import RelatedProducts from '../components/ReleatedProducts';
 
-// Helper function to download images
 const downloadImage = async (url, filename) => {
   try {
     const response = await fetch(url);
@@ -67,7 +52,6 @@ export default function ProductDetailsPage() {
   const [copySuccess, setCopySuccess] = useState(false);
   const thumbnailsRef = useRef(null);
   const howItWorksRef = useRef(null);
-  const paymentMethodsRef = useRef(null);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -89,7 +73,6 @@ export default function ProductDetailsPage() {
     };
     fetchProductDetails();
 
-    // Check if product is in favorites
     const checkFavorite = () => {
       const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
       setIsFavorite(favorites.includes(id));
@@ -98,7 +81,6 @@ export default function ProductDetailsPage() {
   }, [id]);
 
   useEffect(() => {
-    // Scroll the active thumbnail into view when it changes
     if (thumbnailsRef.current && activeImage > 0) {
       const thumbnailElements = thumbnailsRef.current.children;
       if (thumbnailElements[activeImage]) {
@@ -162,31 +144,31 @@ export default function ProductDetailsPage() {
     return (
       <>
         <Navbar />
-        <div className="max-w-7xl mx-auto bg-white py-6 sm:py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
+        <div className="max-w-7xl mx-auto bg-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12">
             <div className="space-y-4">
-              <div className="h-[300px] sm:h-[550px] bg-gray-100 rounded-lg animate-pulse"></div>
+              <div className="h-[300px] sm:h-[550px] bg-gray-200 rounded-lg animate-pulse"></div>
               <div className="flex gap-2 sm:gap-3 overflow-x-auto">
                 {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-16 w-16 sm:h-24 sm:w-24 flex-shrink-0 bg-gray-100 rounded-md animate-pulse"></div>
+                  <div key={i} className="h-16 w-16 sm:h-24 sm:w-24 flex-shrink-0 bg-gray-200 rounded-md animate-pulse"></div>
                 ))}
               </div>
             </div>
             <div className="space-y-4 sm:space-y-6 pt-4">
-              <div className="h-6 sm:h-8 bg-gray-100 rounded w-3/4 animate-pulse"></div>
-              <div className="h-4 sm:h-6 bg-gray-100 rounded w-1/2 animate-pulse"></div>
-              <div className="h-8 sm:h-12 bg-gray-100 rounded w-1/3 animate-pulse my-4"></div>
+              <div className="h-6 sm:h-8 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div className="h-4 sm:h-6 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+              <div className="h-8 sm:h-12 bg-gray-200 rounded w-1/3 animate-pulse my-4"></div>
               <div className="space-y-2 sm:space-y-3">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-3 sm:h-4 bg-gray-100 rounded w-full animate-pulse"></div>
+                  <div key={i} className="h-3 sm:h-4 bg-gray-200 rounded w-full animate-pulse"></div>
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-4 sm:mt-6">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-8 sm:h-10 bg-gray-100 rounded animate-pulse"></div>
+                  <div key={i} className="h-8 sm:h-10 bg-gray-200 rounded animate-pulse"></div>
                 ))}
               </div>
-              <div className="h-10 sm:h-12 bg-gray-100 rounded animate-pulse mt-4 sm:mt-6"></div>
+              <div className="h-10 sm:h-12 bg-gray-200 rounded animate-pulse mt-4 sm:mt-6"></div>
             </div>
           </div>
         </div>
@@ -201,12 +183,12 @@ export default function ProductDetailsPage() {
         <Navbar />
         <div className="min-h-[60vh] flex items-center justify-center text-center px-4">
           <div>
-            <FaInfoCircle className="mx-auto text-red-500 text-5xl mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Something went wrong.</h2>
+            <p className="text-red-500 font-semibold mb-2">Error</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Oops! Something went wrong.</h2>
             <p className="text-gray-600 mb-6">{error}</p>
             <button
               onClick={() => router.push('/products')}
-              className="inline-flex items-center px-6 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors"
+              className="inline-flex items-center px-6 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors duration-200"
             >
               <FaArrowLeft className="mr-2" />
               Return to Products
@@ -230,71 +212,74 @@ export default function ProductDetailsPage() {
         <Navbar />
       </div>
       <div className="bg-white text-black">
-        {/* Breadcrumb & Navigation */}
-        <div className="bg-gray-50 py-3 sm:py-4 border-b border-gray-200 print:hidden">
+        <div className="bg-gray-50 py-4 sm:py-6 border-b border-gray-200 print:hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center">
-              <nav aria-label="Breadcrumb" className="text-xs sm:text-sm">
-                <ol className="flex items-center space-x-1 sm:space-x-2 text-gray-500">
-                  <li><Link href="/" className="hover:text-gray-700">Home</Link></li>
-                  <li><span className="mx-1 sm:mx-2">/</span></li>
-                  <li><Link href="/products" className="hover:text-gray-700">Products</Link></li>
-                  <li><span className="mx-1 sm:mx-2">/</span></li>
-                  <li className="font-medium text-gray-800 truncate max-w-[120px] sm:max-w-[200px] md:max-w-xs">{product.title}</li>
+              <nav aria-label="Breadcrumb" className="text-sm sm:text-base">
+                <ol className="flex items-center space-x-2 sm:space-x-3 text-gray-500">
+                  <li><Link href="/" className="hover:text-gray-700 transition-colors">Home</Link></li>
+                  <li><span className="mx-2">/</span></li>
+                  <li><Link href="/products" className="hover:text-gray-700 transition-colors">Products</Link></li>
+                  <li><span className="mx-2">/</span></li>
+                  <li className="font-medium text-gray-800 truncate max-w-[150px] sm:max-w-[250px]">{product.title}</li>
                 </ol>
               </nav>
               <button 
                 onClick={() => router.back()}
-                className="group inline-flex items-center text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                className="group inline-flex items-center text-sm sm:text-base font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
               >
-                <FaArrowLeft className="mr-1 sm:mr-2 group-hover:-translate-x-0.5 transition-transform" />
+                <FaArrowLeft className="mr-2 group-hover:-translate-x-0.5 transition-transform duration-200" />
                 <span className="hidden sm:inline">Back</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12">
-            <div>
-              <div className="space-y-3 sm:space-y-4">
-                <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full bg-gray-50 rounded-lg overflow-hidden group border border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="space-y-4">
+                <div className="relative h-[300px] sm:h-[450px] md:h-[550px] w-full bg-white rounded-xl overflow-hidden group border border-gray-100 shadow-sm">
                   <Image 
                     src={allImages[activeImage] || '/placeholder-image.jpg'}
                     alt={`${product.title} - view ${activeImage + 1}`}
                     fill
-                    className="object-contain"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                     priority
                     onClick={() => setIsFullscreen(true)}
                   />
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity cursor-zoom-in flex items-center justify-center" onClick={() => setIsFullscreen(true)}>
-                    <div className="p-2 bg-white/90 rounded-full">
-                      <FaSearch size={18} className="text-gray-800" />
+                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-zoom-in flex items-center justify-center" onClick={() => setIsFullscreen(true)}>
+                    <div className="p-2 bg-white/90 rounded-full shadow-sm">
+                      <FaSearch size={20} className="text-gray-800" />
                     </div>
                   </div>
                   
-                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 flex items-center gap-2 print:hidden">
+                  <div className="absolute top-4 right-4 flex items-center gap-3 print-hidden">
                     <motion.button 
                       onClick={toggleFavorite}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="bg-white/90 backdrop-blur-sm rounded-full p-2 sm:p-2.5 shadow-md hover:bg-white transition"
+                      className="bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-sm hover:bg-white transition-colors duration-200"
                     >
                       {isFavorite ? 
-                        <IoMdHeart className="text-red-500" size={18} /> : 
-                        <IoMdHeartEmpty className="text-gray-600" size={18} />
+                        <IoMdHeart className="text-red-500" size={20} /> : 
+                        <IoMdHeartEmpty className="text-gray-600" size={20} />
                       }
                     </motion.button>
                     <motion.button 
                       onClick={shareProduct}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="relative bg-white/90 backdrop-blur-sm rounded-full p-2 sm:p-2.5 shadow-md hover:bg-white transition"
+                      className="relative bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-sm hover:bg-white transition-colors duration-200"
                     >
-                      <FaShareAlt className="text-gray-600" size={16} />
+                      <FaShareAlt className="text-gray-600" size={18} />
                       {copySuccess && (
-                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-3 py-1.5 rounded whitespace-nowrap">
                           Link copied!
                         </span>
                       )}
@@ -302,41 +287,40 @@ export default function ProductDetailsPage() {
                   </div>
                   
                   {allImages.length > 1 && (
-                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-gray-900/70 text-white text-xs font-mono px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
+                    <div className="absolute top-4 left-4 bg-gray-900/70 text-white text-xs font-mono px-3 py-1.5 rounded-full">
                       {activeImage + 1} / {allImages.length}
                     </div>
                   )}
                   
                   {hasDiscount && (
-                    <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 bg-red-600 text-white text-xs sm:text-sm font-semibold px-3 py-1 sm:px-4 sm:py-1.5 rounded-md">
+                    <div className="absolute bottom-4 left-4 bg-red-600 text-white text-sm font-semibold px-4 py-1.5 rounded-md">
                       {product.discountPercentage}% OFF
                     </div>
                   )}
                 </div>
 
-                {/* Image Navigation */}
                 {allImages.length > 1 && (
                   <div className="relative">
                     <div 
                       ref={thumbnailsRef}
-                      className="flex gap-2 sm:gap-3 overflow-x-auto py-2 px-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth"
+                      className="flex gap-3 overflow-x-auto py-2 px-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth"
                     >
                       {allImages.map((image, index) => (
                         <button 
                           key={index}
                           onClick={() => setActiveImage(index)}
-                          className={`relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 ${
+                          className={`relative h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 ${
                             activeImage === index 
                               ? 'ring-2 ring-offset-2 ring-blue-600' 
-                              : 'hover:opacity-80 border border-gray-200'
+                              : 'hover:opacity-80 border border-gray-200 hover:border-blue-300'
                           }`}
                         >
                           <Image 
                             src={image} 
                             alt={`Thumbnail ${index + 1}`} 
                             fill 
-                            className="object-cover" 
-                            sizes="80px" 
+                            className="object-cover transition-transform duration-200 hover:scale-105" 
+                            sizes="96px" 
                           />
                         </button>
                       ))}
@@ -349,281 +333,304 @@ export default function ProductDetailsPage() {
                             const container = thumbnailsRef.current;
                             container.scrollBy({ left: -150, behavior: 'smooth' });
                           }}
-                          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 sm:p-1.5 shadow-md hover:bg-gray-50 transition z-10"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors duration-200 z-10"
                         >
-                          <FaChevronLeft size={12} />
+                          <FaChevronLeft size={14} />
                         </button>
                         <button 
                           onClick={() => {
                             const container = thumbnailsRef.current;
                             container.scrollBy({ left: 150, behavior: 'smooth' });
                           }}
-                          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 sm:p-1.5 shadow-md hover:bg-gray-50 transition z-10"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors duration-200 z-10"
                         >
-                          <FaChevronRight size={12} />
+                          <FaChevronRight size={14} />
                         </button>
                       </>
                     )}
                   </div>
                 )}
                 
-                <div className="flex items-center justify-between text-xs sm:text-sm print:hidden">
+                <div className="flex items-center justify-between text-sm print-hidden">
                   <button 
                     onClick={handleDownloadAll} 
-                    className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
                   >
-                    <FaDownload size={12} className="sm:text-sm"/>
+                    <FaDownload size={14} />
                     <span>Download images</span>
                   </button>
                   <button 
                     onClick={handlePrint} 
-                    className="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
                   >
-                    <FaPrint size={12} className="sm:text-sm"/>
+                    <FaPrint size={14} />
                     <span>Print details</span>
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div>
-              <div className="space-y-4 sm:space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <div className="space-y-6">
                 <div>
-                  <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-1.5">
+                  <div className="flex items-center gap-2 mb-2">
                     <Link 
                       href={`/categories/${product.category?._id}`}
-                      className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                      className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     >
                       {product.category?.name || 'Category'}
                     </Link>
                     <span className="text-gray-400">•</span>
-                    <span className="text-xs sm:text-sm text-gray-500">Model: {product.model}</span>
+                    <span className="text-sm text-gray-500">Model: {product.model}</span>
                   </div>
                   
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{product.title}</h1>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">{product.title}</h1>
 
                   {product.quantity > 0 ? (
-                    <div className="mt-2 flex items-center text-xs sm:text-sm text-green-600">
-                      <FaCheckCircle className="mr-1 sm:mr-2" size={12} />
+                    <div className="mt-2 flex items-center text-sm text-green-600">
                       <span>In Stock ({product.quantity} {product.quantity === 1 ? 'unit' : 'units'} available)</span>
                     </div>
                   ) : (
-                    <div className="mt-2 flex items-center text-xs sm:text-sm text-red-500">
-                      <FaInfoCircle className="mr-1 sm:mr-2" size={12} />
+                    <div className="mt-2 flex items-center text-sm text-red-500">
                       <span>Out of Stock</span>
                     </div>
                   )}
                 </div>
 
-                {/* Price */}
-                <div className="flex items-baseline gap-2 sm:gap-3">
-                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
                     {productPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                   </span>
                   {hasDiscount && (
-                    <span className="text-sm sm:text-lg text-gray-400 line-through">
+                    <span className="text-lg text-gray-400 line-through">
                       {product.unitPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                     </span>
                   )}
                   {hasDiscount && (
-                    <span className="text-xs sm:text-sm text-green-600 font-medium">
+                    <span className="text-sm text-green-600 font-medium">
                       Save {(product.unitPrice - product.discountedPrice)?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                     </span>
                   )}
                 </div>
 
-                {/* Features */}
-                <div className="border-t border-b border-gray-200 py-3 sm:py-5">
-                  <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">Product Features</h2>
-                  <div dangerouslySetInnerHTML={{ __html: product.features }} className="prose prose-sm max-w-none text-gray-600 text-sm" />
-                </div>
-                
-                {/* Key Specs */}
-                <div>
-                  <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">Key Specifications</h2>
-                  <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
-                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full flex-shrink-0">
-                        <FaCalendarAlt size={16} />
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Year</span>
-                        <p className="font-medium text-gray-800">{product.year || 'N/A'}</p>
-                      </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 shadow-sm">
+                    <div>
+                      <span className="text-gray-500">Year</span>
+                      <p className="font-medium text-gray-800">{product.year || 'N/A'}</p>
                     </div>
-                    
-                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-full flex-shrink-0">
-                        <FaWeightHanging size={16} />
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Weight</span>
-                        <p className="font-medium text-gray-800">{product.weight ? `${product.weight} kg` : 'N/A'}</p>
-                      </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 shadow-sm">
+                    <div>
+                      <span className="text-gray-500">Fuel</span>
+                      <p className="font-medium text-gray-800">{product.fuelType || 'N/A'}</p>
                     </div>
-                    
-                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-purple-100 text-purple-600 rounded-full flex-shrink-0">
-                        <MdCategory size={16} />
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Brand</span>
-                        <p className="font-medium text-gray-800">{product.make?.name || 'N/A'}</p>
-                      </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 shadow-sm">
+                    <div>
+                      <span className="text-gray-500">Brand</span>
+                      <p className="font-medium text-gray-800">{product.make?.name || 'N/A'}</p>
                     </div>
-                    
-                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-orange-100 text-orange-600 rounded-full flex-shrink-0">
-                        <FaBoxes size={16} />
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Availability</span>
-                        <p className="font-medium text-gray-800">{product.quantity > 0 ? 'In Stock' : 'Out of Stock'}</p>
-                      </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 shadow-sm">
+                    <div>
+                      <span className="text-gray-500">Availability</span>
+                      <p className="font-medium text-gray-800">{product.quantity > 0 ? 'In Stock' : 'Out of Stock'}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* CTA Button */}
                 <motion.button
                   onClick={handleWhatsAppClick}
-                  className="w-full py-3 sm:py-4 flex items-center justify-center gap-2 sm:gap-3 bg-green-600 text-white text-base sm:text-lg font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-md print:hidden"
-                  whileHover={{ scale: 1.01 }} 
+                  className="w-full py-4 flex items-center justify-center cursor-pointer gap-3 bg-green-600 text-white text-lg font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-md print-hidden"
+                  whileHover={{ scale: 1.02 }} 
                   whileTap={{ scale: 0.98 }}
                 >
-                  <FaWhatsapp size={20} />
+                  <FaWhatsapp size={32} />
                   <span>Inquire on WhatsApp</span>
                 </motion.button>
 
-                {/* Assurance badges */}
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-3 sm:pt-4 print:hidden">
-                  <div className="flex flex-col items-center justify-center text-center p-2 sm:p-3 border border-gray-100 rounded-lg">
-                    <FaShieldAlt className="text-blue-500 mb-1 sm:mb-2" size={16} />
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-800">Quality Guarantee</span>
-                  </div>
-                  <div className="flex flex-col items-center justify-center text-center p-2 sm:p-3 border border-gray-100 rounded-lg">
-                    <FaClipboardCheck className="text-blue-500 mb-1 sm:mb-2" size={16} />
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-800">Verified Supplier</span>
-                  </div>
-                  <div className="flex flex-col items-center justify-center text-center p-2 sm:p-3 border border-gray-100 rounded-lg">
-                    <FaTruckMoving className="text-blue-500 mb-1 sm:mb-2" size={16} />
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-800">Fast Shipping</span>
-                  </div>
+                <p className="text-xs text-gray-500 text-center print-hidden">
+                  Quality verified product with satisfaction guarantee
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="mt-12 sm:mt-16"
+          >
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-5 border-b border-gray-200">
+                <div className="flex items-center">
+                  <FaInfoCircle className="text-white mr-2" size={20} />
+                  <h2 className="text-xl sm:text-2xl font-bold text-white">Technical Specifications</h2>
                 </div>
+              </div>
+
+              <div className="p-4 md:p-6 bg-white">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse font-['Inter',sans-serif]">
+                    <thead className="bg-gray-50 text-left">
+                      <tr className="border-b border-gray-200">
+                        <th className="py-3 px-4 font-semibold text-gray-700 w-1/3">Specification</th>
+                        <th className="py-3 px-4 font-semibold text-gray-700">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Model</td>
+                        <td className="py-3 px-4 text-gray-800">{product.model || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-gray-50/50 border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Brand</td>
+                        <td className="py-3 px-4 text-gray-800">{product.make?.name || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Year</td>
+                        <td className="py-3 px-4 text-gray-800">{product.year || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-gray-50/50 border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Category</td>
+                        <td className="py-3 px-4 text-gray-800">{product.category?.name || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Fuel Type</td>
+                        <td className="py-3 px-4 text-gray-800">{product.fuelType || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-gray-50/50 border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Engine Displacement</td>
+                        <td className="py-3 px-4 text-gray-800">{product.engine?.displacement ? `${product.engine.displacement} cc` : 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Number of Cylinders</td>
+                        <td className="py-3 px-4 text-gray-800">{product.engine?.cylinders || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-gray-50/50 border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Horsepower</td>
+                        <td className="py-3 px-4 text-gray-800">{product.engine?.horsepower ? `${product.engine.horsepower} hp` : 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Engine Configuration</td>
+                        <td className="py-3 px-4 text-gray-800">{product.engine?.configuration || 'N/A'}</td>
+                      </tr>
+                      <tr className="bg-gray-50/50 border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">City Mileage</td>
+                        <td className="py-3 px-4 text-gray-800">
+                          {product.mileage?.city ? `${product.mileage.city} ${product.mileage.unit || 'km/l'}` : 'N/A'}
+                        </td>
+                      </tr>
+                      <tr className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Highway Mileage</td>
+                        <td className="py-3 px-4 text-gray-800">
+                          {product.mileage?.highway ? `${product.mileage.highway} ${product.mileage.unit || 'km/l'}` : 'N/A'}
+                        </td>
+                      </tr>
+                      <tr className="bg-gray-50/50 hover:bg-blue-50/30 transition-colors">
+                        <td className="py-3 px-4 font-medium text-gray-600">Weight</td>
+                        <td className="py-3 px-4 text-gray-800">{product.weight ? `${product.weight} kg` : 'N/A'}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+            className="mt-12 sm:mt-16"
+          >
+            <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-5 border-b border-gray-200">
+                <div className="flex items-center">
+                  <FaInfoCircle className="text-white mr-2" size={20} />
+                  <h2 className="text-xl sm:text-2xl font-bold text-white">Features & Description</h2>
+                </div>
+              </div>
+              <div className="p-6 bg-white">
+                <div dangerouslySetInnerHTML={{ __html: product.features }} className="prose prose-sm sm:prose-base max-w-none text-gray-600 font-['Inter',sans-serif]" />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 print-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-center mb-8 sm:mb-12"
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">How It Works</h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">We've made purchasing and receiving your product as simple as possible, just follow these steps.</p>
+            </motion.div>
+            
+            <div className="relative">
+              <div 
+                ref={howItWorksRef}
+                className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 snap-x snap-mandatory p-8 scrollbar-none scroll-smooth px-2"
+                style={{ scrollbarWidth: 'none' }}
+              >
+                {[
+                  { icon: FaSearch, title: 'Select Vehicle', desc: 'Find the perfect vehicle that meets your needs.', bg: 'bg-blue-100', color: 'text-blue-600' },
+                  { icon: FaShieldAlt, title: 'Secure Payment', desc: 'Multiple secure payment options available.', bg: 'bg-green-100', color: 'text-green-600' },
+                  { icon: FaTruckMoving, title: 'Track Order', desc: 'Real-time tracking of your shipment.', bg: 'bg-orange-100', color: 'text-orange-600' },
+                  { icon: FaCar, title: 'Get Delivery', desc: 'Professional doorstep delivery service.', bg: 'bg-purple-100', color: 'text-purple-600' }
+                ].map((step, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[70%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[200px] sm:h-auto"
+                  >
+                    <div className="absolute top-0 left-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg transform -translate-x-4 -translate-y-4">{index + 1}</div>
+                    <div className={`w-16 h-16 ${step.bg} ${step.color} rounded-xl flex items-center justify-center mx-auto mb-4 mt-4`}>
+                      <step.icon size={24} />
+                    </div>
+                    <h3 className="font-bold text-lg text-center mb-2">{step.title}</h3>
+                    <p className="text-gray-600 text-center text-sm">{step.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="flex justify-center gap-2 mt-6 sm:hidden">
+                {[...Array(4)].map((_, index) => (
+                  <div key={index} className={`h-2 w-2 rounded-full ${index === 0 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-50 py-8 sm:py-12 print:hidden">
+        <div className="bg-white py-12 sm:py-16 border-t border-gray-100 print-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-6 sm:mb-10">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">How It Works</h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto">We've made purchasing and receiving your product as simple as possible, just follow these steps.</p>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Related Products</h2>
+              <Link href={`/categories/${product.category?._id}`} className="text-blue-600 hover:text-blue-800 text-base font-medium transition-colors duration-200">
+                View All
+              </Link>
             </div>
             
-            <div className="relative mb-8 sm:mb-16">
-              <div 
-                ref={howItWorksRef}
-                className="flex overflow-x-auto sm:grid p-6 pl-4 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 snap-x snap-mandatory scrollbar-none scroll-smooth px-2"
-                style={{ scrollbarWidth: 'none' }}
-              >
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[60%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[180px] sm:h-auto">
-                  <div className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg transform -translate-x-2 -translate-y-2 sm:-translate-x-4 sm:-translate-y-4">1</div>
-                  <div className="w-10 h-10 sm:w-16 sm:h-16 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 mt-3">
-                    <FaSearch size={20} className="sm:text-2xl"/>
-                  </div>
-                  <h3 className="font-bold text-base sm:text-lg text-center mb-1 sm:mb-2">Select Vehicle</h3>
-                  <p className="text-gray-600 text-center text-xs sm:text-sm">Find the perfect vehicle that meets your needs.</p>
-                </div>
-                
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[60%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[180px] sm:h-auto">
-                  <div className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg transform -translate-x-2 -translate-y-2 sm:-translate-x-4 sm:-translate-y-4">2</div>
-                  <div className="w-10 h-10 sm:w-16 sm:h-16 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 mt-3">
-                    <FaShieldAlt size={20} className="sm:text-2xl"/>
-                  </div>
-                  <h3 className="font-bold text-base sm:text-lg text-center mb-1 sm:mb-2">Secure Payment</h3>
-                  <p className="text-gray-600 text-center text-xs sm:text-sm">Multiple secure payment options available.</p>
-                </div>
-                
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[60%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[180px] sm:h-auto">
-                  <div className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg transform -translate-x-2 -translate-y-2 sm:-translate-x-4 sm:-translate-y-4">3</div>
-                  <div className="w-10 h-10 sm:w-16 sm:h-16 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 mt-3">
-                    <FaTruckMoving size={20} className="sm:text-2xl"/>
-                  </div>
-                  <h3 className="font-bold text-base sm:text-lg text-center mb-1 sm:mb-2">Track Order</h3>
-                  <p className="text-gray-600 text-center text-xs sm:text-sm">Real-time tracking of your shipment.</p>
-                </div>
-                
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[60%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[180px] sm:h-auto">
-                  <div className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg transform -translate-x-2 -translate-y-2 sm:-translate-x-4 sm:-translate-y-4">4</div>
-                  <div className="w-10 h-10 sm:w-16 sm:h-16 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 mt-3">
-                    <FaCar size={20} className="sm:text-2xl"/>
-                  </div>
-                  <h3 className="font-bold text-base sm:text-lg text-center mb-1 sm:mb-2">Get Delivery</h3>
-                  <p className="text-gray-600 text-center text-xs sm:text-sm">Professional doorstep delivery service.</p>
-                </div>
-              </div>
-              
-              <div className="flex justify-center gap-1.5 mt-4 sm:hidden">
-                <div className="h-1.5 w-8 bg-blue-600 rounded-full"></div>
-                <div className="h-1.5 w-1.5 bg-gray-300 rounded-full"></div>
-                <div className="h-1.5 w-1.5 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">Payment Methods</h3>
-              
-              <div 
-                ref={paymentMethodsRef}
-                className="flex overflow-x-auto sm:grid sm:grid-cols-4 gap-3 sm:gap-6 pb-3 snap-x snap-mandatory scrollbar-none scroll-smooth px-2"
-                style={{ scrollbarWidth: 'none' }}
-              >
-                <div className="text-center p-3 sm:p-4 border border-gray-100 bg-white rounded-lg snap-start min-w-[35%] sm:min-w-0 flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                    <FaMoneyBillWave size={20}/>
-                  </div>
-                  <h4 className="font-semibold text-sm text-gray-800">Bank Transfer</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Direct and secure</p>
-                </div>
-                
-                <div className="text-center p-3 sm:p-4 border border-gray-100 bg-white rounded-lg snap-start min-w-[35%] sm:min-w-0 flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                    <FaCreditCard size={20}/>
-                  </div>
-                  <h4 className="font-semibold text-sm text-gray-800">Credit Card</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">All major cards</p>
-                </div>
-                
-                <div className="text-center p-3 sm:p-4 border border-gray-100 bg-white rounded-lg snap-start min-w-[35%] sm:min-w-0 flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                    <FaPaypal size={20}/>
-                  </div>
-                  <h4 className="font-semibold text-sm text-gray-800">PayPal</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Fast and convenient</p>
-                </div>
-                
-                <div className="text-center p-3 sm:p-4 border border-gray-100 bg-white rounded-lg snap-start min-w-[35%] sm:min-w-0 flex-shrink-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                    <FaMapMarkedAlt size={20}/>
-                  </div>
-                  <h4 className="font-semibold text-sm text-gray-800">In-Person</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">Visit our branch</p>
-                </div>
-              </div>
-              
-              {/* Visual scroll indicator for payment methods */}
-              <div className="flex justify-center gap-1.5 mt-3 sm:hidden">
-                <div className="h-1.5 w-8 bg-blue-600 rounded-full"></div>
-                <div className="h-1.5 w-1.5 bg-gray-300 rounded-full"></div>
-              </div>
-            </div>
+            <RelatedProducts categoryId={product.category?._id} currentProductId={id} />
           </div>
         </div>
       </div>
 
-      {/* Fullscreen Image Modal */}
       <AnimatePresence>
         {isFullscreen && (
           <motion.div
@@ -635,20 +642,24 @@ export default function ProductDetailsPage() {
             onClick={() => setIsFullscreen(false)}
           >
             <div className="absolute top-4 right-4 z-10 flex gap-4">
-              <button 
+              <motion.button 
                 onClick={(e) => {e.stopPropagation(); handleDownloadAll();}}
-                className="text-white bg-black/50 rounded-full p-2 sm:p-3 hover:bg-black/70"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
               >
-                <FaDownload size={16} />
-              </button>
-              <button
+                <FaDownload size={18} />
+              </motion.button>
+              <motion.button
                 onClick={(e) => {e.stopPropagation(); setIsFullscreen(false)}}
-                className="text-white bg-black/50 rounded-full p-2 sm:p-3 hover:bg-black/70"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-              </button>
+              </motion.button>
             </div>
             
             <motion.div 
@@ -662,13 +673,13 @@ export default function ProductDetailsPage() {
                 src={allImages[activeImage]} 
                 alt={product.title}
                 fill
-                className="object-contain"
+                className="object-cover"
                 sizes="90vw"
                 quality={90}
               />
               
               {product.title && (
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-lg text-xs sm:text-sm max-w-xs sm:max-w-md text-center truncate">
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-lg text-sm max-w-md text-center truncate">
                   {product.title} - {product.model}
                 </div>
               )}
@@ -676,34 +687,39 @@ export default function ProductDetailsPage() {
             
             {allImages.length > 1 && (
               <>
-                <button 
+                <motion.button 
                   onClick={(e) => {
                     e.stopPropagation(); 
                     setActiveImage(p => (p - 1 + allImages.length) % allImages.length);
                   }} 
-                  className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
                 >
-                  <FaChevronLeft size={16} className="sm:text-lg" />
-                </button>
-                <button 
+                  <FaChevronLeft size={18} />
+                </motion.button>
+                <motion.button 
                   onClick={(e) => {
                     e.stopPropagation(); 
                     setActiveImage(p => (p + 1) % allImages.length);
                   }} 
-                  className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
                 >
-                  <FaChevronRight size={16} className="sm:text-lg" />
-                </button>
+                  <FaChevronRight size={18} />
+                </motion.button>
               </>
             )}
             
             {allImages.length > 1 && (
               <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-full px-4">
                 {allImages.map((_, index) => (
-                  <button 
+                  <motion.button 
                     key={index}
                     onClick={(e) => {e.stopPropagation(); setActiveImage(index)}}
-                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ${activeImage === index ? 'bg-white' : 'bg-white/40'}`}
+                    whileHover={{ scale: 1.2 }}
+                    className={`w-2.5 h-2.5 rounded-full ${activeImage === index ? 'bg-white' : 'bg-white/40'}`}
                     aria-label={`View image ${index + 1}`}
                   />
                 ))}

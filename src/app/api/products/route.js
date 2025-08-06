@@ -43,6 +43,8 @@ export async function GET(request) {
     const minWeight = searchParams.get('minWeight');
     const maxWeight = searchParams.get('maxWeight');
     const year = searchParams.get('year');
+    const engineConfiguration = searchParams.get('engineConfiguration');
+    const fuelType = searchParams.get('fuelType');
     
     let query = {};
     
@@ -78,6 +80,16 @@ export async function GET(request) {
     
     if (year && year !== '') {
       query.year = parseInt(year);
+    }
+    
+    // Add engine configuration filter - matches the engine.configuration field in schema
+    if (engineConfiguration && engineConfiguration !== '') {
+      query['engine.configuration'] = engineConfiguration;
+    }
+    
+    // Add fuel type filter - matches the fuelType field in schema
+    if (fuelType && fuelType !== '') {
+      query.fuelType = fuelType;
     }
     
     if (searchTerm) {
@@ -139,7 +151,23 @@ export async function POST(request) {
       model: formData.get('model'),
       quantity: parseInt(formData.get('quantity')),
       weight: parseFloat(formData.get('weight')),
-      features: formData.get('features')
+      features: formData.get('features'),
+      fuelType: formData.get('fuelType') || 'Diesel' // Default to Diesel if not provided
+    };
+    
+    // Handle engine configuration
+    productData.engine = {
+      configuration: formData.get('engineConfiguration') || 'Other',
+      displacement: parseFloat(formData.get('engineDisplacement') || 0),
+      cylinders: parseInt(formData.get('engineCylinders') || 0),
+      horsepower: parseFloat(formData.get('engineHorsepower') || 0)
+    };
+    
+    // Handle mileage information
+    productData.mileage = {
+      city: parseFloat(formData.get('mileageCity') || 0),
+      highway: parseFloat(formData.get('mileageHighway') || 0),
+      unit: formData.get('mileageUnit') || 'km/l'
     };
     
     const requiredFields = ['title', 'category', 'make', 'unitPrice', 'year', 'model', 'quantity', 'weight', 'features'];

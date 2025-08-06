@@ -1,56 +1,56 @@
 "use client"
 
 import { 
-  FiSearch, 
-  FiPhone, 
-  FiCreditCard, 
-  FiCheckCircle,
-  FiFileText,
-  FiMapPin,
-  FiTruck,
-  FiFile
-} from "react-icons/fi";
+  FaCar, 
+  FaPhoneVolume, 
+  FaCreditCard, 
+  FaMagnifyingGlassChart,
+  FaFileInvoice,
+  FaShip,
+  FaMoneyBillTransfer,
+  FaBoxesPacking
+} from "react-icons/fa6";
 import { motion } from 'framer-motion';
 
 export default function HowToImport() {
   const steps = [
     {
-      icon: <FiSearch size={40} className="text-[#1A3760]" />,
+      icon: <FaCar size={38} className="text-[#1A3760]" />,
       title: "Select Vehicle",
       description: "Browse and select your desired vehicle",
     },
     {
-      icon: <FiPhone size={40} className="text-[#1A3760]" />,
+      icon: <FaPhoneVolume size={38} className="text-[#1A3760]" />,
       title: "Contact & Reserve",
       description: "Contact us to reserve your chosen car",
     },
     {
-      icon: <FiCreditCard size={40} className="text-[#1A3760]" />,
+      icon: <FaCreditCard size={38} className="text-[#1A3760]" />,
       title: "Down Payment",
       description: "Make a down payment and send receipt",
     },
     {
-      icon: <FiCheckCircle size={40} className="text-[#1A3760]" />,
+      icon: <FaMagnifyingGlassChart size={38} className="text-[#1A3760]" />,
       title: "Inspection & Port",
       description: "Vehicle inspection and move to port",
     },
     {
-      icon: <FiFileText size={40} className="text-[#1A3760]" />,
+      icon: <FaFileInvoice size={38} className="text-[#1A3760]" />,
       title: "Booking Confirmed",
       description: "Receive booking confirmation",
     },
     {
-      icon: <FiMapPin size={40} className="text-[#1A3760]" />,
+      icon: <FaShip size={38} className="text-[#1A3760]" />,
       title: "Track Shipment",
       description: "Receive Bill of Lading and track shipment",
     },
     {
-      icon: <FiCreditCard size={40} className="text-[#1A3760]" />,
+      icon: <FaMoneyBillTransfer size={38} className="text-[#1A3760]" />,
       title: "Final Payment",
       description: "Complete the final payment",
     },
     {
-      icon: <FiFile size={40} className="text-[#1A3760]" />,
+      icon: <FaBoxesPacking size={38} className="text-[#1A3760]" />,
       title: "Receive Documents",
       description: "Get documents and release papers via DHL",
     },
@@ -82,7 +82,7 @@ export default function HowToImport() {
           {steps.map((step, idx) => (
             <div
               key={idx}
-              className="border border-gray-200 rounded-lg p-6 md:p-8 text-center flex-shrink-0 w-[200px] md:w-auto snap-center"
+              className="border border-gray-200 rounded-lg p-6 md:p-8 text-center flex-shrink-0 w-[200px] md:w-auto snap-center shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex justify-center mb-4">
                 {step.icon}

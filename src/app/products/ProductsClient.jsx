@@ -29,6 +29,8 @@ export default function ProductsPage() {
     minWeight: '',
     maxWeight: '',
     selectedWeight: '',
+    engineConfiguration: '',
+    fuelType: '',
     sortBy: 'createdAt',
     sortOrder: 'desc',
     year: ''
@@ -72,6 +74,8 @@ export default function ProductsPage() {
         }
         if (searchParams.get('maxWeight')) updatedFilters.maxWeight = searchParams.get('maxWeight');
         if (searchParams.get('year')) updatedFilters.year = searchParams.get('year');
+        if (searchParams.get('engineConfiguration')) updatedFilters.engineConfiguration = searchParams.get('engineConfiguration');
+        if (searchParams.get('fuelType')) updatedFilters.fuelType = searchParams.get('fuelType');
         
         if (searchParams.get('page')) setPagination(prev => ({ 
           ...prev, 
@@ -138,6 +142,14 @@ export default function ProductsPage() {
         queryParams.append('maxWeight', filters.maxWeight);
       }
       
+      if (filters.engineConfiguration && filters.engineConfiguration !== '') {
+        queryParams.append('engineConfiguration', filters.engineConfiguration);
+      }
+      
+      if (filters.fuelType && filters.fuelType !== '') {
+        queryParams.append('fuelType', filters.fuelType);
+      }
+      
       if (filters.sortBy) queryParams.append('sortBy', filters.sortBy);
       if (filters.sortOrder) queryParams.append('sortOrder', filters.sortOrder);
       
@@ -200,11 +212,11 @@ export default function ProductsPage() {
 
   const getSortLabel = () => {
     switch(filters.sortBy) {
-      case 'price':
+      case 'unitPrice':
         return `Price: ${filters.sortOrder === 'asc' ? 'Low to High' : 'High to Low'}`;
       case 'createdAt':
         return `Date: ${filters.sortOrder === 'desc' ? 'Newest' : 'Oldest'}`;
-      case 'name':
+      case 'title':
         return `Name: ${filters.sortOrder === 'asc' ? 'A to Z' : 'Z to A'}`;
       default:
         return 'Sort By';
@@ -217,6 +229,8 @@ export default function ProductsPage() {
     if (filters.brand.length) count += filters.brand.length;
     if (filters.year) count += 1;
     if (filters.minWeight || filters.maxWeight) count += 1;
+    if (filters.engineConfiguration) count += 1;
+    if (filters.fuelType) count += 1;
     return count;
   };
 
@@ -289,14 +303,14 @@ export default function ProductsPage() {
                     <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
                       <div className="py-1">
                         <button 
-                          onClick={() => handleSortSelect('price', 'asc')}
-                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'price' && filters.sortOrder === 'asc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => handleSortSelect('unitPrice', 'asc')}
+                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'unitPrice' && filters.sortOrder === 'asc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
                           Price: Low to High
                         </button>
                         <button 
-                          onClick={() => handleSortSelect('price', 'desc')}
-                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'price' && filters.sortOrder === 'desc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => handleSortSelect('unitPrice', 'desc')}
+                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'unitPrice' && filters.sortOrder === 'desc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
                           Price: High to Low
                         </button>
@@ -307,14 +321,14 @@ export default function ProductsPage() {
                           Date: Newest First
                         </button>
                         <button 
-                          onClick={() => handleSortSelect('name', 'asc')}
-                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'name' && filters.sortOrder === 'asc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => handleSortSelect('title', 'asc')}
+                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'title' && filters.sortOrder === 'asc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
                           Name: A to Z
                         </button>
                         <button 
-                          onClick={() => handleSortSelect('name', 'desc')}
-                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'name' && filters.sortOrder === 'desc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
+                          onClick={() => handleSortSelect('title', 'desc')}
+                          className={`w-full text-left px-4 py-2 text-sm ${filters.sortBy === 'title' && filters.sortOrder === 'desc' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}
                         >
                           Name: Z to A
                         </button>
@@ -372,6 +386,8 @@ export default function ProductsPage() {
                         minWeight: '',
                         maxWeight: '',
                         selectedWeight: '',
+                        engineConfiguration: '',
+                        fuelType: '',
                         sortBy: 'createdAt',
                         sortOrder: 'desc',
                         year: ''
@@ -390,6 +406,7 @@ export default function ProductsPage() {
                   >
                     {products.map(product => (
                       <motion.div 
+                        // Continuing from where we left off - in the products mapping section
                         key={product._id}
                         layout
                         initial={{ opacity: 0 }}

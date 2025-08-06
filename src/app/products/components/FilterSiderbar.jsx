@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaTimes, FaChevronDown, FaCheck } from 'react-icons/fa';
+import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs } from 'react-icons/fa';
 
 export default function FilterSidebar({ 
   categories, 
@@ -15,6 +15,8 @@ export default function FilterSidebar({
     weight: true,
     brands: true,
     categories: true,
+    engineConfiguration: true,
+    fuelType: true,
     sort: false
   });
   
@@ -25,6 +27,27 @@ export default function FilterSidebar({
     { value: '40', label: 'Up to 40 Ton', min: '0', max: '40' },
     { value: '50', label: 'Up to 50 Ton', min: '0', max: '50' },
     { value: '51', label: 'Over 50 Ton', min: '50', max: '999999' },
+  ];
+  
+  const engineConfigOptions = [
+    { value: 'Inline', label: 'Inline/Straight' },
+    { value: 'V-type', label: 'V-Type (V6, V8, etc.)' },
+    { value: 'Flat', label: 'Flat/Boxer' },
+    { value: 'Rotary', label: 'Rotary' },
+    { value: 'Single', label: 'Single Cylinder' },
+    { value: 'Electric', label: 'Electric Motor' },
+    { value: 'Hybrid', label: 'Hybrid' },
+    { value: 'Other', label: 'Other' }
+  ];
+  
+  const fuelTypeOptions = [
+    { value: 'Diesel', label: 'Diesel' },
+    { value: 'Gasoline', label: 'Gasoline/Petrol' },
+    { value: 'Electric', label: 'Electric' },
+    { value: 'Hybrid', label: 'Hybrid' },
+    { value: 'CNG', label: 'CNG' },
+    { value: 'LPG', label: 'LPG' },
+    { value: 'Other', label: 'Other' }
   ];
 
   const currentYear = new Date().getFullYear();
@@ -99,6 +122,8 @@ export default function FilterSidebar({
       minWeight: '',
       maxWeight: '',
       selectedWeight: '',
+      engineConfiguration: '',
+      fuelType: '',
       sortBy: 'createdAt',
       sortOrder: 'desc'
     };
@@ -198,6 +223,114 @@ export default function FilterSidebar({
                       isWeightSelected(option) ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
                     }`}>
                       {isWeightSelected(option) && <FaCheck className="text-white text-xs" />}
+                    </div>
+                    <span className="text-sm text-gray-700">{option.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('engineConfiguration')}
+          >
+            <div className="flex items-center">
+              <FaCogs className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Engine Type</h3>
+            </div>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.engineConfiguration ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.engineConfiguration && (
+            <div className="mt-2 space-y-2">
+              <div 
+                onClick={() => handleFilterChange('engineConfiguration', '')}
+                className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                  !localFilters.engineConfiguration ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                  !localFilters.engineConfiguration 
+                    ? 'bg-blue-600 border-blue-600' 
+                    : 'border border-gray-300'
+                }`}>
+                  {!localFilters.engineConfiguration && <FaCheck className="text-white text-xs" />}
+                </div>
+                <span className="text-sm text-gray-700">All Engine Types</span>
+              </div>
+              
+              {engineConfigOptions.map(option => (
+                <div key={option.value} className="flex items-center">
+                  <div 
+                    onClick={() => handleFilterChange('engineConfiguration', option.value)}
+                    className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                      localFilters.engineConfiguration === option.value ? 'bg-blue-50' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                      localFilters.engineConfiguration === option.value ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
+                    }`}>
+                      {localFilters.engineConfiguration === option.value && <FaCheck className="text-white text-xs" />}
+                    </div>
+                    <span className="text-sm text-gray-700">{option.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('fuelType')}
+          >
+            <div className="flex items-center">
+              <FaGasPump className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Fuel Type</h3>
+            </div>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.fuelType ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.fuelType && (
+            <div className="mt-2 space-y-2">
+              <div 
+                onClick={() => handleFilterChange('fuelType', '')}
+                className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                  !localFilters.fuelType ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                  !localFilters.fuelType 
+                    ? 'bg-blue-600 border-blue-600' 
+                    : 'border border-gray-300'
+                }`}>
+                  {!localFilters.fuelType && <FaCheck className="text-white text-xs" />}
+                </div>
+                <span className="text-sm text-gray-700">All Fuel Types</span>
+              </div>
+              
+              {fuelTypeOptions.map(option => (
+                <div key={option.value} className="flex items-center">
+                  <div 
+                    onClick={() => handleFilterChange('fuelType', option.value)}
+                    className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                      localFilters.fuelType === option.value ? 'bg-blue-50' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                      localFilters.fuelType === option.value ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
+                    }`}>
+                      {localFilters.fuelType === option.value && <FaCheck className="text-white text-xs" />}
                     </div>
                     <span className="text-sm text-gray-700">{option.label}</span>
                   </div>

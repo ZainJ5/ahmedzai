@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { FaChevronDown, FaSearch, FaTimes, FaFilter } from 'react-icons/fa';
 import { HiAdjustments } from 'react-icons/hi';
-import { FaTruck } from 'react-icons/fa6';
+import { FaTruck, FaGasPump, FaCogs } from 'react-icons/fa6';
 import 'rc-slider/assets/index.css';
 
 export default function AdvancedSearchFilter() {
@@ -25,6 +25,8 @@ export default function AdvancedSearchFilter() {
     category: '',
     year: '',
     selectedWeight: '',
+    engineConfiguration: '',
+    fuelType: ''
   });
   
   const weightOptions = [
@@ -35,6 +37,29 @@ export default function AdvancedSearchFilter() {
     { value: '40', label: 'Up to 40 Ton', min: '0', max: '40' },
     { value: '50', label: 'Up to 50 Ton', min: '0', max: '50' },
     { value: '51', label: 'Over 50 Ton', min: '50', max: '999999' },
+  ];
+  
+  const engineConfigOptions = [
+    { value: '', label: 'All Engine Types' },
+    { value: 'Inline', label: 'Inline/Straight' },
+    { value: 'V-type', label: 'V-Type (V6, V8, etc.)' },
+    { value: 'Flat', label: 'Flat/Boxer' },
+    { value: 'Rotary', label: 'Rotary' },
+    { value: 'Single', label: 'Single Cylinder' },
+    { value: 'Electric', label: 'Electric Motor' },
+    { value: 'Hybrid', label: 'Hybrid' },
+    { value: 'Other', label: 'Other' }
+  ];
+  
+  const fuelTypeOptions = [
+    { value: '', label: 'All Fuel Types' },
+    { value: 'Diesel', label: 'Diesel' },
+    { value: 'Gasoline', label: 'Gasoline/Petrol' },
+    { value: 'Electric', label: 'Electric' },
+    { value: 'Hybrid', label: 'Hybrid' },
+    { value: 'CNG', label: 'CNG' },
+    { value: 'LPG', label: 'LPG' },
+    { value: 'Other', label: 'Other' }
   ];
 
   const generateYears = () => {
@@ -130,6 +155,8 @@ export default function AdvancedSearchFilter() {
     if (filters.model && filters.model.trim() !== '') queryParams.append('search', filters.model.trim());
     if (filters.category) queryParams.append('category', filters.category);
     if (filters.year) queryParams.append('year', filters.year);
+    if (filters.engineConfiguration) queryParams.append('engineConfiguration', filters.engineConfiguration);
+    if (filters.fuelType) queryParams.append('fuelType', filters.fuelType);
     
     // Apply weight filter based on selected option
     if (filters.selectedWeight) {
@@ -151,6 +178,8 @@ export default function AdvancedSearchFilter() {
       category: '',
       year: '',
       selectedWeight: '',
+      engineConfiguration: '',
+      fuelType: ''
     });
   };
 
@@ -300,6 +329,48 @@ export default function AdvancedSearchFilter() {
                             {yearOptions.map(year => (
                               <option key={year.value} value={year.value}>
                                 {year.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label htmlFor="engineConfiguration" className="block text-sm font-medium text-gray-700">
+                          Engine Type
+                        </label>
+                        <div className="relative rounded-md">
+                          <select
+                            id="engineConfiguration"
+                            value={filters.engineConfiguration}
+                            onChange={(e) => handleInputChange('engineConfiguration', e.target.value)}
+                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            disabled={loading}
+                          >
+                            {engineConfigOptions.map(option => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label htmlFor="fuelType" className="block text-sm font-medium text-gray-700">
+                          Fuel Type
+                        </label>
+                        <div className="relative rounded-md">
+                          <select
+                            id="fuelType"
+                            value={filters.fuelType}
+                            onChange={(e) => handleInputChange('fuelType', e.target.value)}
+                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            disabled={loading}
+                          >
+                            {fuelTypeOptions.map(option => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
                               </option>
                             ))}
                           </select>

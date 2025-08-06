@@ -84,7 +84,7 @@ export async function PUT(request, { params }) {
       updatedAt: Date.now()
     };
     
-    const textFields = ['title', 'model', 'features'];
+    const textFields = ['title', 'model', 'features', 'fuelType'];
     for (const field of textFields) {
       if (formData.has(field)) {
         updateData[field] = formData.get(field);
@@ -103,6 +103,42 @@ export async function PUT(request, { params }) {
       if (formData.has(field)) {
         updateData[field] = formData.get(field);
       }
+    }
+    
+    updateData.engine = {};
+    const engineFields = ['displacement', 'cylinders', 'horsepower'];
+    for (const field of engineFields) {
+      const formKey = `engine.${field}`;
+      if (formData.has(formKey)) {
+        updateData.engine[field] = parseFloat(formData.get(formKey));
+      } else if (existingProduct.engine && existingProduct.engine[field]) {
+        updateData.engine[field] = existingProduct.engine[field];
+      }
+    }
+    
+    if (formData.has('engine.configuration')) {
+      updateData.engine.configuration = formData.get('engine.configuration');
+    } else if (existingProduct.engine && existingProduct.engine.configuration) {
+      updateData.engine.configuration = existingProduct.engine.configuration;
+    }
+    
+    updateData.mileage = {};
+    const mileageNumericFields = ['city', 'highway'];
+    for (const field of mileageNumericFields) {
+      const formKey = `mileage.${field}`;
+      if (formData.has(formKey)) {
+        updateData.mileage[field] = parseFloat(formData.get(formKey));
+      } else if (existingProduct.mileage && existingProduct.mileage[field]) {
+        updateData.mileage[field] = existingProduct.mileage[field];
+      }
+    }
+    
+    if (formData.has('mileage.unit')) {
+      updateData.mileage.unit = formData.get('mileage.unit');
+    } else if (existingProduct.mileage && existingProduct.mileage.unit) {
+      updateData.mileage.unit = existingProduct.mileage.unit;
+    } else {
+      updateData.mileage.unit = 'km/l';
     }
     
     const thumbnailFile = formData.get('thumbnail');

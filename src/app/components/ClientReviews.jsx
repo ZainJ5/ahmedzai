@@ -51,11 +51,11 @@ export default function ClientReviews() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-4 sm:pb-0 snap-x snap-mandatory scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {testimonials.map((testimonial) => (
             <motion.div
               key={testimonial.id}
-              className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center"
+              className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col items-center text-center min-w-[280px] sm:min-w-0 snap-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: testimonial.id * 0.2 }}

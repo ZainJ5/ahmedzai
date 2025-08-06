@@ -31,7 +31,10 @@ import {
   FaAlignCenter,
   FaAlignRight,
   FaQuoteRight,
-  FaTable
+  FaTable,
+  FaGasPump,
+  FaCogs,
+  FaTachometerAlt
 } from 'react-icons/fa';
 
 const CustomEditor = ({ value, onChange }) => {
@@ -156,7 +159,20 @@ export default function CarManagement() {
     model: '',
     quantity: '',
     weight: '',
-    features: ''
+    features: '',
+    // New fields for fuel, engine, mileage
+    fuelType: '',
+    engine: {
+      displacement: '',
+      cylinders: '',
+      horsepower: '',
+      configuration: ''
+    },
+    mileage: {
+      city: '',
+      highway: '',
+      unit: 'km/l'
+    }
   });
   
   const [thumbnailFile, setThumbnailFile] = useState(null);
@@ -233,7 +249,20 @@ export default function CarManagement() {
     setFormData({
       title: '', category: '', make: '', unitPrice: '',
       discountPercentage: 0, year: new Date().getFullYear(),
-      model: '', quantity: '', weight: '', features: ''
+      model: '', quantity: '', weight: '', features: '',
+      // Reset new fields
+      fuelType: '',
+      engine: {
+        displacement: '',
+        cylinders: '',
+        horsepower: '',
+        configuration: ''
+      },
+      mileage: {
+        city: '',
+        highway: '',
+        unit: 'km/l'
+      }
     });
     setThumbnailFile(null);
     setNewImageFiles([]);
@@ -262,7 +291,20 @@ export default function CarManagement() {
       model: product.model,
       quantity: product.quantity,
       weight: product.weight,
-      features: product.features
+      features: product.features,
+      // Set values for new fields
+      fuelType: product.fuelType || '',
+      engine: {
+        displacement: product.engine?.displacement || '',
+        cylinders: product.engine?.cylinders || '',
+        horsepower: product.engine?.horsepower || '',
+        configuration: product.engine?.configuration || ''
+      },
+      mileage: {
+        city: product.mileage?.city || '',
+        highway: product.mileage?.highway || '',
+        unit: product.mileage?.unit || 'km/l'
+      }
     });
     setThumbnailFile(null);
     setNewImageFiles([]);
@@ -294,7 +336,20 @@ export default function CarManagement() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    
+    // Handle nested object fields
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setFormData({
+        ...formData,
+        [parent]: {
+          ...formData[parent],
+          [child]: value
+        }
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
   
   const handleFeaturesChange = (e) => {
@@ -340,9 +395,23 @@ export default function CarManagement() {
     try {
       const formDataToSend = new FormData();
       
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
+      // Add simple fields
+      const simpleFields = ['title', 'model', 'year', 'unitPrice', 'discountPercentage', 'quantity', 'weight', 'features', 'category', 'make', 'fuelType'];
+      simpleFields.forEach(field => {
+        if (formData[field] !== undefined) {
+          formDataToSend.append(field, formData[field]);
+        }
       });
+      
+      // Add nested engine fields
+      for (const key in formData.engine) {
+        formDataToSend.append(`engine.${key}`, formData.engine[key]);
+      }
+      
+      // Add nested mileage fields
+      for (const key in formData.mileage) {
+        formDataToSend.append(`mileage.${key}`, formData.mileage[key]);
+      }
       
       if (thumbnailFile) {
         formDataToSend.append('thumbnail', thumbnailFile);
@@ -537,6 +606,29 @@ export default function CarManagement() {
                   />
                 </div>
                 
+                {/* New field: Fuel Type */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">
+                    <FaGasPump className="inline mr-1" /> Fuel Type *
+                  </label>
+                  <select
+                    name="fuelType"
+                    value={formData.fuelType}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  >
+                    <option value="">Select Fuel Type</option>
+                    <option value="Gasoline">Gasoline</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="CNG">CNG</option>
+                    <option value="LPG">LPG</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
                     Price ($) *
@@ -608,6 +700,130 @@ export default function CarManagement() {
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
+                </div>
+
+                {/* New section: Engine Details */}
+                <div className="md:col-span-2">
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                      <FaCogs className="mr-2 text-blue-600" /> Engine Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Engine Displacement (cc) *
+                        </label>
+                        <input
+                          type="number"
+                          name="engine.displacement"
+                          min="0"
+                          value={formData.engine.displacement}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Number of Cylinders *
+                        </label>
+                        <input
+                          type="number"
+                          name="engine.cylinders"
+                          min="0"
+                          value={formData.engine.cylinders}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Horsepower (hp) *
+                        </label>
+                        <input
+                          type="number"
+                          name="engine.horsepower"
+                          min="0"
+                          value={formData.engine.horsepower}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Engine Configuration *
+                        </label>
+                        <input
+                          type="text"
+                          name="engine.configuration"
+                          placeholder="e.g., V6, Inline-4, Flat-6"
+                          value={formData.engine.configuration}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* New section: Mileage Information */}
+                <div className="md:col-span-2">
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                      <FaTachometerAlt className="mr-2 text-blue-600" /> Mileage Information
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          City Mileage *
+                        </label>
+                        <input
+                          type="number"
+                          name="mileage.city"
+                          min="0"
+                          step="0.1"
+                          value={formData.mileage.city}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Highway Mileage *
+                        </label>
+                        <input
+                          type="number"
+                          name="mileage.highway"
+                          min="0"
+                          step="0.1"
+                          value={formData.mileage.highway}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">
+                          Mileage Unit *
+                        </label>
+                        <select
+                          name="mileage.unit"
+                          value={formData.mileage.unit}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        >
+                          <option value="km/l">km/l</option>
+                          <option value="mpg">mpg (Miles Per Gallon)</option>
+                          <option value="l/100km">l/100km</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 <div className="md:col-span-2">

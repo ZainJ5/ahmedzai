@@ -29,7 +29,7 @@ export default function ProductCard({ product }) {
             src={product.thumbnail || '/placeholder-product.jpg'} 
             alt={product.title}
             fill
-            className={`object-contain transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+            className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
           />
           {product.discountPercentage > 0 && (
             <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">

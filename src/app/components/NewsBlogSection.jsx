@@ -79,7 +79,7 @@ export default function FeaturedBlogs() {
   };
 
   return (
-    <div className="py-16 bg-gray-50">
+    <div className="py-8 mb-8 bg-gray-50 rounded-2xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Latest From Our Blog</h2>
@@ -125,11 +125,17 @@ export default function FeaturedBlogs() {
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <Link href="/blogs" className="inline-block bg-blue-600 text-white font-medium px-6 py-3 rounded-md hover:bg-blue-700 transition-colors shadow-md">
-            View All Blog Posts
-          </Link>
-        </div>
+          <div className="flex justify-center pt-8 mt-4">
+            <Link 
+              href="/blogs" 
+              className="text-gray-800 text-sm sm:text-base font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1"
+            >
+              View All Blogs
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-3 h-3 sm:w-4 sm:h-4 ml-1">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
       </div>
     </div>
   );

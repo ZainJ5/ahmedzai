@@ -47,6 +47,52 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Please provide product weight']
   },
+  fuelType: {
+    type: String,
+    required: [true, 'Please specify the fuel type'],
+    enum: ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'CNG', 'LPG', 'Other'],
+    trim: true
+  },
+  engine: {
+    displacement: {
+      type: Number,
+      required: [true, 'Please provide engine displacement in cc'],
+      min: [0, 'Engine displacement cannot be negative']
+    },
+    cylinders: {
+      type: Number,
+      required: [true, 'Please specify number of cylinders'],
+      min: [0, 'Number of cylinders cannot be negative']
+    },
+    horsepower: {
+      type: Number,
+      required: [true, 'Please provide engine horsepower'],
+      min: [0, 'Horsepower cannot be negative']
+    },
+    configuration: {
+      type: String,
+      required: [true, 'Please specify engine configuration'],
+      trim: true
+    }
+  },
+  mileage: {
+    city: {
+      type: Number,
+      required: [true, 'Please provide city mileage'],
+      min: [0, 'Mileage cannot be negative']
+    },
+    highway: {
+      type: Number,
+      required: [true, 'Please provide highway mileage'],
+      min: [0, 'Mileage cannot be negative']
+    },
+    unit: {
+      type: String,
+      required: [true, 'Please specify mileage unit'],
+      enum: ['km/l', 'mpg', 'l/100km'],
+      default: 'km/l'
+    }
+  },
   features: {
     type: String,
     required: [true, 'Please provide product features']
