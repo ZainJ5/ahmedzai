@@ -16,7 +16,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                // Fetch up to 8 products for the 4x2 grid
                 const response = await fetch('/api/products?limit=8&sortBy=createdAt&sortOrder=desc&category=6890ae47d1f3719edf5910a9');
 
                 if (!response.ok) {
@@ -42,7 +41,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
 
     if (loading) {
         return (
-            <section className="bg-white py-16">
+            <section className="bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-gray-900 mb-3">Discover Top Picks</h2>
@@ -52,9 +51,9 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[...Array(4)].map((_, index) => (
-                            <div key={index} className="flex-shrink-0 w-full">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                        {[...Array(8)].map((_, index) => (
+                            <div key={index} className="w-full">
                                 <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100">
                                     <div className="h-52 bg-slate-100 animate-pulse"></div>
                                     <div className="p-5">
@@ -96,7 +95,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
     }
 
     return (
-        <section className="py-16 bg-white">
+        <section className="py-4 bg-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <motion.h2
@@ -117,15 +116,15 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {products.map((product) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    {products.slice(0, 8).map((product) => (
                         <motion.div
                             key={product._id}
-                            className="w-full cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out border border-slate-100"
+                            className="cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out border border-slate-100"
                             onClick={() => handleProductClick(product._id)}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0.4 }}
                         >
                             <div className="relative h-52 w-full bg-slate-100">
                                 <Image
@@ -133,19 +132,19 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                                     alt={product.title}
                                     fill
                                     className="object-cover rounded-t-xl"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 280px"
-                                    priority={products.indexOf(product) < 4} // Prioritize loading images for the first row
+                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                    priority
                                 />
                             </div>
 
-                            <div className="p-5">
+                            <div className="p-4">
                                 <div className="flex items-baseline gap-2 mb-2">
                                     {product.discountPercentage > 0 ? (
                                         <>
-                                            <h3 className="text-xl font-semibold text-slate-800">
+                                            <h3 className="text-lg md:text-xl font-semibold text-slate-800">
                                                 ${product.discountedPrice.toLocaleString()}
                                             </h3>
-                                            <p className="text-sm text-slate-400 line-through">
+                                            <p className="text-xs md:text-sm text-slate-400 line-through">
                                                 ${product.unitPrice.toLocaleString()}
                                             </p>
                                             <p className="text-xs text-amber-600 font-medium">
@@ -153,17 +152,17 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                                             </p>
                                         </>
                                     ) : (
-                                        <h3 className="text-xl font-semibold text-slate-800">
+                                        <h3 className="text-lg md:text-xl font-semibold text-slate-800">
                                             ${product.unitPrice.toLocaleString()}
                                         </h3>
                                     )}
                                 </div>
 
-                                <h4 className="text-lg font-medium text-slate-700 mb-3 truncate">
+                                <h4 className="text-base md:text-lg font-medium text-slate-700 mb-2 truncate">
                                     {product.make?.name} {product.title}
                                 </h4>
 
-                                <p className="text-sm text-slate-500 tracking-tight mb-2">
+                                <p className="text-xs md:text-sm text-slate-500 tracking-tight">
                                     {product.category?.name} | {product.year} | {product.model}
                                 </p>
                             </div>
@@ -171,14 +170,14 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                     ))}
                 </div>
 
-                <div className="flex justify-center mt-12">
+                <div className="flex justify-center mt-10">
                     <Link
                         href="/products?category=6890ae47d1f3719edf5910a9"
-                        className="text-gray-800 font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1 text-lg"
+                        className="text-gray-800 font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1"
                     >
                         View All Trucks
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 ml-2">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 ml-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                     </Link>
                 </div>
