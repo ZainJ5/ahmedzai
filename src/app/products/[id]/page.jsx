@@ -569,7 +569,7 @@ export default function ProductDetailsPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <Link 
-                      href={`/categories/${product.category?._id}`}
+                      href={`/products`}
                       className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     >
                       {product.category?.name || 'Category'}
