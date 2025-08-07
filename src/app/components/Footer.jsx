@@ -1,6 +1,9 @@
+"use client"
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { 
   FaFacebookF, 
   FaInstagram, 
@@ -8,99 +11,218 @@ import {
   FaPhoneAlt, 
   FaEnvelope, 
   FaMapMarkerAlt,
-  FaChevronRight
 } from 'react-icons/fa';
 
 const Footer = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const headingVariants = {
+    hidden: { opacity: 0, y: -10, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const socialHoverVariants = {
+    hover: {
+      scale: 1.1,
+      backgroundColor: "#ffffff",
+      color: "#000000",
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
+  
   return (
-    <footer className="bg-gradient-to-b from-gray-900 to-black text-white pt-24 pb-12 font-sans">
-      <div className="container mx-auto px-6 md:px-10 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
-          <div className="space-y-8">
-            <div className="h-16 w-52 relative">
+    <motion.footer 
+      className="bg-black text-white sm:pt-15 pt-8 pb-10 font-sans"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={containerVariants}
+    >
+      <div className="container mx-auto px-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12"
+          variants={containerVariants}
+        >
+          <motion.div className="space-y-6" variants={itemVariants}>
+            <div className="h-20 w-40 relative">
               <Image 
                 src="/logo.jpg" 
                 alt="ATJ Automotive" 
                 fill
                 style={{ objectFit: "contain" }}
-                className="filter brightness-125 transition-transform duration-500 hover:scale-105"
+                className="brightness-110"
               />
             </div>
-            <p className="text-gray-300 text-base leading-relaxed max-w-sm font-light tracking-wide">
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
               ATJ Automotive: Pioneering the future of mobility with cutting-edge innovation, precision, and elegance.
             </p>
-            <div className="flex space-x-6">
+            <div className="flex space-x-3 pt-2">
               {[
-              { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd'},
-              { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd'},
-              { icon: FaInstagram, href: 'https://www.instagram.com/ahmedzaitradingjapan/' },
-              ].map((social, index) => (
-                <a 
-                  key={index}
+                { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd', label: 'Facebook'},
+                { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd', label: 'YouTube' },
+                { icon: FaInstagram, href: 'https://www.instagram.com/ahmedzaitradingjapan/', label: 'Instagram' },
+              ].map((social) => (
+                <motion.a 
+                  key={social.label}
                   href={social.href} 
-                  className="bg-gray-800 bg-opacity-70 hover:bg-white hover:text-gray-900 p-3 rounded-full transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-lg"
-                  aria-label={`Visit our ${social.icon.name} page`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gray-800 text-gray-300 p-3 rounded-full transition-colors duration-300 border border-gray-700"
+                  aria-label={`Visit our ${social.label} page`}
+                  variants={socialHoverVariants}
+                  whileHover="hover"
                 >
-                  <social.icon size={18} />
-                </a>
+                  <social.icon size={16} />
+                </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
           
-          <div>
-            <h3 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-700 tracking-wider text-white">Quick Links</h3>
-            <ul className="space-y-5">
+          <motion.div variants={itemVariants}>
+            <motion.h3 
+              className="text-xl font-bold mb-5 tracking-wide text-left relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-26 after:bg-white"
+              variants={headingVariants}
+              custom={1}
+            >
+              COMPANY
+            </motion.h3>
+            <ul className="space-y-3 text-center md:text-left">
               {[
                 { text: 'Home', href: '/' },
-                { text: 'Products', href: '/products' },
-                { text: 'Services', href: '#services' },
-                // { text: 'About Us', href: '/about' },
-                { text: 'Contact', href: '#contact' }
+                { text: 'About Us', href: '/about' },
+                { text: 'Contact Us', href: '/contact' },
               ].map((link, index) => (
-                <li key={index}>
-                  <Link 
-                    href={link.href} 
-                    className="text-gray-300 hover:text-white text-base font-light flex items-center group transition-all duration-300"
-                  >
-                    <FaChevronRight className="mr-3 text-sm text-gray-500 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-2" />
-                    <span className="group-hover:translate-x-2 transition-transform duration-300">{link.text}</span>
+                <motion.li 
+                  key={link.text}
+                  variants={itemVariants}
+                  custom={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
+                    {link.text}
                   </Link>
-                </li>
+                </motion.li>
               ))}
             </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-700 tracking-wider text-white">Contact Us</h3>
-            <ul className="space-y-7">
-              <li className="flex items-start">
-                <FaMapMarkerAlt className="mt-1 mr-4 text-gray-400" size={20} />
-                <span className="text-gray-300 text-base font-light tracking-wide">123 Business Avenue, Technology Park, Karachi, Pakistan</span>
-              </li>
-              <li className="flex items-center">
-                <FaPhoneAlt className="mr-4 text-gray-400" size={18} />
-                <a href="tel:+921234567890" className="text-gray-300 hover:text-white text-base font-light transition-colors duration-300">+92 123 4567890</a>
-              </li>
-              <li className="flex items-center">
-                <FaEnvelope className="mr-4 text-gray-400" size={18} />
-                <a href="mailto:info@atj.com" className="text-gray-300 hover:text-white text-base font-light transition-colors duration-300">info@atj.com</a>
-              </li>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <motion.h3 
+              className="text-xl font-bold mb-5 tracking-wide text-left relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-26 after:bg-white"
+              variants={headingVariants}
+              custom={2}
+            >
+              SERVICES
+            </motion.h3>
+            <ul className="space-y-3 text-center md:text-left">
+              {[
+                { text: 'Blogs', href: '/blogs' },
+                { text: 'Services', href: '#services' },
+                { text: 'Products', href: '/products' },
+              ].map((link, index) => (
+                <motion.li 
+                  key={link.text}
+                  variants={itemVariants}
+                  custom={index}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
+                      {link.text}
+                  </Link>
+                </motion.li>
+              ))}
             </ul>
-          </div>
-        </div>
+          </motion.div>
+          
+          <motion.div variants={itemVariants}>
+            <motion.h3 
+              className="text-xl font-bold mb-5 tracking-wide text-center md:text-left relative pb-2 md:after:content-[''] md:after:absolute md:after:left-0 md:after:bottom-0 md:after:h-1 md:after:w-33 md:after:bg-white"
+              variants={headingVariants}
+              custom={3}
+            >
+              CONTACT US
+            </motion.h3>
+            <ul className="space-y-4">
+              <motion.li 
+                className="flex items-start group"
+                variants={itemVariants}
+                whileHover={{ x: 5 }}
+              >
+                <FaMapMarkerAlt className="mt-1 mr-4 text-gray-500 group-hover:text-blue-400 transition-colors duration-300 flex-shrink-0" size={16} />
+                <span className="text-gray-400 text-sm">
+                  123 Business Avenue, Technology Park, Karachi, Pakistan
+                </span>
+              </motion.li>
+              <motion.li 
+                className="flex items-center group"
+                variants={itemVariants}
+                whileHover={{ x: 5 }}
+              >
+                <FaPhoneAlt className="mr-4 text-gray-500 group-hover:text-blue-400 transition-colors duration-300" size={14} />
+                <a href="tel:+819027801563" className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
+                  +81 90-2780-1563
+                </a>
+              </motion.li>
+              <motion.li 
+                className="flex items-center group"
+                variants={itemVariants}
+                whileHover={{ x: 5 }}
+              >
+                <FaEnvelope className="mr-4 text-gray-500 group-hover:text-blue-400 transition-colors duration-300" size={14} />
+                <a href="mailto:ahmedzai.trading@gmail.com" className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
+                  ahmedzai.trading@gmail.com
+                </a>
+              </motion.li>
+            </ul>
+          </motion.div>
+        </motion.div>
         
-        <div className="border-t border-gray-800 pt-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-gray-400 text-base font-light">© {new Date().getFullYear()} ATJ Automotive. All rights reserved.</p>
-            <div className="flex space-x-10">
-              <Link href="/privacy-policy" className="text-gray-400 hover:text-white text-base font-light transition-colors duration-300">Privacy Policy</Link>
-              <Link href="/terms-conditions" className="text-gray-400 hover:text-white text-base font-light transition-colors duration-300">Terms & Conditions</Link>
-              <Link href="/sitemap" className="text-gray-400 hover:text-white text-base font-light transition-colors duration-300">Sitemap</Link>
-            </div>
+        <motion.div 
+          className="border-t border-gray-800 pt-8 mt-10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="text-center">
+            <p className="text-gray-500 text-xs">
+              © {new Date().getFullYear()} ATJ Automotive. All rights reserved.
+            </p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 
