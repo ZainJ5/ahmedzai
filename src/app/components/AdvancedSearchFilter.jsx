@@ -24,20 +24,9 @@ export default function AdvancedSearchFilter() {
     model: '',
     category: '',
     year: '',
-    selectedWeight: '',
     engineConfiguration: '',
     fuelType: ''
   });
-  
-  const weightOptions = [
-    { value: '', label: 'All Weights' },
-    { value: '10', label: 'Up to 10 Ton', min: '0', max: '10' },
-    { value: '20', label: 'Up to 20 Ton', min: '0', max: '20' },
-    { value: '30', label: 'Up to 30 Ton', min: '0', max: '30' },
-    { value: '40', label: 'Up to 40 Ton', min: '0', max: '40' },
-    { value: '50', label: 'Up to 50 Ton', min: '0', max: '50' },
-    { value: '51', label: 'Over 50 Ton', min: '50', max: '999999' },
-  ];
   
   const engineConfigOptions = [
     { value: '', label: 'All Engine Types' },
@@ -158,15 +147,6 @@ export default function AdvancedSearchFilter() {
     if (filters.engineConfiguration) queryParams.append('engineConfiguration', filters.engineConfiguration);
     if (filters.fuelType) queryParams.append('fuelType', filters.fuelType);
     
-    // Apply weight filter based on selected option
-    if (filters.selectedWeight) {
-      const selectedOption = weightOptions.find(option => option.value === filters.selectedWeight);
-      if (selectedOption) {
-        queryParams.append('minWeight', selectedOption.min);
-        queryParams.append('maxWeight', selectedOption.max);
-      }
-    }
-    
     // Navigate to products page with search parameters
     router.push(`/products?${queryParams.toString()}`);
   };
@@ -177,7 +157,6 @@ export default function AdvancedSearchFilter() {
       model: '',
       category: '',
       year: '',
-      selectedWeight: '',
       engineConfiguration: '',
       fuelType: ''
     });
@@ -387,27 +366,6 @@ export default function AdvancedSearchFilter() {
                           <h3 className="text-lg font-semibold text-gray-800">Additional Options</h3>
                         </div>
                         <p className="text-sm text-gray-500 mt-1">Further refine your equipment search</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label htmlFor="weight" className="block text-sm font-medium text-gray-700">
-                          Weight Range
-                        </label>
-                        <div className="relative rounded-md">
-                          <select
-                            id="weight"
-                            value={filters.selectedWeight}
-                            onChange={(e) => handleInputChange('selectedWeight', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                            disabled={loading}
-                          >
-                            {weightOptions.map(option => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
                       </div>
                       
                       <div className="pt-4 grid grid-cols-2 gap-4">

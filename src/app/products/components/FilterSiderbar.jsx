@@ -12,22 +12,12 @@ export default function FilterSidebar({
   const [localFilters, setLocalFilters] = useState(filters);
   const [expandedSections, setExpandedSections] = useState({
     year: true,
-    weight: true,
     brands: true,
     categories: true,
     engineConfiguration: true,
     fuelType: true,
     sort: false
   });
-  
-  const weightOptions = [
-    { value: '10', label: 'Up to 10 Ton', min: '0', max: '10' },
-    { value: '20', label: 'Up to 20 Ton', min: '0', max: '20' },
-    { value: '30', label: 'Up to 30 Ton', min: '0', max: '30' },
-    { value: '40', label: 'Up to 40 Ton', min: '0', max: '40' },
-    { value: '50', label: 'Up to 50 Ton', min: '0', max: '50' },
-    { value: '51', label: 'Over 50 Ton', min: '50', max: '999999' },
-  ];
   
   const engineConfigOptions = [
     { value: 'Inline', label: 'Inline/Straight' },
@@ -87,18 +77,6 @@ export default function FilterSidebar({
     onFilterChange(newFilters);
   };
 
-  const handleWeightChange = (option) => {
-    const newFilters = {
-      ...localFilters,
-      minWeight: option.min,
-      maxWeight: option.max,
-      selectedWeight: option.value
-    };
-    
-    setLocalFilters(newFilters);
-    onFilterChange(newFilters);
-  };
-
   const isItemSelected = (key, value) => {
     const currentValues = localFilters[key];
     
@@ -109,19 +87,12 @@ export default function FilterSidebar({
     }
     return false;
   };
-  
-  const isWeightSelected = (option) => {
-    return localFilters.selectedWeight === option.value;
-  };
 
   const clearFilters = () => {
     const resetFilters = {
       category: [],
       brand: [],
       year: '',
-      minWeight: '',
-      maxWeight: '',
-      selectedWeight: '',
       engineConfiguration: '',
       fuelType: '',
       sortBy: 'createdAt',
@@ -168,66 +139,6 @@ export default function FilterSidebar({
                   <option key={year.value} value={year.value}>{year.label}</option>
                 ))}
               </select>
-            </div>
-          )}
-        </div>
-        
-        <div className="mb-6">
-          <div 
-            className="flex items-center justify-between cursor-pointer mb-2" 
-            onClick={() => toggleSection('weight')}
-          >
-            <h3 className="text-md font-medium text-gray-700">Weight</h3>
-            <FaChevronDown 
-              className={`text-gray-400 transition-transform ${expandedSections.weight ? 'transform rotate-180' : ''}`} 
-              size={14}
-            />
-          </div>
-          
-          {expandedSections.weight && (
-            <div className="mt-2 space-y-2">
-              <div 
-                onClick={() => {
-                  const newFilters = {
-                    ...localFilters, 
-                    minWeight: '', 
-                    maxWeight: '', 
-                    selectedWeight: ''
-                  };
-                  setLocalFilters(newFilters);
-                  onFilterChange(newFilters);
-                }}
-                className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
-                  !localFilters.selectedWeight ? 'bg-blue-50' : 'hover:bg-gray-50'
-                }`}
-              >
-                <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                  !localFilters.selectedWeight 
-                    ? 'bg-blue-600 border-blue-600' 
-                    : 'border border-gray-300'
-                }`}>
-                  {!localFilters.selectedWeight && <FaCheck className="text-white text-xs" />}
-                </div>
-                <span className="text-sm text-gray-700">All Weights</span>
-              </div>
-              
-              {weightOptions.map(option => (
-                <div key={option.value} className="flex items-center">
-                  <div 
-                    onClick={() => handleWeightChange(option)}
-                    className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
-                      isWeightSelected(option) ? 'bg-blue-50' : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                      isWeightSelected(option) ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
-                    }`}>
-                      {isWeightSelected(option) && <FaCheck className="text-white text-xs" />}
-                    </div>
-                    <span className="text-sm text-gray-700">{option.label}</span>
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>
