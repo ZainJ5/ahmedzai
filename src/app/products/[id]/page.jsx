@@ -779,9 +779,9 @@ export default function ProductDetailsPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="p-6 bg-white"
+                className="p-6 bg-white overflow-x-auto"
               >
-                <div dangerouslySetInnerHTML={{ __html: product.features }} className="prose prose-sm sm:prose-base max-w-none text-gray-600 font-['Inter',sans-serif]" />
+                <div dangerouslySetInnerHTML={{ __html: product.features }} className="prose prose-sm sm:prose-base  max-w-none text-gray-600 font-['Inter',sans-serif]" />
               </motion.div>
             </div>
           </motion.div>
