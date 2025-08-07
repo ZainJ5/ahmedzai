@@ -73,7 +73,7 @@ export default function ProductsPage() {
           else if (minW === 50 && maxW === 999999) updatedFilters.selectedWeight = '51';
         }
         if (searchParams.get('maxWeight')) updatedFilters.maxWeight = searchParams.get('maxWeight');
-        if (searchParams.get('year')) updatedFilters.year = searchParams.get('year');
+        if (searchParams.get('year')) updatedFilters.year = search_params.get('year');
         if (searchParams.get('engineConfiguration')) updatedFilters.engineConfiguration = searchParams.get('engineConfiguration');
         if (searchParams.get('fuelType')) updatedFilters.fuelType = searchParams.get('fuelType');
         
@@ -267,7 +267,35 @@ export default function ProductsPage() {
 
         {/* Main Content */}
         <div className="flex-1 bg-gray-50">
-          {/* Mobile Filter Button & Top Bar */}
+          {/* Mobile Filter Section */}
+          <div className="lg:hidden p-4 bg-white border-b border-gray-200">
+            <div
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex justify-between items-center cursor-pointer"
+            >
+              <h2 className="text-lg font-medium text-gray-800">Advanced Search</h2>
+              <FaChevronUp
+                className={`text-gray-500 transition-transform ${
+                  !showFilters ? 'transform rotate-180' : ''
+                }`}
+                size={16}
+              />
+            </div>
+            {showFilters && (
+              <div className="mt-4">
+                <FilterSidebar
+                  categories={categories}
+                  brands={brands}
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  isMobile={true}
+                  onClose={() => setShowFilters(false)}
+                />
+              </div>
+            )}
+          </div>
+          
+          {/* Top Bar */}
           <div className="z-10 bg-white border-b border-gray-200 px-3 sm:px-4 py-3 lg:py-4">
             <div className="flex justify-between items-center">
               <div className="text-xs sm:text-sm text-gray-500">
@@ -276,19 +304,6 @@ export default function ProductsPage() {
               </div>
               
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowFilters(true)}
-                  className="lg:hidden flex items-center px-3 py-2 bg-white border border-gray-200 rounded-full text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition shadow-sm"
-                >
-                  <FaFilter className="mr-1.5 text-gray-500" />
-                  Filters
-                  {getActiveFiltersCount() > 0 && (
-                    <span className="ml-1.5 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                      {getActiveFiltersCount()}
-                    </span>
-                  )}
-                </button>
-                
                 <div className="relative">
                   <button
                     onClick={handleSortClick}
@@ -487,39 +502,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-
-      {/* Mobile Filter Sidebar */}
-      <AnimatePresence>
-        {showFilters && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black bg-opacity-50 flex lg:hidden"
-          >
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'tween' }}
-              className="w-[85vw] max-w-[320px] bg-white h-full overflow-y-auto"
-            >              
-              <div className="">
-                <FilterSidebar
-                  categories={categories}
-                  brands={brands}
-                  filters={filters}
-                  onFilterChange={handleFilterChange}
-                  isMobile={true}
-                  onClose={() => setShowFilters(false)}
-                  hideHeader={true} 
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <Footer />
     </div>
   );
