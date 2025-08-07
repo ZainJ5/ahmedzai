@@ -919,7 +919,7 @@ export default function ProductDetailsPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                <Link href={`/categories/${product.category?._id}`} className="text-blue-600 hover:text-blue-800 text-base font-medium transition-colors duration-200">
+                <Link href={`/products`} className="text-blue-600 hover:text-blue-800 text-base font-medium transition-colors duration-200">
                   View All
                 </Link>
               </motion.div>
