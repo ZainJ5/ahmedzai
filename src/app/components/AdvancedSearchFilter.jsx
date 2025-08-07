@@ -23,7 +23,8 @@ export default function AdvancedSearchFilter() {
     make: '',
     model: '',
     category: '',
-    year: '',
+    yearFrom: '',
+    yearTo: '',
     engineConfiguration: '',
     fuelType: ''
   });
@@ -51,16 +52,17 @@ export default function AdvancedSearchFilter() {
     { value: 'Other', label: 'Other' }
   ];
 
-  const generateYears = () => {
+  const generateYears = (label) => {
     const years = [];
-    years.push({ value: '', label: 'All years' });
+    years.push({ value: '', label: label });
     for (let year = currentYear; year >= currentYear - 30; year--) {
       years.push({ value: year.toString(), label: year.toString() });
     }
     return years;
   };
   
-  const yearOptions = generateYears();
+  const yearFromOptions = generateYears('From');
+  const yearToOptions = generateYears('To');
 
   // Set isClient to true once component mounts (client-side only)
   useEffect(() => {
@@ -143,7 +145,8 @@ export default function AdvancedSearchFilter() {
     if (filters.make) queryParams.append('brand', filters.make);
     if (filters.model && filters.model.trim() !== '') queryParams.append('search', filters.model.trim());
     if (filters.category) queryParams.append('category', filters.category);
-    if (filters.year) queryParams.append('year', filters.year);
+    if (filters.yearFrom) queryParams.append('yearFrom', filters.yearFrom);
+    if (filters.yearTo) queryParams.append('yearTo', filters.yearTo);
     if (filters.engineConfiguration) queryParams.append('engineConfiguration', filters.engineConfiguration);
     if (filters.fuelType) queryParams.append('fuelType', filters.fuelType);
     
@@ -156,7 +159,8 @@ export default function AdvancedSearchFilter() {
       make: '',
       model: '',
       category: '',
-      year: '',
+      yearFrom: '',
+      yearTo: '',
       engineConfiguration: '',
       fuelType: ''
     });
@@ -295,22 +299,39 @@ export default function AdvancedSearchFilter() {
                       
                       <div className="space-y-2">
                         <label htmlFor="year" className="block text-sm font-medium text-gray-700">
-                          Year
+                          Year Range
                         </label>
-                        <div className="relative rounded-md">
-                          <select
-                            id="year"
-                            value={filters.year}
-                            onChange={(e) => handleInputChange('year', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                            disabled={loading}
-                          >
-                            {yearOptions.map(year => (
-                              <option key={year.value} value={year.value}>
-                                {year.label}
-                              </option>
-                            ))}
-                          </select>
+                        <div className="flex items-center space-x-2">
+                          <div className="relative rounded-md w-1/2">
+                            <select
+                              id="yearFrom"
+                              value={filters.yearFrom}
+                              onChange={(e) => handleInputChange('yearFrom', e.target.value)}
+                              className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              disabled={loading}
+                            >
+                              {yearFromOptions.map(year => (
+                                <option key={year.value} value={year.value}>
+                                  {year.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="relative rounded-md w-1/2">
+                            <select
+                              id="yearTo"
+                              value={filters.yearTo}
+                              onChange={(e) => handleInputChange('yearTo', e.target.value)}
+                              className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              disabled={loading}
+                            >
+                              {yearToOptions.map(year => (
+                                <option key={year.value} value={year.value}>
+                                  {year.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       </div>
                       

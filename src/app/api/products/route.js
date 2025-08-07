@@ -42,7 +42,8 @@ export async function GET(request) {
     const maxPrice = searchParams.get('maxPrice');
     const minWeight = searchParams.get('minWeight');
     const maxWeight = searchParams.get('maxWeight');
-    const year = searchParams.get('year');
+    const yearFrom = searchParams.get('yearFrom');
+    const yearTo = searchParams.get('yearTo');
     const engineConfiguration = searchParams.get('engineConfiguration');
     const fuelType = searchParams.get('fuelType');
     
@@ -78,8 +79,10 @@ export async function GET(request) {
       if (maxWeight) query.weight.$lte = parseFloat(maxWeight);
     }
     
-    if (year && year !== '') {
-      query.year = parseInt(year);
+    if (yearFrom || yearTo) {
+      query.year = {};
+      if (yearFrom) query.year.$gte = parseInt(yearFrom);
+      if (yearTo) query.year.$lte = parseInt(yearTo);
     }
     
     // Add engine configuration filter - matches the engine.configuration field in schema

@@ -33,7 +33,8 @@ export default function ProductsPage() {
     fuelType: '',
     sortBy: 'createdAt',
     sortOrder: 'desc',
-    year: ''
+    yearFrom: '',
+    yearTo: ''
   });
   const [showFilters, setShowFilters] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
@@ -73,7 +74,8 @@ export default function ProductsPage() {
           else if (minW === 50 && maxW === 999999) updatedFilters.selectedWeight = '51';
         }
         if (searchParams.get('maxWeight')) updatedFilters.maxWeight = searchParams.get('maxWeight');
-        if (searchParams.get('year')) updatedFilters.year = search_params.get('year');
+        if (searchParams.get('yearFrom')) updatedFilters.yearFrom = searchParams.get('yearFrom');
+        if (searchParams.get('yearTo')) updatedFilters.yearTo = searchParams.get('yearTo');
         if (searchParams.get('engineConfiguration')) updatedFilters.engineConfiguration = searchParams.get('engineConfiguration');
         if (searchParams.get('fuelType')) updatedFilters.fuelType = searchParams.get('fuelType');
         
@@ -130,8 +132,12 @@ export default function ProductsPage() {
         queryParams.append('brand', filters.brand.join(','));
       }
       
-      if (filters.year && filters.year !== '') {
-        queryParams.append('year', filters.year);
+      if (filters.yearFrom && filters.yearFrom !== '') {
+        queryParams.append('yearFrom', filters.yearFrom);
+      }
+      
+      if (filters.yearTo && filters.yearTo !== '') {
+        queryParams.append('yearTo', filters.yearTo);
       }
       
       if (filters.minWeight && filters.minWeight !== '') {
@@ -227,7 +233,7 @@ export default function ProductsPage() {
     let count = 0;
     if (filters.category.length) count += filters.category.length;
     if (filters.brand.length) count += filters.brand.length;
-    if (filters.year) count += 1;
+    if (filters.yearFrom || filters.yearTo) count += 1;
     if (filters.minWeight || filters.maxWeight) count += 1;
     if (filters.engineConfiguration) count += 1;
     if (filters.fuelType) count += 1;
@@ -405,7 +411,8 @@ export default function ProductsPage() {
                         fuelType: '',
                         sortBy: 'createdAt',
                         sortOrder: 'desc',
-                        year: ''
+                        yearFrom: '',
+                        yearTo: ''
                       })}
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-sm text-sm sm:text-base"
                     >

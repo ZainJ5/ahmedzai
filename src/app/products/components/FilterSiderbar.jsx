@@ -41,13 +41,17 @@ export default function FilterSidebar({
   ];
 
   const currentYear = new Date().getFullYear();
-  const yearOptions = [
-    { value: '', label: 'All years' },
-    ...Array.from({ length: 30 }, (_, i) => ({
-      value: (currentYear - i).toString(),
-      label: (currentYear - i).toString()
-    }))
-  ];
+  const generateYears = (label) => {
+    const years = [];
+    years.push({ value: '', label: label });
+    for (let year = currentYear; year >= currentYear - 30; year--) {
+      years.push({ value: year.toString(), label: year.toString() });
+    }
+    return years;
+  };
+  
+  const yearFromOptions = generateYears('From');
+  const yearToOptions = generateYears('To');
   
   useEffect(() => {
     setLocalFilters(filters);
@@ -92,7 +96,8 @@ export default function FilterSidebar({
     const resetFilters = {
       category: [],
       brand: [],
-      year: '',
+      yearFrom: '',
+      yearTo: '',
       engineConfiguration: '',
       fuelType: '',
       sortBy: 'createdAt',
@@ -121,7 +126,7 @@ export default function FilterSidebar({
             className="flex items-center justify-between cursor-pointer mb-2" 
             onClick={() => toggleSection('year')}
           >
-            <h3 className="text-md font-medium text-gray-700">Year</h3>
+            <h3 className="text-md font-medium text-gray-700">Year Range</h3>
             <FaChevronDown 
               className={`text-gray-400 transition-transform ${expandedSections.year ? 'transform rotate-180' : ''}`} 
               size={14}
@@ -129,13 +134,22 @@ export default function FilterSidebar({
           </div>
           
           {expandedSections.year && (
-            <div className="mt-2">
+            <div className="mt-2 space-y-2">
               <select
-                value={localFilters.year || ''}
-                onChange={(e) => handleFilterChange('year', e.target.value)}
+                value={localFilters.yearFrom || ''}
+                onChange={(e) => handleFilterChange('yearFrom', e.target.value)}
                 className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
-                {yearOptions.map(year => (
+                {yearFromOptions.map(year => (
+                  <option key={year.value} value={year.value}>{year.label}</option>
+                ))}
+              </select>
+              <select
+                value={localFilters.yearTo || ''}
+                onChange={(e) => handleFilterChange('yearTo', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                {yearToOptions.map(year => (
                   <option key={year.value} value={year.value}>{year.label}</option>
                 ))}
               </select>
