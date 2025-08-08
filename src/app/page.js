@@ -21,7 +21,7 @@ export default function Home() {
       <HeroSearch />
       <AdvancedSearchFilter />
       <div className="container mx-auto px-4 py-8">
-        <CategoryExplorer />
+        {/* <CategoryExplorer /> */}
         <BrandLogoGrid />
         <div className="mt-12">
           <RecommendedProducts />
