@@ -960,8 +960,8 @@ export default function ProductDetailsPage() {
             
 <div 
   ref={howItWorksRef}
-  className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-8 snap-x snap-mandatory p-8 scrollbar-none scroll-smooth px-2"
-  style={{ scrollbarWidth: 'none' }}
+  className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 snap-x snap-mandatory py-4 px-4 sm:p-6 scrollbar-none scroll-smooth"
+  style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
 >
   {[
     { 
@@ -1002,29 +1002,29 @@ export default function ProductDetailsPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative snap-start min-w-[70%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[230px] sm:h-auto group hover:shadow-lg transition-all duration-300"
+      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[180px] w-[80vw] max-w-[200px] sm:min-w-0 sm:w-auto flex-shrink-0 flex flex-col items-center h-auto group hover:shadow-lg transition-all duration-300 mx-1"
     >
       <motion.div 
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="absolute top-0 left-0 w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full flex items-center justify-center font-bold text-lg transform -translate-x-4 -translate-y-4 shadow-md"
+        className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-lg transform -translate-x-3 -translate-y-3 shadow-md"
       >
         {index + 1}
       </motion.div>
       <motion.div 
-        className={`w-24 h-24 ${step.gradient} ${step.color} rounded-full flex items-center justify-center mx-auto mb-5 mt-2 shadow-sm group-hover:shadow group-hover:scale-105 transition-all duration-300`}
+        className={`w-14 h-14 sm:w-20 sm:h-20 ${step.gradient} ${step.color} rounded-full flex items-center justify-center mx-auto mb-4 mt-2 shadow-sm group-hover:shadow group-hover:scale-105 transition-all duration-300`}
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <step.icon size={step.iconSize} className="group-hover:scale-110 transition-transform duration-300" />
+        <step.icon size={step.iconSize * 0.7} className="group-hover:scale-110 transition-transform duration-300" />
       </motion.div>
       <motion.h3 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="font-bold text-lg text-center mb-2.5 text-gray-800"
+        className="font-bold text-sm sm:text-lg text-center mb-2 text-gray-800"
       >
         {step.title}
       </motion.h3>
@@ -1032,7 +1032,7 @@ export default function ProductDetailsPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="text-gray-600 text-center text-sm leading-relaxed"
+        className="text-gray-600 text-center text-xs sm:text-sm leading-relaxed"
       >
         {step.desc}
       </motion.p>
