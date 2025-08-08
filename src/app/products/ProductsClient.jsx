@@ -41,9 +41,7 @@ export default function ProductsPage() {
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   
-  // Track if this is the initial load
   const isInitialMount = useRef(true);
-  // Track if we are currently fetching data
   const isFetching = useRef(false);
 
   useEffect(() => {
@@ -108,14 +106,11 @@ export default function ProductsPage() {
     fetchInitialData();
   }, [searchParams]);
 
-  // Memoize fetchProducts to avoid recreating the function
   const fetchProducts = useCallback(async () => {
-    // Prevent multiple simultaneous fetches
     if (isFetching.current) return;
     
     try {
       isFetching.current = true;
-      // Only show the loading state if this isn't the initial load
       if (!isInitialMount.current) {
         setIsFiltering(true);
       }
@@ -169,7 +164,6 @@ export default function ProductsPage() {
       setProducts(data.data);
       setPagination(data.pagination);
       
-      // Update URL without triggering another fetch
       router.push(`/products?${queryParams.toString()}`, { scroll: false });
       
     } catch (err) {
@@ -178,21 +172,17 @@ export default function ProductsPage() {
       setLoading(false);
       isFetching.current = false;
       
-      // Small delay before removing the filtering state to prevent UI flicker
       setTimeout(() => setIsFiltering(false), 300);
       
-      // No longer the initial mount after first fetch
       isInitialMount.current = false;
     }
   }, [filters, pagination.page, pagination.limit, router]);
 
-  // Combined effect to handle both initial load and filter changes
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   const handleFilterChange = useCallback((newFilters) => {
-    // Batch state updates to trigger only one re-render
     setFilters(newFilters);
     setPagination(prev => ({ ...prev, page: 1 }));
   }, []);
@@ -240,7 +230,6 @@ export default function ProductsPage() {
     return count;
   };
 
-  // Close sort menu if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (showSortOptions && sortMenuAnchor && !sortMenuAnchor.contains(event.target)) {
@@ -261,7 +250,6 @@ export default function ProductsPage() {
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Sidebar */}
         <div className="hidden lg:block w-64 bg-white border-r border-gray-200 overflow-y-auto">
           <FilterSidebar
             categories={categories}
@@ -271,9 +259,7 @@ export default function ProductsPage() {
           />
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 bg-gray-50">
-          {/* Mobile Filter Section */}
           <div className="lg:hidden p-4 bg-white border-b border-gray-200">
             <div
               onClick={() => setShowFilters(!showFilters)}
@@ -301,7 +287,6 @@ export default function ProductsPage() {
             )}
           </div>
           
-          {/* Top Bar */}
           <div className="z-10 bg-white border-b border-gray-200 px-3 sm:px-4 py-3 lg:py-4">
             <div className="flex justify-between items-center">
               <div className="text-xs sm:text-sm text-gray-500">
@@ -361,7 +346,6 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* Products Grid */}
           <div className="p-3 sm:p-4 lg:p-6">
             {error ? (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md">
@@ -442,7 +426,6 @@ export default function ProductsPage() {
                   </motion.div>
                 )}
 
-                {/* Pagination */}
                 {pagination.totalPages > 1 && (
                   <div className="mt-8 sm:mt-10 flex justify-center">
                     <nav className="inline-flex rounded-md shadow-sm">
@@ -460,7 +443,6 @@ export default function ProductsPage() {
 
                       {[...Array(pagination.totalPages)].map((_, i) => {
                         const pageNum = i + 1;
-                        // Show first, last, and pages around current page
                         if (
                           pageNum === 1 ||
                           pageNum === pagination.totalPages ||
