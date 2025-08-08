@@ -34,7 +34,8 @@ import {
   FaTable,
   FaGasPump,
   FaCogs,
-  FaTachometerAlt
+  FaTachometerAlt,
+  FaCheck
 } from 'react-icons/fa';
 
 const CustomEditor = ({ value, onChange }) => {
@@ -159,7 +160,7 @@ export default function CarManagement() {
     model: '',
     quantity: '',
     weight: '',
-    features: '',
+    description: '', // Added dedicated field for rich text description
     // New fields for fuel, engine, mileage
     fuelType: '',
     engine: {
@@ -172,6 +173,33 @@ export default function CarManagement() {
       city: '',
       highway: '',
       unit: 'km/l'
+    },
+    // Add the features object with all features set to false by default
+    features: {
+      camera360: false,
+      airBags: false,
+      airCondition: false,
+      alloyWheels: false,
+      abs: false,
+      sunRoof: false,
+      autoAC: false,
+      backCamera: false,
+      backSpoiler: false,
+      doubleMuffler: false,
+      fogLights: false,
+      tv: false,
+      hidLights: false,
+      keylessEntry: false,
+      leatherSeats: false,
+      navigation: false,
+      parkingSensors: false,
+      doubleAC: false,
+      powerSteering: false,
+      powerWindows: false,
+      pushStart: false,
+      radio: false,
+      retractableMirrors: false,
+      roofRail: false
     }
   });
   
@@ -249,7 +277,7 @@ export default function CarManagement() {
     setFormData({
       title: '', category: '', make: '', unitPrice: '',
       discountPercentage: 0, year: new Date().getFullYear(),
-      model: '', quantity: '', weight: '', features: '',
+      model: '', quantity: '', weight: '', description: '', // Reset description field
       // Reset new fields
       fuelType: '',
       engine: {
@@ -262,6 +290,33 @@ export default function CarManagement() {
         city: '',
         highway: '',
         unit: 'km/l'
+      },
+      // Reset all features to false
+      features: {
+        camera360: false,
+        airBags: false,
+        airCondition: false,
+        alloyWheels: false,
+        abs: false,
+        sunRoof: false,
+        autoAC: false,
+        backCamera: false,
+        backSpoiler: false,
+        doubleMuffler: false,
+        fogLights: false,
+        tv: false,
+        hidLights: false,
+        keylessEntry: false,
+        leatherSeats: false,
+        navigation: false,
+        parkingSensors: false,
+        doubleAC: false,
+        powerSteering: false,
+        powerWindows: false,
+        pushStart: false,
+        radio: false,
+        retractableMirrors: false,
+        roofRail: false
       }
     });
     setThumbnailFile(null);
@@ -281,6 +336,55 @@ export default function CarManagement() {
   const handleEditProduct = (product) => {
     setFormMode('edit');
     setCurrentProduct(product);
+    
+    // Create a features object with default values if no features present
+    const featuresObj = {
+      camera360: false,
+      airBags: false,
+      airCondition: false,
+      alloyWheels: false,
+      abs: false,
+      sunRoof: false,
+      autoAC: false,
+      backCamera: false,
+      backSpoiler: false,
+      doubleMuffler: false,
+      fogLights: false,
+      tv: false,
+      hidLights: false,
+      keylessEntry: false,
+      leatherSeats: false,
+      navigation: false,
+      parkingSensors: false,
+      doubleAC: false,
+      powerSteering: false,
+      powerWindows: false,
+      pushStart: false,
+      radio: false,
+      retractableMirrors: false,
+      roofRail: false
+    };
+    
+    // Handle description content correctly
+    let descriptionText = '';
+    
+    // Update with product's features if they exist
+    if (product.features) {
+      if (typeof product.features === 'object') {
+        // If features is an object (new schema), use it for checkboxes
+        Object.keys(featuresObj).forEach(key => {
+          if (product.features[key] !== undefined) {
+            featuresObj[key] = product.features[key];
+          }
+        });
+        // Description might be in a separate field if already migrated
+        descriptionText = product.description || '';
+      } else {
+        // If features is a string (old schema), use it as the description
+        descriptionText = product.features;
+      }
+    }
+    
     setFormData({
       title: product.title,
       category: product.category._id || product.category,
@@ -291,7 +395,7 @@ export default function CarManagement() {
       model: product.model,
       quantity: product.quantity,
       weight: product.weight,
-      features: product.features,
+      description: descriptionText, // Set the description field
       // Set values for new fields
       fuelType: product.fuelType || '',
       engine: {
@@ -304,8 +408,10 @@ export default function CarManagement() {
         city: product.mileage?.city || '',
         highway: product.mileage?.highway || '',
         unit: product.mileage?.unit || 'km/l'
-      }
+      },
+      features: featuresObj
     });
+    
     setThumbnailFile(null);
     setNewImageFiles([]);
     setThumbnailPreview(product.thumbnail);
@@ -335,7 +441,20 @@ export default function CarManagement() {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    
+    // Handle feature checkboxes
+    if (name.startsWith('features.')) {
+      const featureName = name.split('.')[1];
+      setFormData({
+        ...formData,
+        features: {
+          ...formData.features,
+          [featureName]: checked
+        }
+      });
+      return;
+    }
     
     // Handle nested object fields
     if (name.includes('.')) {
@@ -352,8 +471,8 @@ export default function CarManagement() {
     }
   };
   
-  const handleFeaturesChange = (e) => {
-    setFormData({ ...formData, features: e.target.value });
+  const handleDescriptionChange = (e) => {
+    setFormData({ ...formData, description: e.target.value });
   };
 
   const handleThumbnailChange = (e) => {
@@ -396,7 +515,7 @@ export default function CarManagement() {
       const formDataToSend = new FormData();
       
       // Add simple fields
-      const simpleFields = ['title', 'model', 'year', 'unitPrice', 'discountPercentage', 'quantity', 'weight', 'features', 'category', 'make', 'fuelType'];
+      const simpleFields = ['title', 'model', 'year', 'unitPrice', 'discountPercentage', 'quantity', 'weight', 'category', 'make', 'fuelType', 'description'];
       simpleFields.forEach(field => {
         if (formData[field] !== undefined) {
           formDataToSend.append(field, formData[field]);
@@ -411,6 +530,11 @@ export default function CarManagement() {
       // Add nested mileage fields
       for (const key in formData.mileage) {
         formDataToSend.append(`mileage.${key}`, formData.mileage[key]);
+      }
+
+      // Add feature checkbox values
+      for (const key in formData.features) {
+        formDataToSend.append(`features.${key}`, formData.features[key]);
       }
       
       if (thumbnailFile) {
@@ -702,6 +826,356 @@ export default function CarManagement() {
                   />
                 </div>
 
+                {/* New section: Vehicle Features */}
+                <div className="md:col-span-2">
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                    <h3 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                      <FaCarSide className="mr-2 text-blue-600" /> Vehicle Features
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                      {/* First Row */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="camera360"
+                          name="features.camera360"
+                          checked={formData.features.camera360}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="camera360" className="ml-2 text-sm text-gray-700">
+                          360 Camera
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="airBags"
+                          name="features.airBags"
+                          checked={formData.features.airBags}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="airBags" className="ml-2 text-sm text-gray-700">
+                          Air Bags
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="airCondition"
+                          name="features.airCondition"
+                          checked={formData.features.airCondition}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="airCondition" className="ml-2 text-sm text-gray-700">
+                          Air Condition
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="alloyWheels"
+                          name="features.alloyWheels"
+                          checked={formData.features.alloyWheels}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="alloyWheels" className="ml-2 text-sm text-gray-700">
+                          Alloy Wheels
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="abs"
+                          name="features.abs"
+                          checked={formData.features.abs}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="abs" className="ml-2 text-sm text-gray-700">
+                          ABS
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="sunRoof"
+                          name="features.sunRoof"
+                          checked={formData.features.sunRoof}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="sunRoof" className="ml-2 text-sm text-gray-700">
+                          Sun Roof
+                        </label>
+                      </div>
+                      
+                      {/* Second Row */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="autoAC"
+                          name="features.autoAC"
+                          checked={formData.features.autoAC}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="autoAC" className="ml-2 text-sm text-gray-700">
+                          Auto A/C
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="backCamera"
+                          name="features.backCamera"
+                          checked={formData.features.backCamera}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="backCamera" className="ml-2 text-sm text-gray-700">
+                          Back Camera
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="backSpoiler"
+                          name="features.backSpoiler"
+                          checked={formData.features.backSpoiler}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="backSpoiler" className="ml-2 text-sm text-gray-700">
+                          Back Spoiler
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="doubleMuffler"
+                          name="features.doubleMuffler"
+                          checked={formData.features.doubleMuffler}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="doubleMuffler" className="ml-2 text-sm text-gray-700">
+                          Double Muffler
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="fogLights"
+                          name="features.fogLights"
+                          checked={formData.features.fogLights}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="fogLights" className="ml-2 text-sm text-gray-700">
+                          Fog Lights
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="tv"
+                          name="features.tv"
+                          checked={formData.features.tv}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="tv" className="ml-2 text-sm text-gray-700">
+                          TV
+                        </label>
+                      </div>
+                      
+                      {/* Third Row */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="hidLights"
+                          name="features.hidLights"
+                          checked={formData.features.hidLights}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="hidLights" className="ml-2 text-sm text-gray-700">
+                          HID Lights
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="keylessEntry"
+                          name="features.keylessEntry"
+                          checked={formData.features.keylessEntry}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="keylessEntry" className="ml-2 text-sm text-gray-700">
+                          Key-less Entry
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="leatherSeats"
+                          name="features.leatherSeats"
+                          checked={formData.features.leatherSeats}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="leatherSeats" className="ml-2 text-sm text-gray-700">
+                          Leather Seats
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="navigation"
+                          name="features.navigation"
+                          checked={formData.features.navigation}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="navigation" className="ml-2 text-sm text-gray-700">
+                          Navigation
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="parkingSensors"
+                          name="features.parkingSensors"
+                          checked={formData.features.parkingSensors}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="parkingSensors" className="ml-2 text-sm text-gray-700">
+                          Parking Sensors
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="doubleAC"
+                          name="features.doubleAC"
+                          checked={formData.features.doubleAC}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="doubleAC" className="ml-2 text-sm text-gray-700">
+                          Double A/C
+                        </label>
+                      </div>
+                      
+                      {/* Fourth Row */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="powerSteering"
+                          name="features.powerSteering"
+                          checked={formData.features.powerSteering}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="powerSteering" className="ml-2 text-sm text-gray-700">
+                          Power Steering
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="powerWindows"
+                          name="features.powerWindows"
+                          checked={formData.features.powerWindows}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="powerWindows" className="ml-2 text-sm text-gray-700">
+                          Power Windows
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="pushStart"
+                          name="features.pushStart"
+                          checked={formData.features.pushStart}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="pushStart" className="ml-2 text-sm text-gray-700">
+                          Push Start
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="radio"
+                          name="features.radio"
+                          checked={formData.features.radio}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="radio" className="ml-2 text-sm text-gray-700">
+                          Radio
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="retractableMirrors"
+                          name="features.retractableMirrors"
+                          checked={formData.features.retractableMirrors}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="retractableMirrors" className="ml-2 text-sm text-gray-700">
+                          Retractable Mirrors
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="roofRail"
+                          name="features.roofRail"
+                          checked={formData.features.roofRail}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label htmlFor="roofRail" className="ml-2 text-sm text-gray-700">
+                          Roof Rail
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* New section: Engine Details */}
                 <div className="md:col-span-2">
                   <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
@@ -828,11 +1302,11 @@ export default function CarManagement() {
                 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Features *
+                    Additional Description
                   </label>
                   <CustomEditor 
-                    value={formData.features} 
-                    onChange={handleFeaturesChange}
+                    value={formData.description} 
+                    onChange={handleDescriptionChange}
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     Use the toolbar to format text, add lists, links and other content
@@ -1012,7 +1486,7 @@ export default function CarManagement() {
                   <FaSearch className="text-gray-400" />
                 </div>
                 <input
-                  type="text"
+                                   type="text"
                   placeholder="Search cars by name, model, or features..."
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={searchTerm}

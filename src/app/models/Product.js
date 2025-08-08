@@ -94,8 +94,102 @@ const ProductSchema = new mongoose.Schema({
     }
   },
   features: {
-    type: String,
-    required: [true, 'Please provide product features']
+    camera360: {
+      type: Boolean,
+      default: false
+    },
+    airBags: {
+      type: Boolean,
+      default: false
+    },
+    airCondition: {
+      type: Boolean,
+      default: false
+    },
+    alloyWheels: {
+      type: Boolean,
+      default: false
+    },
+    abs: {
+      type: Boolean,
+      default: false
+    },
+    sunRoof: {
+      type: Boolean,
+      default: false
+    },
+    autoAC: {
+      type: Boolean,
+      default: false
+    },
+    backCamera: {
+      type: Boolean,
+      default: false
+    },
+    backSpoiler: {
+      type: Boolean,
+      default: false
+    },
+    doubleMuffler: {
+      type: Boolean,
+      default: false
+    },
+    fogLights: {
+      type: Boolean,
+      default: false
+    },
+    tv: {
+      type: Boolean,
+      default: false
+    },
+    hidLights: {
+      type: Boolean,
+      default: false
+    },
+    keylessEntry: {
+      type: Boolean,
+      default: false
+    },
+    leatherSeats: {
+      type: Boolean,
+      default: false
+    },
+    navigation: {
+      type: Boolean,
+      default: false
+    },
+    parkingSensors: {
+      type: Boolean,
+      default: false
+    },
+    doubleAC: {
+      type: Boolean,
+      default: false
+    },
+    powerSteering: {
+      type: Boolean,
+      default: false
+    },
+    powerWindows: {
+      type: Boolean,
+      default: false
+    },
+    pushStart: {
+      type: Boolean,
+      default: false
+    },
+    radio: {
+      type: Boolean,
+      default: false
+    },
+    retractableMirrors: {
+      type: Boolean,
+      default: false
+    },
+    roofRail: {
+      type: Boolean,
+      default: false
+    }
   },
   images: [{
     type: String,

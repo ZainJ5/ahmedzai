@@ -39,7 +39,7 @@ function deleteFile(filePath) {
 export async function GET(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
     
     const product = await Product.findById(id)
       .populate('category', 'name')
@@ -68,7 +68,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
     
     const existingProduct = await Product.findById(id);
     if (!existingProduct) {
@@ -84,7 +84,7 @@ export async function PUT(request, { params }) {
       updatedAt: Date.now()
     };
     
-    const textFields = ['title', 'model', 'features', 'fuelType'];
+    const textFields = ['title', 'model', 'fuelType'];
     for (const field of textFields) {
       if (formData.has(field)) {
         updateData[field] = formData.get(field);
@@ -102,6 +102,25 @@ export async function PUT(request, { params }) {
     for (const field of refFields) {
       if (formData.has(field)) {
         updateData[field] = formData.get(field);
+      }
+    }
+    
+    updateData.features = {};
+    const featureFields = [
+      'camera360', 'airBags', 'airCondition', 'alloyWheels', 'abs', 'sunRoof',
+      'autoAC', 'backCamera', 'backSpoiler', 'doubleMuffler', 'fogLights', 'tv',
+      'hidLights', 'keylessEntry', 'leatherSeats', 'navigation', 'parkingSensors', 
+      'doubleAC', 'powerSteering', 'powerWindows', 'pushStart', 'radio', 
+      'retractableMirrors', 'roofRail'
+    ];
+    
+    for (const feature of featureFields) {
+      const formKey = `features.${feature}`;
+      if (formData.has(formKey)) {
+        const value = formData.get(formKey);
+        updateData.features[feature] = value === 'true' || value === '1' || value === 'on';
+      } else {
+        updateData.features[feature] = false;
       }
     }
     
@@ -207,7 +226,7 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
     
     const product = await Product.findById(id);
     if (!product) {
