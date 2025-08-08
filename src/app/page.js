@@ -28,14 +28,14 @@ export default function Home() {
         </div>
         <div className="mt-12">
         <Trucks/>
-        <ClientReviews/>
+        {/* <ClientReviews/> */}
         <NewsBlogSection/>
         </div>
         <HowToBuy />
         <OurServices/>
       </div>
       <ContactSection/>
-      <FaqSection />
+      {/* <FaqSection /> */}
       <Footer />
     </main>
   );

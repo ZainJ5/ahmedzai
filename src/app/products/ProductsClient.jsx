@@ -376,7 +376,7 @@ export default function ProductsPage() {
                 )}
 
                 {loading && products.length === 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                     {[...Array(8)].map((_, i) => (
                       <div key={i} className="bg-white rounded-lg shadow-sm overflow-hidden">
                         <div className="h-40 xs:h-48 sm:h-56 bg-gray-200 animate-pulse"></div>
@@ -424,11 +424,10 @@ export default function ProductsPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
                   >
                     {products.map(product => (
                       <motion.div 
-                        // Continuing from where we left off - in the products mapping section
                         key={product._id}
                         layout
                         initial={{ opacity: 0 }}
