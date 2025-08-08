@@ -23,7 +23,8 @@ const Navbar = () => {
 
   return (
     <header className="w-full z-50">
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-3">
+      {/* Top bar - hidden on small devices, visible on sm breakpoint and above */}
+      <div className="hidden sm:block bg-gradient-to-r from-slate-900 to-slate-800 text-white py-3">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
           <div className="flex items-center space-x-6 text-sm font-light tracking-wide">
             <a 

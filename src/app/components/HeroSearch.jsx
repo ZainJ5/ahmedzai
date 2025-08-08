@@ -9,7 +9,7 @@ const HeroSection = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const initialHeightSet = useRef(false);
-  const timestamp = useRef(Date.now()); // Cache buster timestamp
+  const timestamp = useRef(Date.now());
 
   useEffect(() => {
     const fetchHeroImages = async () => {
@@ -19,7 +19,6 @@ const HeroSection = () => {
         if (response.data.success && response.data.data.length > 0) {
           setBanners(response.data.data);
         } else {
-          // Fallback to default images if no API images available
           setBanners([
             { mediaUrl: '/hero-1.webp', alt: 'Banner 1' },
             { mediaUrl: '/hero-2.webp', alt: 'Banner 2' },
@@ -29,7 +28,6 @@ const HeroSection = () => {
       } catch (err) {
         console.error('Failed to fetch hero images:', err);
         setError(err);
-        // Use fallback images on error
         setBanners([
           { mediaUrl: '/hero-1.webp', alt: 'Banner 1' },
           { mediaUrl: '/hero-2.webp', alt: 'Banner 2' },
@@ -68,7 +66,7 @@ const HeroSection = () => {
     
     const interval = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 5000); // Change banner every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [banners.length]);
@@ -81,9 +79,7 @@ const HeroSection = () => {
     setCurrentBanner((prev) => (prev + 1) % banners.length);
   };
   
-  // Add cache buster to URL
   const getImageUrl = (url) => {
-    // Handle both relative and absolute URLs
     if (url.startsWith('http')) {
       return `${url}?v=${timestamp.current}`;
     }
@@ -107,7 +103,7 @@ const HeroSection = () => {
   }
 
   if (banners.length === 0) {
-    return null; // Don't render anything if no banners are available
+    return null; 
   }
 
   return (
