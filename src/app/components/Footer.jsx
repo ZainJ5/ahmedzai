@@ -76,7 +76,7 @@ const Footer = () => {
           <motion.div className="space-y-6" variants={itemVariants}>
             <div className="h-20 w-40 relative">
               <Image 
-                src="/logo.jpg" 
+                src="/footer-logo.jpg" 
                 alt="ATJ Automotive" 
                 fill
                 style={{ objectFit: "contain" }}
