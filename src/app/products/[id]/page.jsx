@@ -22,6 +22,10 @@ import {
 } from 'react-icons/fa';
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BsCarFrontFill } from "react-icons/bs";
+import { HiOutlineCreditCard } from "react-icons/hi2";
+import { LuPackageCheck } from "react-icons/lu";
+import { PiHandshakeFill } from "react-icons/pi";
 import RelatedProducts from '../components/ReleatedProducts';
 
 const downloadImage = async (url, filename) => {
@@ -757,7 +761,7 @@ export default function ProductDetailsPage() {
             </div>
           </motion.div>
 
-          <motion.div 
+          {/* <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
@@ -784,7 +788,7 @@ export default function ProductDetailsPage() {
                 <div dangerouslySetInnerHTML={{ __html: product.features }} className="prose prose-sm sm:prose-base  max-w-none text-gray-600 font-['Inter',sans-serif]" />
               </motion.div>
             </div>
-          </motion.div>
+          </motion.div> */}
         </div>
 
         <motion.div 
@@ -818,78 +822,87 @@ export default function ProductDetailsPage() {
               </motion.p>
             </motion.div>
             
-            <div className="relative">
-              <div 
-                ref={howItWorksRef}
-                className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 snap-x snap-mandatory p-8 scrollbar-none scroll-smooth px-2"
-                style={{ scrollbarWidth: 'none' }}
-              >
-                {[
-                  { icon: FaSearch, title: 'Select Vehicle', desc: 'Find the perfect vehicle that meets your needs.', bg: 'bg-blue-100', color: 'text-blue-600' },
-                  { icon: FaShieldAlt, title: 'Secure Payment', desc: 'Multiple secure payment options available.', bg: 'bg-green-100', color: 'text-green-600' },
-                  { icon: FaTruckMoving, title: 'Track Order', desc: 'Real-time tracking of your shipment.', bg: 'bg-orange-100', color: 'text-orange-600' },
-                  { icon: FaCar, title: 'Get Delivery', desc: 'Professional doorstep delivery service.', bg: 'bg-purple-100', color: 'text-purple-600' }
-                ].map((step, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[70%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[200px] sm:h-auto"
-                  >
-                    <motion.div 
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute top-0 left-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg transform -translate-x-4 -translate-y-4"
-                    >
-                      {index + 1}
-                    </motion.div>
-                    <motion.div 
-                      className={`w-16 h-16 ${step.bg} ${step.color} rounded-xl flex items-center justify-center mx-auto mb-4 mt-4`}
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <step.icon size={24} />
-                    </motion.div>
-                    <motion.h3 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="font-bold text-lg text-center mb-2"
-                    >
-                      {step.title}
-                    </motion.h3>
-                    <motion.p 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3, delay: 0.1 }}
-                      className="text-gray-600 text-center text-sm"
-                    >
-                      {step.desc}
-                    </motion.p>
-                  </motion.div>
-                ))}
-              </div>
-              
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="flex justify-center gap-2 mt-6 sm:hidden"
-              >
-                {[...Array(4)].map((_, index) => (
-                  <motion.div 
-                    key={index} 
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className={`h-2 w-2 rounded-full ${index === 0 ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  />
-                ))}
-              </motion.div>
-            </div>
+<div 
+  ref={howItWorksRef}
+  className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-8 snap-x snap-mandatory p-8 scrollbar-none scroll-smooth px-2"
+  style={{ scrollbarWidth: 'none' }}
+>
+  {[
+    { 
+      icon: BsCarFrontFill, 
+      title: 'Select Vehicle', 
+      desc: 'Browse our premium collection and find your perfect match.', 
+      gradient: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/20', 
+      color: 'text-blue-700',
+      iconSize: 34
+    },
+    { 
+      icon: HiOutlineCreditCard, 
+      title: 'Secure Payment', 
+      desc: 'Enjoy our encrypted, safe payment processing system.', 
+      gradient: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/20', 
+      color: 'text-emerald-700',
+      iconSize: 34
+    },
+    { 
+      icon: LuPackageCheck, 
+      title: 'Track Order', 
+      desc: 'Monitor your purchase with our real-time tracking system.', 
+      gradient: 'bg-gradient-to-br from-amber-500/10 to-orange-500/20', 
+      color: 'text-amber-700',
+      iconSize: 34
+    },
+    { 
+      icon: PiHandshakeFill, 
+      title: 'Receive & Enjoy', 
+      desc: 'Experience white-glove delivery service and support.', 
+      gradient: 'bg-gradient-to-br from-violet-500/10 to-purple-500/20', 
+      color: 'text-violet-700',
+      iconSize: 34
+    }
+  ].map((step, index) => (
+    <motion.div 
+      key={index}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative snap-start min-w-[70%] sm:min-w-0 flex-shrink-0 flex flex-col items-center h-[230px] sm:h-auto group hover:shadow-lg transition-all duration-300"
+    >
+      <motion.div 
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="absolute top-0 left-0 w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full flex items-center justify-center font-bold text-lg transform -translate-x-4 -translate-y-4 shadow-md"
+      >
+        {index + 1}
+      </motion.div>
+      <motion.div 
+        className={`w-24 h-24 ${step.gradient} ${step.color} rounded-full flex items-center justify-center mx-auto mb-5 mt-2 shadow-sm group-hover:shadow group-hover:scale-105 transition-all duration-300`}
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <step.icon size={step.iconSize} className="group-hover:scale-110 transition-transform duration-300" />
+      </motion.div>
+      <motion.h3 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="font-bold text-lg text-center mb-2.5 text-gray-800"
+      >
+        {step.title}
+      </motion.h3>
+      <motion.p 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="text-gray-600 text-center text-sm leading-relaxed"
+      >
+        {step.desc}
+      </motion.p>
+    </motion.div>
+  ))}
+</div>
           </div>
         </motion.div>
 

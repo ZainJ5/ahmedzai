@@ -23,7 +23,6 @@ const Navbar = () => {
 
   return (
     <header className="w-full z-50">
-      {/* Top bar - hidden on small devices, visible on sm breakpoint and above */}
       <div className="hidden sm:block bg-gradient-to-r from-slate-900 to-slate-800 text-white py-3">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
           <div className="flex items-center space-x-6 text-sm font-light tracking-wide">
@@ -72,7 +71,7 @@ const Navbar = () => {
                   scrolled ? 'h-14 w-24' : 'h-16 w-28'
                 }`}>
                   <Image
-                    src="/logo.jpg"
+                    src="/logo.png"
                     alt="Company Logo"
                     fill
                     style={{ objectFit: "contain" }}
@@ -89,7 +88,7 @@ const Navbar = () => {
             
             <nav className="hidden lg:block">
               <ul className="flex space-x-10">
-                {['Home', 'Products', 'Contact', 'About Us'].map((item, index) => (
+                {['Home', 'Products', 'Contact', 'About Us','Blogs'].map((item, index) => (
                   <li key={index}>
                     <Link 
                       href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '')}`}
@@ -149,7 +148,7 @@ const Navbar = () => {
                     closed: {}
                   }}
                 >
-                  {['Home', 'Products', 'Contact', 'About Us'].map((item, index) => (
+                  {['Home', 'Products', 'Contact', 'About Us','Blogs'].map((item, index) => (
                     <motion.li 
                       key={index}
                       variants={{
@@ -171,7 +170,6 @@ const Navbar = () => {
             )}
           </AnimatePresence>
           
-          {/* Mobile Search */}
           <div className="mt-4 mb-4 lg:hidden">
             <SearchBar />
           </div>
