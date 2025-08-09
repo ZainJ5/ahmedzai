@@ -67,7 +67,7 @@ const HeroSection = () => {
 
   if (isLoading) {
     return (
-      <div className="relative w-full h-[60vh] flex items-center justify-center bg-gray-100">
+      <div className="relative w-full h-[60vh] flex items-center justify-center bg-white">
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
       </div>
     );
@@ -75,7 +75,7 @@ const HeroSection = () => {
 
   if (error && banners.length === 0) {
     return (
-      <div className="relative w-full h-[40vh] flex items-center justify-center bg-gray-100">
+      <div className="relative w-full h-[40vh] flex items-center justify-center bg-white">
         <p className="text-gray-500">Unable to load hero images</p>
       </div>
     );
@@ -135,7 +135,7 @@ const HeroSection = () => {
                 fill
                 priority={index === 0}
                 sizes="100vw"
-                className="object-contain"
+                className="object-cover"
                 quality={90}
                 unoptimized
               />
