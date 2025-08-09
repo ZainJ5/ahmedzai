@@ -799,125 +799,89 @@ export default function ProductDetailsPage() {
   className="mt-12 sm:mt-16"
 >
   <div className="border border-gray-200 overflow-hidden shadow-sm">
-    {/* <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="bg-gradient-to-r from-gray-700 to-gray-900 p-5 border-b border-gray-200"
-    > */}
-      {/* <div className="flex items-center">
-        <FaInfoCircle className="text-white mr-2" size={20} />
-        <h2 className="text-xl sm:text-2xl font-bold text-white">Features & Amenities</h2>
-      </div> */}
-    {/* </motion.div> */}
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       className="bg-white"
     >
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
-          <tbody>
-            {/* Row 1 */}
-            <tr>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.camera360 ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                360<br/>Camera
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.airBags ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Air Bags
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.airCondition ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Air<br/>Condition
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.alloyWheels ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Alloy<br/>Wheels
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.abs ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                ABS
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.sunRoof ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Sun<br/>Roof
-              </td>
-            </tr>
-            
-            {/* Row 2 */}
-            <tr>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.autoAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Auto A/C
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.backCamera ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Back<br/>Camera
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.backSpoiler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Back<br/>Spoiler
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.doubleMuffler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Double<br/>Muffler
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.fogLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Fog Lights
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.tv ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                TV
-              </td>
-            </tr>
-            
-            {/* Row 3 */}
-            <tr>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.hidLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                HID<br/>Lights
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.keylessEntry ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Key-less<br/>Entry
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.leatherSeats ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Leather<br/>Seats
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.navigation ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Navigation
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.parkingSensors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Parking<br/>Sensors
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.doubleAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Double<br/>A/C
-              </td>
-            </tr>
-            
-            {/* Row 4 */}
-            <tr>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.powerSteering ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Power<br/>Steering
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.powerWindows ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Power<br/>Windows
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.pushStart ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Push<br/>Start
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.radio ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Radio
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.retractableMirrors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Retractable<br/>Mirrors
-              </td>
-              <td className={`border border-gray-300 p-3 text-center ${product.features?.roofRail ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-                Roof<br/>Rail
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="grid grid-cols-3 sm:grid-cols-6">
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.camera360 ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          360<br/>Camera
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.airBags ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Air Bags
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.airCondition ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Air<br/>Condition
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.alloyWheels ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Alloy<br/>Wheels
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.abs ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          ABS
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.sunRoof ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Sun<br/>Roof
+        </div>
+        
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.autoAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Auto A/C
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.backCamera ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Back<br/>Camera
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.backSpoiler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Back<br/>Spoiler
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleMuffler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Double<br/>Muffler
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.fogLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Fog Lights
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.tv ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          TV
+        </div>
+        
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.hidLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          HID<br/>Lights
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.keylessEntry ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Key-less<br/>Entry
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.leatherSeats ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Leather<br/>Seats
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.navigation ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Navigation
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.parkingSensors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Parking<br/>Sensors
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Double<br/>A/C
+        </div>
+        
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.powerSteering ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Power<br/>Steering
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.powerWindows ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Power<br/>Windows
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.pushStart ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Push<br/>Start
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.radio ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Radio
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.retractableMirrors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Retractable<br/>Mirrors
+        </div>
+        <div className={`border border-gray-300 p-3 text-center ${product.features?.roofRail ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+          Roof<br/>Rail
+        </div>
       </div>
-      
-      {/* <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-        className="mt-4 text-sm text-center text-gray-500"
-      >
-        <p>Features with dark background are available with this vehicle</p>
-      </motion.div> */}
     </motion.div>
   </div>
 </motion.div>
@@ -1140,7 +1104,7 @@ export default function ProductDetailsPage() {
                     src={allImages[activeImage]} 
                     alt={product.title}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="90vw"
                     quality={90}
                   />
