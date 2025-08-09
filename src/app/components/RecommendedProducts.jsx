@@ -16,7 +16,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // Increased limit to fetch 16 products instead of 8
+        // Keep fetching 16 products for the 4x4 grid
         const response = await fetch('/api/products?limit=16&sortBy=createdAt&sortOrder=desc');
         
         if (!response.ok) {
@@ -52,16 +52,16 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
             </p>
           </div>
           
-          {/* Updated grid with more columns for loading skeleton */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 md:gap-4">
+          {/* Updated grid columns for loading state - 4 columns on large devices */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-6">
             {[...Array(16)].map((_, index) => (
               <div key={index} className="w-full flex flex-col">
                 <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 h-full">
                   <div className="aspect-square bg-slate-100 animate-pulse"></div>
-                  <div className="p-2 sm:p-3 flex-grow">
-                    <div className="h-4 bg-slate-100 rounded animate-pulse mb-1 sm:mb-2"></div>
-                    <div className="h-3 bg-slate-100 rounded animate-pulse w-2/3 mb-1 sm:mb-2"></div>
-                    <div className="h-2 bg-slate-100 rounded animate-pulse w-3/4"></div>
+                  <div className="p-2 sm:p-3 md:p-4 flex-grow">
+                    <div className="h-4 md:h-5 bg-slate-100 rounded animate-pulse mb-1 sm:mb-2"></div>
+                    <div className="h-3 md:h-4 bg-slate-100 rounded animate-pulse w-2/3 mb-1 sm:mb-2"></div>
+                    <div className="h-2 md:h-3 bg-slate-100 rounded animate-pulse w-3/4"></div>
                   </div>
                 </div>
               </div>
@@ -118,8 +118,8 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
           </motion.p>
         </div>
         
-        {/* Updated grid with more columns */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 md:gap-4">
+        {/* Updated grid columns - 4 columns on large devices */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-6">
           {products.map((product) => (
             <motion.div 
               key={product._id} 
@@ -135,19 +135,19 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
                   alt={product.title}
                   fill
                   className="object-cover rounded-t-xl"
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 25vw, (max-width: 1024px) 16.67vw, 12.5vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                   loading="eager"
                 />
               </div>
               
-              <div className="p-2 flex-grow flex flex-col">
-                <div className="flex flex-wrap items-baseline gap-1 mb-1">
+              <div className="p-2 sm:p-3 md:p-4 flex-grow flex flex-col">
+                <div className="flex flex-wrap items-baseline gap-1 mb-1 md:mb-2">
                   {product.discountPercentage > 0 ? (
                     <>
-                      <h3 className="text-xs sm:text-sm font-semibold text-slate-800">
+                      <h3 className="text-xs sm:text-sm md:text-base font-semibold text-slate-800">
                         ${product.discountedPrice.toLocaleString()}
                       </h3>
-                      <p className="text-xs text-slate-400 line-through">
+                      <p className="text-xs md:text-sm text-slate-400 line-through">
                         ${product.unitPrice.toLocaleString()}
                       </p>
                       <p className="text-xs text-amber-600 font-medium">
@@ -155,13 +155,13 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
                       </p>
                     </>
                   ) : (
-                    <h3 className="text-xs sm:text-sm font-semibold text-slate-800">
+                    <h3 className="text-xs sm:text-sm md:text-base font-semibold text-slate-800">
                       ${product.unitPrice.toLocaleString()}
                     </h3>
                   )}
                 </div>
                 
-                <h4 className="text-xs font-medium text-slate-700 mb-1 line-clamp-1">
+                <h4 className="text-xs md:text-sm font-medium text-slate-700 mb-1 md:mb-2 line-clamp-1">
                   {product.make?.name} {product.title}
                 </h4>
                 
