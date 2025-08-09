@@ -507,79 +507,77 @@ export default function CarManagement() {
     setNewImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSubmitting(true);
+  
+  try {
+    const formDataToSend = new FormData();
     
-    try {
-      const formDataToSend = new FormData();
-      
-      // Add simple fields
-      const simpleFields = ['title', 'model', 'year', 'unitPrice', 'discountPercentage', 'quantity', 'weight', 'category', 'make', 'fuelType', 'description'];
-      simpleFields.forEach(field => {
-        if (formData[field] !== undefined) {
-          formDataToSend.append(field, formData[field]);
-        }
-      });
-      
-      // Add nested engine fields
-      for (const key in formData.engine) {
-        formDataToSend.append(`engine.${key}`, formData.engine[key]);
+    // Add simple fields
+    const simpleFields = ['title', 'model', 'year', 'unitPrice', 'discountPercentage', 'quantity', 'weight', 'category', 'make', 'fuelType', 'description'];
+    simpleFields.forEach(field => {
+      if (formData[field] !== undefined) {
+        formDataToSend.append(field, formData[field]);
       }
-      
-      // Add nested mileage fields
-      for (const key in formData.mileage) {
-        formDataToSend.append(`mileage.${key}`, formData.mileage[key]);
-      }
-
-      // Add feature checkbox values
-      for (const key in formData.features) {
-        formDataToSend.append(`features.${key}`, formData.features[key]);
-      }
-      
-      if (thumbnailFile) {
-        formDataToSend.append('thumbnail', thumbnailFile);
-      }
-      
-      newImageFiles.forEach(file => {
-        formDataToSend.append('images', file);
-      });
-
-      if (formMode === 'edit') {
-        existingImages.forEach(image => {
-          formDataToSend.append('existingImages', image);
-        });
-      }
-      
-      let response;
-      if (formMode === 'add') {
-        response = await fetch('/api/products', {
-          method: 'POST',
-          body: formDataToSend,
-        });
-      } else {
-        response = await fetch(`/api/products/${currentProduct._id}`, {
-          method: 'PUT',
-          body: formDataToSend,
-        });
-      }
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        setView('list');
-        fetchProducts(); 
-      } else {
-        console.error('Error saving product:', data.message);
-        alert(`Error: ${data.message}`);
-      }
-    } catch (error) {
-      console.error('Error saving product:', error);
-      alert('An unexpected error occurred while saving the product.');
-    } finally {
-      setSubmitting(false);
+    });
+    
+    // Add nested engine fields
+    for (const key in formData.engine) {
+      formDataToSend.append(`engine.${key}`, formData.engine[key]);
     }
-  };
+    
+    // Add nested mileage fields
+    for (const key in formData.mileage) {
+      formDataToSend.append(`mileage.${key}`, formData.mileage[key]);
+    }
+
+    // Convert features object to JSON string and append as a single field
+    formDataToSend.append('features', JSON.stringify(formData.features));
+    
+    if (thumbnailFile) {
+      formDataToSend.append('thumbnail', thumbnailFile);
+    }
+    
+    newImageFiles.forEach(file => {
+      formDataToSend.append('images', file);
+    });
+
+    if (formMode === 'edit') {
+      existingImages.forEach(image => {
+        formDataToSend.append('existingImages', image);
+      });
+    }
+    
+    let response;
+    if (formMode === 'add') {
+      response = await fetch('/api/products', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+    } else {
+      response = await fetch(`/api/products/${currentProduct._id}`, {
+        method: 'PUT',
+        body: formDataToSend,
+      });
+    }
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      setView('list');
+      fetchProducts(); 
+    } else {
+      console.error('Error saving product:', data.message);
+      alert(`Error: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error saving product:', error);
+    alert('An unexpected error occurred while saving the product.');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const resetFilters = () => {
     setSearchTerm('');
