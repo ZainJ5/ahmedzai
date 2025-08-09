@@ -16,7 +16,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                // Increased the limit to fetch more products (from 8 to 12)
+                // Fetch 12 products (4x3 grid)
                 const response = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&category=6890ae47d1f3719edf5910a9');
 
                 if (!response.ok) {
@@ -52,12 +52,12 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         </p>
                     </div>
 
-                    {/* Updated grid columns for loading state */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                    {/* Updated grid columns for loading state - now 4 columns on large screens */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-4">
                         {[...Array(12)].map((_, index) => (
                             <div key={index} className="w-full flex flex-col">
                                 <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 h-full">
-                                    <div className="aspect-square md:aspect-auto md:h-44 bg-slate-100 animate-pulse"></div>
+                                    <div className="aspect-square md:aspect-auto md:h-48 bg-slate-100 animate-pulse"></div>
                                     <div className="p-2 md:p-3 flex-grow">
                                         <div className="h-4 md:h-5 bg-slate-100 rounded animate-pulse mb-1 md:mb-2"></div>
                                         <div className="h-3 md:h-4 bg-slate-100 rounded animate-pulse w-2/3 mb-1 md:mb-2"></div>
@@ -118,8 +118,8 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                     </motion.p>
                 </div>
 
-                {/* Updated grid columns for content */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                {/* Updated grid columns for content - now 4 columns on large screens */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-5">
                     {products.map((product) => (
                         <motion.div
                             key={product._id}
@@ -129,13 +129,13 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4 }}
                         >
-                            <div className="relative w-full aspect-square md:aspect-auto md:h-44 bg-slate-100">
+                            <div className="relative w-full aspect-square md:aspect-auto md:h-48 bg-slate-100">
                                 <Image
                                     src={product.thumbnail || '/placeholder-product.jpg'}
                                     alt={product.title}
                                     fill
                                     className="object-cover rounded-t-xl"
-                                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                                     loading="eager"
                                 />
                             </div>
