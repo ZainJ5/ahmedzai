@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FaWhatsapp, FaCalendarAlt, FaTruck, FaWeightHanging } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -17,57 +16,55 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <Link href={`/products/${product._id}`}>
-      <motion.div 
-        className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 h-full flex flex-col"
-        whileHover={{ y: -3, boxShadow: '0 8px 15px rgba(0,0,0,0.06)' }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="relative h-48 xs:h-52 sm:h-56 w-full bg-gray-50 overflow-hidden">
-          <Image 
-            src={product.thumbnail || '/placeholder-product.jpg'} 
-            alt={product.title}
-            fill
-            className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
-          />
-          {product.discountPercentage > 0 && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-              {product.discountPercentage}% OFF
-            </div>
-          )}
-        </div>
-        
-        <div className="p-3 sm:p-4 flex flex-col flex-grow">
-          <div className="flex items-center justify-center gap-2 xs:gap-3 sm:gap-5 text-xs text-gray-600 mb-3 border-b border-gray-100 pb-3">
-            <div className="flex items-center">
-              <FaCalendarAlt className="mr-1 text-gray-500" /> 
-              <span>{product.year || "2023"}</span>
-            </div>
-            <div className="flex items-center">
-              <FaTruck className="mr-1 text-gray-500" /> 
-              <span className="uppercase">{product.category?.name || "TRUCKS"}</span>
-            </div>
-            <div className="flex items-center">
-              <FaWeightHanging className="mr-1 text-gray-500" /> 
-              <span>{product.weight || "0"} Tons</span>
-            </div>
+    <div 
+      className="bg-white rounded-lg shadow-sm border text-black border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-96"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative h-48 w-full overflow-hidden">
+        <Image 
+          src={product.thumbnail || '/placeholder-product.jpg'} 
+          alt={product.title}
+          fill
+          className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+        />
+      </div>
+      
+      <div className="p-3 flex flex-col flex-grow justify-between">
+        <div>
+          <h3 className="font-bold text-center text-gray-900 text-lg mb-2 line-clamp-2 h-14 overflow-hidden">
+            {product.make?.name} {product.title} {product.year || ""}
+          </h3>
+          
+          <div className="flex justify-between text-sm mb-3">
+            <span className="font-medium">Ref#</span>
+            <span>{product.model}</span>
           </div>
           
-          <h3 className="font-medium text-center text-gray-800 text-sm xs:text-base sm:text-lg mb-4">
-            {product.make?.name} {product.title}
-          </h3>
+          <div className="flex justify-between text-sm">
+            <span className="font-medium">FOB Price</span>
+            <span className="text-red-600 font-medium">ASK</span>
+          </div>
+        </div>
+        
+        <div className="flex gap-2 mt-3">
+          <Link href={`/products/${product._id}`} className="flex-1">
+            <button 
+              className="w-full bg-[#0d6cfe] hover:bg-blue-600 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
+            >
+              More Details
+            </button>
+          </Link>
           
           <button 
             onClick={handleWhatsAppClick}
-            className="mt-auto flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-800 text-white font-medium rounded-lg py-2 sm:py-3 px-4 transition-colors w-full text-sm sm:text-base"
+            className="w-10 sm:w-12 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-colors"
             aria-label="Contact via WhatsApp"
           >
-            <FaWhatsapp size={20} /> 
-            <span>Chat Now</span>
+            <FaWhatsapp size={30} />
           </button>
         </div>
-      </motion.div>
-    </Link>
+      </div>
+    </div>
   );
 }
