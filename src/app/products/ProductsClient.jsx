@@ -26,24 +26,23 @@ export default function ProductsPage() {
   const [filters, setFilters] = useState({
     category: [],
     brand: [],
-    minWeight: '',
-    maxWeight: '',
-    selectedWeight: '',
-    engineConfiguration: '',
+    yearFrom: '',
+    yearTo: '',
     fuelType: '',
     sortBy: 'createdAt',
     sortOrder: 'desc',
-    yearFrom: '',
-    yearTo: ''
+    model: '',
+    chassis: '',
+    color: '',
+    minMileage: '',
+    maxMileage: ''
   });
   const [showFilters, setShowFilters] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
   const [showSortOptions, setShowSortOptions] = useState(false);
   const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
   
-  // Track if this is the initial load
   const isInitialMount = useRef(true);
-  // Track if we are currently fetching data
   const isFetching = useRef(false);
 
   useEffect(() => {
@@ -61,23 +60,14 @@ export default function ProductsPage() {
           updatedFilters.brand = brandParam.split(',');
         }
         
-        if (searchParams.get('minWeight')) {
-          updatedFilters.minWeight = searchParams.get('minWeight');
-          const minW = parseFloat(searchParams.get('minWeight'));
-          const maxW = parseFloat(searchParams.get('maxWeight') || '999999');
-          
-          if (minW === 0 && maxW === 10) updatedFilters.selectedWeight = '10';
-          else if (minW === 0 && maxW === 20) updatedFilters.selectedWeight = '20';
-          else if (minW === 0 && maxW === 30) updatedFilters.selectedWeight = '30';
-          else if (minW === 0 && maxW === 40) updatedFilters.selectedWeight = '40';
-          else if (minW === 0 && maxW === 50) updatedFilters.selectedWeight = '50';
-          else if (minW === 50 && maxW === 999999) updatedFilters.selectedWeight = '51';
-        }
-        if (searchParams.get('maxWeight')) updatedFilters.maxWeight = searchParams.get('maxWeight');
         if (searchParams.get('yearFrom')) updatedFilters.yearFrom = searchParams.get('yearFrom');
         if (searchParams.get('yearTo')) updatedFilters.yearTo = searchParams.get('yearTo');
-        if (searchParams.get('engineConfiguration')) updatedFilters.engineConfiguration = searchParams.get('engineConfiguration');
         if (searchParams.get('fuelType')) updatedFilters.fuelType = searchParams.get('fuelType');
+        if (searchParams.get('model')) updatedFilters.model = searchParams.get('model');
+        if (searchParams.get('chassis')) updatedFilters.chassis = searchParams.get('chassis');
+        if (searchParams.get('color')) updatedFilters.color = searchParams.get('color');
+        if (searchParams.get('minMileage')) updatedFilters.minMileage = searchParams.get('minMileage');
+        if (searchParams.get('maxMileage')) updatedFilters.maxMileage = searchParams.get('maxMileage');
         
         if (searchParams.get('page')) setPagination(prev => ({ 
           ...prev, 
@@ -108,14 +98,11 @@ export default function ProductsPage() {
     fetchInitialData();
   }, [searchParams]);
 
-  // Memoize fetchProducts to avoid recreating the function
   const fetchProducts = useCallback(async () => {
-    // Prevent multiple simultaneous fetches
     if (isFetching.current) return;
     
     try {
       isFetching.current = true;
-      // Only show the loading state if this isn't the initial load
       if (!isInitialMount.current) {
         setIsFiltering(true);
       }
@@ -140,20 +127,28 @@ export default function ProductsPage() {
         queryParams.append('yearTo', filters.yearTo);
       }
       
-      if (filters.minWeight && filters.minWeight !== '') {
-        queryParams.append('minWeight', filters.minWeight);
-      }
-      
-      if (filters.maxWeight && filters.maxWeight !== '') {
-        queryParams.append('maxWeight', filters.maxWeight);
-      }
-      
-      if (filters.engineConfiguration && filters.engineConfiguration !== '') {
-        queryParams.append('engineConfiguration', filters.engineConfiguration);
-      }
-      
       if (filters.fuelType && filters.fuelType !== '') {
         queryParams.append('fuelType', filters.fuelType);
+      }
+      
+      if (filters.model && filters.model !== '') {
+        queryParams.append('model', filters.model);
+      }
+      
+      if (filters.chassis && filters.chassis !== '') {
+        queryParams.append('chassis', filters.chassis);
+      }
+      
+      if (filters.color && filters.color !== '') {
+        queryParams.append('color', filters.color);
+      }
+      
+      if (filters.minMileage && filters.minMileage !== '') {
+        queryParams.append('minMileage', filters.minMileage);
+      }
+      
+      if (filters.maxMileage && filters.maxMileage !== '') {
+        queryParams.append('maxMileage', filters.maxMileage);
       }
       
       if (filters.sortBy) queryParams.append('sortBy', filters.sortBy);
@@ -169,7 +164,6 @@ export default function ProductsPage() {
       setProducts(data.data);
       setPagination(data.pagination);
       
-      // Update URL without triggering another fetch
       router.push(`/products?${queryParams.toString()}`, { scroll: false });
       
     } catch (err) {
@@ -178,21 +172,17 @@ export default function ProductsPage() {
       setLoading(false);
       isFetching.current = false;
       
-      // Small delay before removing the filtering state to prevent UI flicker
       setTimeout(() => setIsFiltering(false), 300);
       
-      // No longer the initial mount after first fetch
       isInitialMount.current = false;
     }
   }, [filters, pagination.page, pagination.limit, router]);
 
-  // Combined effect to handle both initial load and filter changes
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   const handleFilterChange = useCallback((newFilters) => {
-    // Batch state updates to trigger only one re-render
     setFilters(newFilters);
     setPagination(prev => ({ ...prev, page: 1 }));
   }, []);
@@ -234,13 +224,14 @@ export default function ProductsPage() {
     if (filters.category.length) count += filters.category.length;
     if (filters.brand.length) count += filters.brand.length;
     if (filters.yearFrom || filters.yearTo) count += 1;
-    if (filters.minWeight || filters.maxWeight) count += 1;
-    if (filters.engineConfiguration) count += 1;
     if (filters.fuelType) count += 1;
+    if (filters.model) count += 1;
+    if (filters.chassis) count += 1;
+    if (filters.color) count += 1;
+    if (filters.minMileage || filters.maxMileage) count += 1;
     return count;
   };
 
-  // Close sort menu if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (showSortOptions && sortMenuAnchor && !sortMenuAnchor.contains(event.target)) {
@@ -261,7 +252,6 @@ export default function ProductsPage() {
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Sidebar */}
         <div className="hidden lg:block w-64 bg-white border-r border-gray-200 overflow-y-auto">
           <FilterSidebar
             categories={categories}
@@ -271,9 +261,7 @@ export default function ProductsPage() {
           />
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 bg-gray-50">
-          {/* Mobile Filter Section */}
           <div className="lg:hidden p-4 bg-white border-b border-gray-200">
             <div
               onClick={() => setShowFilters(!showFilters)}
@@ -301,7 +289,6 @@ export default function ProductsPage() {
             )}
           </div>
           
-          {/* Top Bar */}
           <div className="z-10 bg-white border-b border-gray-200 px-3 sm:px-4 py-3 lg:py-4">
             <div className="flex justify-between items-center">
               <div className="text-xs sm:text-sm text-gray-500">
@@ -361,7 +348,6 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* Products Grid */}
           <div className="p-3 sm:p-4 lg:p-6">
             {error ? (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md">
@@ -404,15 +390,16 @@ export default function ProductsPage() {
                       onClick={() => setFilters({
                         category: [],
                         brand: [],
-                        minWeight: '',
-                        maxWeight: '',
-                        selectedWeight: '',
-                        engineConfiguration: '',
+                        yearFrom: '',
+                        yearTo: '',
                         fuelType: '',
                         sortBy: 'createdAt',
                         sortOrder: 'desc',
-                        yearFrom: '',
-                        yearTo: ''
+                        model: '',
+                        chassis: '',
+                        color: '',
+                        minMileage: '',
+                        maxMileage: ''
                       })}
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-sm text-sm sm:text-base"
                     >
@@ -428,7 +415,6 @@ export default function ProductsPage() {
                   >
                     {products.map(product => (
                       <motion.div 
-                        // Continuing from where we left off - in the products mapping section
                         key={product._id}
                         layout
                         initial={{ opacity: 0 }}
@@ -443,7 +429,6 @@ export default function ProductsPage() {
                   </motion.div>
                 )}
 
-                {/* Pagination */}
                 {pagination.totalPages > 1 && (
                   <div className="mt-8 sm:mt-10 flex justify-center">
                     <nav className="inline-flex rounded-md shadow-sm">

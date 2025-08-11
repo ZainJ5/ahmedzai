@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { FaChevronDown, FaSearch, FaTimes, FaFilter } from 'react-icons/fa';
+import { FaChevronDown, FaSearch, FaTimes, FaFilter, FaGasPump, FaTachometerAlt, FaPalette, FaCarSide, FaCar, FaTruckLoading } from 'react-icons/fa';
 import { HiAdjustments } from 'react-icons/hi';
-import { FaTruck, FaGasPump, FaCogs } from 'react-icons/fa6';
+import { FaCogs } from 'react-icons/fa6';
 import 'rc-slider/assets/index.css';
 
 export default function AdvancedSearchFilter() {
@@ -25,21 +25,13 @@ export default function AdvancedSearchFilter() {
     category: '',
     yearFrom: '',
     yearTo: '',
-    engineConfiguration: '',
-    fuelType: ''
+    fuelType: '',
+    chassis: '',
+    color: '',
+    minMileage: '',
+    maxMileage: '',
+    axleConfiguration: ''
   });
-  
-  const engineConfigOptions = [
-    { value: '', label: 'All Engine Types' },
-    { value: 'Inline', label: 'Inline/Straight' },
-    { value: 'V-type', label: 'V-Type (V6, V8, etc.)' },
-    { value: 'Flat', label: 'Flat/Boxer' },
-    { value: 'Rotary', label: 'Rotary' },
-    { value: 'Single', label: 'Single Cylinder' },
-    { value: 'Electric', label: 'Electric Motor' },
-    { value: 'Hybrid', label: 'Hybrid' },
-    { value: 'Other', label: 'Other' }
-  ];
   
   const fuelTypeOptions = [
     { value: '', label: 'All Fuel Types' },
@@ -143,12 +135,16 @@ export default function AdvancedSearchFilter() {
     
     // Apply filters
     if (filters.make) queryParams.append('brand', filters.make);
-    if (filters.model && filters.model.trim() !== '') queryParams.append('search', filters.model.trim());
+    if (filters.model && filters.model.trim() !== '') queryParams.append('model', filters.model.trim());
     if (filters.category) queryParams.append('category', filters.category);
     if (filters.yearFrom) queryParams.append('yearFrom', filters.yearFrom);
     if (filters.yearTo) queryParams.append('yearTo', filters.yearTo);
-    if (filters.engineConfiguration) queryParams.append('engineConfiguration', filters.engineConfiguration);
     if (filters.fuelType) queryParams.append('fuelType', filters.fuelType);
+    if (filters.chassis) queryParams.append('chassis', filters.chassis);
+    if (filters.color) queryParams.append('color', filters.color);
+    if (filters.minMileage) queryParams.append('minMileage', filters.minMileage);
+    if (filters.maxMileage) queryParams.append('maxMileage', filters.maxMileage);
+    if (filters.axleConfiguration) queryParams.append('axleConfiguration', filters.axleConfiguration);
     
     // Navigate to products page with search parameters
     router.push(`/products?${queryParams.toString()}`);
@@ -161,13 +157,17 @@ export default function AdvancedSearchFilter() {
       category: '',
       yearFrom: '',
       yearTo: '',
-      engineConfiguration: '',
-      fuelType: ''
+      fuelType: '',
+      chassis: '',
+      color: '',
+      minMileage: '',
+      maxMileage: '',
+      axleConfiguration: ''
     });
   };
 
   return (
-    <section className="w-full bg-gradient-to-b from-blue-50/70 to-white py-10 sm:py-14">
+    <section className="w-full bg-gradient-to-b from-blue-50 to-white/90 py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <motion.h2 
@@ -182,7 +182,7 @@ export default function AdvancedSearchFilter() {
             className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ opacity: 0.6, delay: 0.3 }}
           >
             Search our extensive inventory with precision and ease
           </motion.p>
@@ -193,7 +193,7 @@ export default function AdvancedSearchFilter() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all"
+          className="bg-white rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden transition-all"
         >
           {/* Mobile Header */}
           <div 
@@ -201,7 +201,7 @@ export default function AdvancedSearchFilter() {
             onClick={() => setIsExpanded(!isExpanded)}
           >
             <div className="flex items-center">
-              <div className="bg-blue-50 p-2 rounded-md mr-3">
+              <div className="bg-blue-50 p-2 rounded-lg mr-3">
                 <HiAdjustments className="text-blue-600 w-5 h-5" />
               </div>
               <h3 className="font-semibold text-gray-800">Advanced Search</h3>
@@ -227,8 +227,8 @@ export default function AdvancedSearchFilter() {
               className={`${isClient && !isExpanded && isMobile ? 'hidden' : ''} lg:block`}
             >
               <form onSubmit={handleSearch} className="p-6 lg:p-8">
-                <div className="lg:flex lg:space-x-8">
-                  <div className="lg:w-2/3 space-y-6">
+                <div className="space-y-8">
+                  <div className="space-y-6">
                     <div className="hidden lg:block mb-2">
                       <div className="flex items-center">
                         <FaFilter className="text-blue-500 mr-2" />
@@ -237,17 +237,17 @@ export default function AdvancedSearchFilter() {
                       <p className="text-sm text-gray-500 mt-1">Refine your search with precise criteria</p>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                       <div className="space-y-2">
-                        <label htmlFor="make" className="block text-sm font-medium text-gray-700">
-                          Make / Brand
+                        <label htmlFor="make" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaCar className="mr-2 text-gray-500" /> Make / Brand
                         </label>
-                        <div className="relative rounded-md">
+                        <div className="relative rounded-lg">
                           <select
                             id="make"
                             value={filters.make}
                             onChange={(e) => handleInputChange('make', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
                             disabled={loading}
                           >
                             <option value="">All Makes</option>
@@ -257,12 +257,13 @@ export default function AdvancedSearchFilter() {
                               </option>
                             ))}
                           </select>
+                          <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <label htmlFor="model" className="block text-sm font-medium text-gray-700">
-                          Model
+                        <label htmlFor="model" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaCar className="mr-2 text-gray-500" /> Model
                         </label>
                         <input
                           type="text"
@@ -270,21 +271,21 @@ export default function AdvancedSearchFilter() {
                           placeholder="Enter model number or keywords"
                           value={filters.model}
                           onChange={(e) => handleInputChange('model', e.target.value)}
-                          className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                           disabled={loading}
                         />
                       </div>
                       
                       <div className="space-y-2">
-                        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                          Equipment Category
+                        <label htmlFor="category" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaTruckLoading className="mr-2 text-gray-500" /> Categories (Body Type)
                         </label>
-                        <div className="relative rounded-md">
+                        <div className="relative rounded-lg">
                           <select
                             id="category"
                             value={filters.category}
                             onChange={(e) => handleInputChange('category', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
                             disabled={loading}
                           >
                             <option value="">All Categories</option>
@@ -294,20 +295,21 @@ export default function AdvancedSearchFilter() {
                               </option>
                             ))}
                           </select>
+                          <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <label htmlFor="year" className="block text-sm font-medium text-gray-700">
-                          Year Range
+                        <label htmlFor="year" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaCar className="mr-2 text-gray-500" /> Year Range
                         </label>
                         <div className="flex items-center space-x-2">
-                          <div className="relative rounded-md w-1/2">
+                          <div className="relative rounded-lg w-1/2">
                             <select
                               id="yearFrom"
                               value={filters.yearFrom}
                               onChange={(e) => handleInputChange('yearFrom', e.target.value)}
-                              className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
                               disabled={loading}
                             >
                               {yearFromOptions.map(year => (
@@ -316,13 +318,14 @@ export default function AdvancedSearchFilter() {
                                 </option>
                               ))}
                             </select>
+                            <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                           </div>
-                          <div className="relative rounded-md w-1/2">
+                          <div className="relative rounded-lg w-1/2">
                             <select
                               id="yearTo"
                               value={filters.yearTo}
                               onChange={(e) => handleInputChange('yearTo', e.target.value)}
-                              className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
                               disabled={loading}
                             >
                               {yearToOptions.map(year => (
@@ -331,41 +334,21 @@ export default function AdvancedSearchFilter() {
                                 </option>
                               ))}
                             </select>
+                            <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                           </div>
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <label htmlFor="engineConfiguration" className="block text-sm font-medium text-gray-700">
-                          Engine Type
+                        <label htmlFor="fuelType" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaGasPump className="mr-2 text-gray-500" /> Fuel Type
                         </label>
-                        <div className="relative rounded-md">
-                          <select
-                            id="engineConfiguration"
-                            value={filters.engineConfiguration}
-                            onChange={(e) => handleInputChange('engineConfiguration', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                            disabled={loading}
-                          >
-                            {engineConfigOptions.map(option => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label htmlFor="fuelType" className="block text-sm font-medium text-gray-700">
-                          Fuel Type
-                        </label>
-                        <div className="relative rounded-md">
+                        <div className="relative rounded-lg">
                           <select
                             id="fuelType"
                             value={filters.fuelType}
                             onChange={(e) => handleInputChange('fuelType', e.target.value)}
-                            className="block w-full rounded-lg border-gray-300 shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 pr-10 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none"
                             disabled={loading}
                           >
                             {fuelTypeOptions.map(option => (
@@ -374,41 +357,101 @@ export default function AdvancedSearchFilter() {
                               </option>
                             ))}
                           </select>
+                          <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <label htmlFor="chassis" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaCarSide className="mr-2 text-gray-500" /> Chassis
+                        </label>
+                        <input
+                          type="text"
+                          id="chassis"
+                          placeholder="Enter chassis"
+                          value={filters.chassis}
+                          onChange={(e) => handleInputChange('chassis', e.target.value)}
+                          className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          disabled={loading}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label htmlFor="color" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaPalette className="mr-2 text-gray-500" /> Colour
+                        </label>
+                        <input
+                          type="text"
+                          id="color"
+                          placeholder="Enter colour"
+                          value={filters.color}
+                          onChange={(e) => handleInputChange('color', e.target.value)}
+                          className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          disabled={loading}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label htmlFor="axleConfiguration" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaTruckLoading className="mr-2 text-gray-500" /> Axle Configuration
+                        </label>
+                        <input
+                          type="text"
+                          id="axleConfiguration"
+                          placeholder="Enter axle configuration"
+                          value={filters.axleConfiguration}
+                          onChange={(e) => handleInputChange('axleConfiguration', e.target.value)}
+                          className="block w-full rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                          disabled={loading}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label htmlFor="mileage" className="block text-sm font-medium text-gray-700 flex items-center">
+                          <FaTachometerAlt className="mr-2 text-gray-500" /> Mileage Range
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="number"
+                            id="minMileage"
+                            placeholder="Min (e.g. 10000)"
+                            value={filters.minMileage}
+                            onChange={(e) => handleInputChange('minMileage', e.target.value)}
+                            className="block w-1/2 rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            disabled={loading}
+                          />
+                          <input
+                            type="number"
+                            id="maxMileage"
+                            placeholder="Max (e.g. 50000)"
+                            value={filters.maxMileage}
+                            onChange={(e) => handleInputChange('maxMileage', e.target.value)}
+                            className="block w-1/2 rounded-lg border border-gray-200 bg-white shadow-sm pl-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            disabled={loading}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="lg:w-1/3 mt-6 lg:mt-0 lg:border-l lg:border-gray-100 lg:pl-8">
-                    <div className="space-y-6">
-                      <div className="hidden lg:block mb-2">
-                        <div className="flex items-center">
-                          <FaTruck className="text-blue-500 mr-2" />
-                          <h3 className="text-lg font-semibold text-gray-800">Additional Options</h3>
-                        </div>
-                        <p className="text-sm text-gray-500 mt-1">Further refine your equipment search</p>
-                      </div>
-                      
-                      <div className="pt-4 grid grid-cols-2 gap-4">
-                        <button
-                          type="button"
-                          onClick={resetFilters}
-                          className="inline-flex justify-center items-center px-4 py-3 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
-                          disabled={loading}
-                        >
-                          <FaTimes className="mr-2 h-4 w-4" />
-                          Reset All
-                        </button>
-                        <button
-                          type="submit"
-                          className="inline-flex justify-center items-center px-4 py-3 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
-                          disabled={loading}
-                        >
-                          <FaSearch className="mr-2 h-4 w-4" />
-                          Search
-                        </button>
-                      </div>
-                    </div>
+                  <div className="border-t border-gray-100 pt-6 md:flex md:justify-end md:space-x-4">
+                    <button
+                      type="button"
+                      onClick={resetFilters}
+                      className="w-full md:w-auto inline-flex justify-center items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 mb-3 md:mb-0"
+                      disabled={loading}
+                    >
+                      <FaTimes className="mr-2 h-5 w-5" />
+                      Clear Filters
+                    </button>
+                    <button
+                      type="submit"
+                      className="w-full md:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                      disabled={loading}
+                    >
+                      <FaSearch className="mr-2 h-5 w-5" />
+                      Search Inventory
+                    </button>
                   </div>
                 </div>
               </form>

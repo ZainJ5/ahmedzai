@@ -34,11 +34,11 @@ const Navbar = () => {
               <span>ahmedzai.trading@gmail.com</span>
             </a>
             <a 
-              href="https://wa.me/+819027801563" 
+              href="https://wa.me/+818046646786" 
               className="flex items-center hover:text-amber-400 transition duration-300 ease-in-out group"
             >
               <FaWhatsapp className="mr-2 text-green-400 group-hover:text-amber-400 transition duration-300" />
-              <span>+81 90-2780-1563</span>
+              <span>+81 8046646786</span>
             </a>
           </div>
           

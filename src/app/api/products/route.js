@@ -40,12 +40,16 @@ export async function GET(request) {
     const brandParam = searchParams.get('brand');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
-    const minWeight = searchParams.get('minWeight');
-    const maxWeight = searchParams.get('maxWeight');
     const yearFrom = searchParams.get('yearFrom');
     const yearTo = searchParams.get('yearTo');
-    const engineConfiguration = searchParams.get('engineConfiguration');
     const fuelType = searchParams.get('fuelType');
+    const chassis = searchParams.get('chassis');
+    const color = searchParams.get('color');
+    const axleConfiguration = searchParams.get('axleConfiguration');
+    const vehicleGrade = searchParams.get('vehicleGrade');
+    const model = searchParams.get('model');
+    const minMileage = searchParams.get('minMileage');
+    const maxMileage = searchParams.get('maxMileage');
     
     let query = {};
     
@@ -73,33 +77,51 @@ export async function GET(request) {
       if (maxPrice) query.unitPrice.$lte = parseFloat(maxPrice);
     }
     
-    if (minWeight || maxWeight) {
-      query.weight = {};
-      if (minWeight) query.weight.$gte = parseFloat(minWeight);
-      if (maxWeight) query.weight.$lte = parseFloat(maxWeight);
-    }
-    
     if (yearFrom || yearTo) {
       query.year = {};
       if (yearFrom) query.year.$gte = parseInt(yearFrom);
       if (yearTo) query.year.$lte = parseInt(yearTo);
     }
     
-    // Add engine configuration filter - matches the engine.configuration field in schema
-    if (engineConfiguration && engineConfiguration !== '') {
-      query['engine.configuration'] = engineConfiguration;
-    }
-    
-    // Add fuel type filter - matches the fuelType field in schema
     if (fuelType && fuelType !== '') {
       query.fuelType = fuelType;
+    }
+    
+    if (chassis && chassis !== '') {
+      query.chassis = { $regex: chassis, $options: 'i' };
+    }
+    
+    if (color && color !== '') {
+      query.color = { $regex: color, $options: 'i' };
+    }
+    
+    if (axleConfiguration && axleConfiguration !== '') {
+      query.axleConfiguration = axleConfiguration;
+    }
+    
+    if (vehicleGrade && vehicleGrade !== '') {
+      query.vehicleGrade = vehicleGrade;
+    }
+    
+    if (model && model !== '') {
+      query.model = { $regex: model, $options: 'i' };
+    }
+    
+    if (minMileage || maxMileage) {
+      query.mileage = {};
+      if (minMileage) query.mileage.$gte = parseFloat(minMileage);
+      if (maxMileage) query.mileage.$lte = parseFloat(maxMileage);
     }
     
     if (searchTerm) {
       query.$or = [
         { title: { $regex: searchTerm, $options: 'i' } },
         { model: { $regex: searchTerm, $options: 'i' } },
-        { features: { $regex: searchTerm, $options: 'i' } }
+        { chassis: { $regex: searchTerm, $options: 'i' } },
+        { color: { $regex: searchTerm, $options: 'i' } },
+        { axleConfiguration: { $regex: searchTerm, $options: 'i' } },
+        { vehicleGrade: { $regex: searchTerm, $options: 'i' } },
+        { description: { $regex: searchTerm, $options: 'i' } }
       ];
     }
     
@@ -154,26 +176,64 @@ export async function POST(request) {
       model: formData.get('model'),
       quantity: parseInt(formData.get('quantity')),
       weight: parseFloat(formData.get('weight')),
-      features: formData.get('features'),
-      fuelType: formData.get('fuelType') || 'Diesel' // Default to Diesel if not provided
+      description: formData.get('description') || '',
+      fuelType: formData.get('fuelType'),
+      
+      mileage: parseFloat(formData.get('mileage') || 0),
+      mileageUnit: formData.get('mileageUnit') || 'km/l',
+      
+      chassis: formData.get('chassis'),
+      color: formData.get('color'),
+      axleConfiguration: formData.get('axleConfiguration'),
+      vehicleGrade: formData.get('vehicleGrade')
     };
     
-    // Handle engine configuration
-    productData.engine = {
-      configuration: formData.get('engineConfiguration') || 'Other',
-      displacement: parseFloat(formData.get('engineDisplacement') || 0),
-      cylinders: parseInt(formData.get('engineCylinders') || 0),
-      horsepower: parseFloat(formData.get('engineHorsepower') || 0)
-    };
+    try {
+      const featuresString = formData.get('features');
+      if (featuresString) {
+        productData.features = JSON.parse(featuresString);
+      } else {
+        productData.features = {
+          camera360: false,
+          airBags: false,
+          airCondition: false,
+          alloyWheels: false,
+          abs: false,
+          sunRoof: false,
+          autoAC: false,
+          backCamera: false,
+          backSpoiler: false,
+          doubleMuffler: false,
+          fogLights: false,
+          tv: false,
+          hidLights: false,
+          keylessEntry: false,
+          leatherSeats: false,
+          navigation: false,
+          parkingSensors: false,
+          doubleAC: false,
+          powerSteering: false,
+          powerWindows: false,
+          pushStart: false,
+          radio: false,
+          retractableMirrors: false,
+          roofRail: false
+        };
+      }
+    } catch (e) {
+      console.error('Error parsing features JSON:', e);
+      return NextResponse.json(
+        { success: false, message: 'Invalid features format' },
+        { status: 400 }
+      );
+    }
     
-    // Handle mileage information
-    productData.mileage = {
-      city: parseFloat(formData.get('mileageCity') || 0),
-      highway: parseFloat(formData.get('mileageHighway') || 0),
-      unit: formData.get('mileageUnit') || 'km/l'
-    };
+    const requiredFields = [
+      'title', 'category', 'make', 'unitPrice', 'year', 'model', 
+      'quantity', 'weight', 'fuelType', 'mileage', 'chassis',
+      'color', 'axleConfiguration', 'vehicleGrade'
+    ];
     
-    const requiredFields = ['title', 'category', 'make', 'unitPrice', 'year', 'model', 'quantity', 'weight', 'features'];
     for (const field of requiredFields) {
       if (!productData[field]) {
         return NextResponse.json(

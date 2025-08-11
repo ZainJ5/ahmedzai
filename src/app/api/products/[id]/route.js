@@ -84,18 +84,33 @@ export async function PUT(request, { params }) {
       updatedAt: Date.now()
     };
     
-    const textFields = ['title', 'model', 'fuelType'];
+    const textFields = [
+      'title', 'model', 'fuelType', 
+      'chassis', 'color', 'axleConfiguration', 'vehicleGrade', 'description'
+    ];
+    
     for (const field of textFields) {
       if (formData.has(field)) {
-        updateData[field] = formData.get(field);
+        updateData[field] = formData.get(field) || '';
       }
     }
     
-    const numericFields = ['unitPrice', 'discountPercentage', 'year', 'quantity', 'weight'];
+    const numericFields = [
+      'unitPrice', 'discountPercentage', 'year', 'quantity', 'weight', 
+      'mileage'
+    ];
+    
     for (const field of numericFields) {
       if (formData.has(field)) {
-        updateData[field] = parseFloat(formData.get(field));
+        const value = parseFloat(formData.get(field));
+        if (!isNaN(value)) {
+          updateData[field] = value;
+        }
       }
+    }
+    
+    if (formData.has('mileageUnit')) {
+      updateData.mileageUnit = formData.get('mileageUnit');
     }
     
     const refFields = ['category', 'make'];
@@ -105,59 +120,17 @@ export async function PUT(request, { params }) {
       }
     }
     
-    updateData.features = {};
-    const featureFields = [
-      'camera360', 'airBags', 'airCondition', 'alloyWheels', 'abs', 'sunRoof',
-      'autoAC', 'backCamera', 'backSpoiler', 'doubleMuffler', 'fogLights', 'tv',
-      'hidLights', 'keylessEntry', 'leatherSeats', 'navigation', 'parkingSensors', 
-      'doubleAC', 'powerSteering', 'powerWindows', 'pushStart', 'radio', 
-      'retractableMirrors', 'roofRail'
-    ];
-    
-    for (const feature of featureFields) {
-      const formKey = `features.${feature}`;
-      if (formData.has(formKey)) {
-        const value = formData.get(formKey);
-        updateData.features[feature] = value === 'true' || value === '1' || value === 'on';
-      } else {
-        updateData.features[feature] = false;
+    try {
+      const featuresString = formData.get('features');
+      if (featuresString) {
+        updateData.features = JSON.parse(featuresString);
       }
-    }
-    
-    updateData.engine = {};
-    const engineFields = ['displacement', 'cylinders', 'horsepower'];
-    for (const field of engineFields) {
-      const formKey = `engine.${field}`;
-      if (formData.has(formKey)) {
-        updateData.engine[field] = parseFloat(formData.get(formKey));
-      } else if (existingProduct.engine && existingProduct.engine[field]) {
-        updateData.engine[field] = existingProduct.engine[field];
-      }
-    }
-    
-    if (formData.has('engine.configuration')) {
-      updateData.engine.configuration = formData.get('engine.configuration');
-    } else if (existingProduct.engine && existingProduct.engine.configuration) {
-      updateData.engine.configuration = existingProduct.engine.configuration;
-    }
-    
-    updateData.mileage = {};
-    const mileageNumericFields = ['city', 'highway'];
-    for (const field of mileageNumericFields) {
-      const formKey = `mileage.${field}`;
-      if (formData.has(formKey)) {
-        updateData.mileage[field] = parseFloat(formData.get(formKey));
-      } else if (existingProduct.mileage && existingProduct.mileage[field]) {
-        updateData.mileage[field] = existingProduct.mileage[field];
-      }
-    }
-    
-    if (formData.has('mileage.unit')) {
-      updateData.mileage.unit = formData.get('mileage.unit');
-    } else if (existingProduct.mileage && existingProduct.mileage.unit) {
-      updateData.mileage.unit = existingProduct.mileage.unit;
-    } else {
-      updateData.mileage.unit = 'km/l';
+    } catch (e) {
+      console.error('Error parsing features JSON:', e);
+      return NextResponse.json(
+        { success: false, message: 'Invalid features format' },
+        { status: 400 }
+      );
     }
     
     const thumbnailFile = formData.get('thumbnail');
@@ -167,15 +140,15 @@ export async function PUT(request, { params }) {
       }
       updateData.thumbnail = await saveFile(thumbnailFile);
     }
-
+    
     const newImageFiles = formData.getAll('images');
-    const existingImagePaths = formData.getAll('existingImages');
-
+    const existingImagePaths = formData.getAll('existingImages') || [];
+    
     const imagesToDelete = existingProduct.images.filter(
       (img) => !existingImagePaths.includes(img)
     );
     imagesToDelete.forEach(deleteFile);
-
+    
     const newImagePaths = [];
     for (const imageFile of newImageFiles) {
       if (imageFile && imageFile.size > 0) {
@@ -185,14 +158,16 @@ export async function PUT(request, { params }) {
     }
     
     updateData.images = [...existingImagePaths, ...newImagePaths];
-
-    if (!updateData.thumbnail && !existingProduct.thumbnail && updateData.images.length > 0) {
-      updateData.thumbnail = updateData.images[0];
-    } else if (!updateData.thumbnail && !existingProduct.thumbnail) {
+    
+    if (!updateData.thumbnail && !existingProduct.thumbnail) {
+      if (updateData.images.length > 0) {
+        updateData.thumbnail = updateData.images[0];
+      } else {
         return NextResponse.json(
           { success: false, message: 'A thumbnail image is required.' },
           { status: 400 }
         );
+      }
     }
     
     if (updateData.images.length === 0) {

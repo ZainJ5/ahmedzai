@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs } from 'react-icons/fa';
+import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs, FaCar, FaTachometerAlt, FaPalette, FaCarSide } from 'react-icons/fa';
 
 export default function FilterSidebar({ 
   categories, 
@@ -14,21 +14,13 @@ export default function FilterSidebar({
     year: true,
     brands: true,
     categories: true,
-    engineConfiguration: true,
     fuelType: true,
-    sort: false
+    sort: false,
+    model: true,
+    chassis: true,
+    color: true,
+    mileage: true
   });
-  
-  const engineConfigOptions = [
-    { value: 'Inline', label: 'Inline/Straight' },
-    { value: 'V-type', label: 'V-Type (V6, V8, etc.)' },
-    { value: 'Flat', label: 'Flat/Boxer' },
-    { value: 'Rotary', label: 'Rotary' },
-    { value: 'Single', label: 'Single Cylinder' },
-    { value: 'Electric', label: 'Electric Motor' },
-    { value: 'Hybrid', label: 'Hybrid' },
-    { value: 'Other', label: 'Other' }
-  ];
   
   const fuelTypeOptions = [
     { value: 'Diesel', label: 'Diesel' },
@@ -98,10 +90,14 @@ export default function FilterSidebar({
       brand: [],
       yearFrom: '',
       yearTo: '',
-      engineConfiguration: '',
       fuelType: '',
       sortBy: 'createdAt',
-      sortOrder: 'desc'
+      sortOrder: 'desc',
+      model: '',
+      chassis: '',
+      color: '',
+      minMileage: '',
+      maxMileage: ''
     };
     setLocalFilters(resetFilters);
     onFilterChange(resetFilters);
@@ -124,6 +120,104 @@ export default function FilterSidebar({
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('categories')}
+          >
+            <h3 className="text-md font-medium text-gray-700">Categories (Body Type)</h3>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.categories ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.categories && (
+            <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1 styled-scrollbar">
+              {categories.map((category) => (
+                <div key={category._id} className="flex items-center">
+                  <div 
+                    onClick={() => handleCheckboxChange('category', category._id)}
+                    className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
+                  >
+                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                      isItemSelected('category', category._id) 
+                        ? 'bg-blue-600 border-blue-600' 
+                        : 'border border-gray-300'
+                    }`}>
+                      {isItemSelected('category', category._id) && <FaCheck className="text-white text-xs" />}
+                    </div>
+                    <span className="text-sm text-gray-700">{category.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('brands')}
+          >
+            <h3 className="text-md font-medium text-gray-700">Make/Brand</h3>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.brands ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.brands && (
+            <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1 styled-scrollbar">
+              {brands.map((brand) => (
+                <div key={brand._id} className="flex items-center">
+                  <div 
+                    onClick={() => handleCheckboxChange('brand', brand._id)}
+                    className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
+                  >
+                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                      isItemSelected('brand', brand._id) 
+                        ? 'bg-blue-600 border-blue-600' 
+                        : 'border border-gray-300'
+                    }`}>
+                      {isItemSelected('brand', brand._id) && <FaCheck className="text-white text-xs" />}
+                    </div>
+                    <span className="text-sm text-gray-700">{brand.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('model')}
+          >
+            <div className="flex items-center">
+              <FaCar className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Model</h3>
+            </div>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.model ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.model && (
+            <div className="mt-2">
+              <input
+                type="text"
+                placeholder="Enter model"
+                value={localFilters.model || ''}
+                onChange={(e) => handleFilterChange('model', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
             onClick={() => toggleSection('year')}
           >
             <h3 className="text-md font-medium text-gray-700">Year Range</h3>
@@ -138,7 +232,7 @@ export default function FilterSidebar({
               <select
                 value={localFilters.yearFrom || ''}
                 onChange={(e) => handleFilterChange('yearFrom', e.target.value)}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               >
                 {yearFromOptions.map(year => (
                   <option key={year.value} value={year.value}>{year.label}</option>
@@ -147,7 +241,7 @@ export default function FilterSidebar({
               <select
                 value={localFilters.yearTo || ''}
                 onChange={(e) => handleFilterChange('yearTo', e.target.value)}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               >
                 {yearToOptions.map(year => (
                   <option key={year.value} value={year.value}>{year.label}</option>
@@ -156,61 +250,42 @@ export default function FilterSidebar({
             </div>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
-            onClick={() => toggleSection('engineConfiguration')}
+            onClick={() => toggleSection('mileage')}
           >
             <div className="flex items-center">
-              <FaCogs className="text-gray-500 mr-2" size={12} />
-              <h3 className="text-md font-medium text-gray-700">Engine Type</h3>
+              <FaTachometerAlt className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Mileage Range</h3>
             </div>
             <FaChevronDown 
-              className={`text-gray-400 transition-transform ${expandedSections.engineConfiguration ? 'transform rotate-180' : ''}`} 
+              className={`text-gray-400 transition-transform ${expandedSections.mileage ? 'transform rotate-180' : ''}`} 
               size={14}
             />
           </div>
           
-          {expandedSections.engineConfiguration && (
+          {expandedSections.mileage && (
             <div className="mt-2 space-y-2">
-              <div 
-                onClick={() => handleFilterChange('engineConfiguration', '')}
-                className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
-                  !localFilters.engineConfiguration ? 'bg-blue-50' : 'hover:bg-gray-50'
-                }`}
-              >
-                <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                  !localFilters.engineConfiguration 
-                    ? 'bg-blue-600 border-blue-600' 
-                    : 'border border-gray-300'
-                }`}>
-                  {!localFilters.engineConfiguration && <FaCheck className="text-white text-xs" />}
-                </div>
-                <span className="text-sm text-gray-700">All Engine Types</span>
-              </div>
-              
-              {engineConfigOptions.map(option => (
-                <div key={option.value} className="flex items-center">
-                  <div 
-                    onClick={() => handleFilterChange('engineConfiguration', option.value)}
-                    className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
-                      localFilters.engineConfiguration === option.value ? 'bg-blue-50' : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                      localFilters.engineConfiguration === option.value ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
-                    }`}>
-                      {localFilters.engineConfiguration === option.value && <FaCheck className="text-white text-xs" />}
-                    </div>
-                    <span className="text-sm text-gray-700">{option.label}</span>
-                  </div>
-                </div>
-              ))}
+              <input
+                type="number"
+                placeholder="Min Mileage (e.g. 10000)"
+                value={localFilters.minMileage || ''}
+                onChange={(e) => handleFilterChange('minMileage', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+              />
+              <input
+                type="number"
+                placeholder="Max Mileage (e.g. 50000)"
+                value={localFilters.maxMileage || ''}
+                onChange={(e) => handleFilterChange('maxMileage', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+              />
             </div>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
@@ -264,77 +339,63 @@ export default function FilterSidebar({
             </div>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
-            onClick={() => toggleSection('brands')}
+            onClick={() => toggleSection('chassis')}
           >
-            <h3 className="text-md font-medium text-gray-700">Brands</h3>
+            <div className="flex items-center">
+              <FaCarSide className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Chassis</h3>
+            </div>
             <FaChevronDown 
-              className={`text-gray-400 transition-transform ${expandedSections.brands ? 'transform rotate-180' : ''}`} 
+              className={`text-gray-400 transition-transform ${expandedSections.chassis ? 'transform rotate-180' : ''}`} 
               size={14}
             />
           </div>
           
-          {expandedSections.brands && (
-            <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1 styled-scrollbar">
-              {brands.map((brand) => (
-                <div key={brand._id} className="flex items-center">
-                  <div 
-                    onClick={() => handleCheckboxChange('brand', brand._id)}
-                    className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
-                  >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                      isItemSelected('brand', brand._id) 
-                        ? 'bg-blue-600 border-blue-600' 
-                        : 'border border-gray-300'
-                    }`}>
-                      {isItemSelected('brand', brand._id) && <FaCheck className="text-white text-xs" />}
-                    </div>
-                    <span className="text-sm text-gray-700">{brand.name}</span>
-                  </div>
-                </div>
-              ))}
+          {expandedSections.chassis && (
+            <div className="mt-2">
+              <input
+                type="text"
+                placeholder="Enter chassis"
+                value={localFilters.chassis || ''}
+                onChange={(e) => handleFilterChange('chassis', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+              />
             </div>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
-            onClick={() => toggleSection('categories')}
+            onClick={() => toggleSection('color')}
           >
-            <h3 className="text-md font-medium text-gray-700">Categories</h3>
+            <div className="flex items-center">
+              <FaPalette className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Colour</h3>
+            </div>
             <FaChevronDown 
-              className={`text-gray-400 transition-transform ${expandedSections.categories ? 'transform rotate-180' : ''}`} 
+              className={`text-gray-400 transition-transform ${expandedSections.color ? 'transform rotate-180' : ''}`} 
               size={14}
             />
           </div>
           
-          {expandedSections.categories && (
-            <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1 styled-scrollbar">
-              {categories.map((category) => (
-                <div key={category._id} className="flex items-center">
-                  <div 
-                    onClick={() => handleCheckboxChange('category', category._id)}
-                    className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
-                  >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                      isItemSelected('category', category._id) 
-                        ? 'bg-blue-600 border-blue-600' 
-                        : 'border border-gray-300'
-                    }`}>
-                      {isItemSelected('category', category._id) && <FaCheck className="text-white text-xs" />}
-                    </div>
-                    <span className="text-sm text-gray-700">{category.name}</span>
-                  </div>
-                </div>
-              ))}
+          {expandedSections.color && (
+            <div className="mt-2">
+              <input
+                type="text"
+                placeholder="Enter colour"
+                value={localFilters.color || ''}
+                onChange={(e) => handleFilterChange('color', e.target.value)}
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+              />
             </div>
           )}
         </div>
-        
+
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 
@@ -356,7 +417,7 @@ export default function FilterSidebar({
                   handleFilterChange('sortBy', sortBy);
                   handleFilterChange('sortOrder', sortOrder);
                 }}
-                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full border border-gray-200 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               >
                 <option value="createdAt-desc">Newest First</option>
                 <option value="createdAt-asc">Oldest First</option>
@@ -383,7 +444,7 @@ export default function FilterSidebar({
         <div className="px-4 pb-4 pt-2">
           <button
             onClick={onClose}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors text-sm"
           >
             Apply Filters
           </button>

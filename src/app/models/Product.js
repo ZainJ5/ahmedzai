@@ -45,7 +45,13 @@ const ProductSchema = new mongoose.Schema({
   },
   weight: {
     type: Number,
-    required: [true, 'Please provide product weight']
+    required: [true, 'Please provide product weight'],
+    min: [0, 'Weight cannot be negative']
+  },
+  description: {
+    type: String,
+    trim: true,
+    default: ''
   },
   fuelType: {
     type: String,
@@ -53,45 +59,37 @@ const ProductSchema = new mongoose.Schema({
     enum: ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'CNG', 'LPG', 'Other'],
     trim: true
   },
-  engine: {
-    displacement: {
-      type: Number,
-      required: [true, 'Please provide engine displacement in cc'],
-      min: [0, 'Engine displacement cannot be negative']
-    },
-    cylinders: {
-      type: Number,
-      required: [true, 'Please specify number of cylinders'],
-      min: [0, 'Number of cylinders cannot be negative']
-    },
-    horsepower: {
-      type: Number,
-      required: [true, 'Please provide engine horsepower'],
-      min: [0, 'Horsepower cannot be negative']
-    },
-    configuration: {
-      type: String,
-      required: [true, 'Please specify engine configuration'],
-      trim: true
-    }
-  },
   mileage: {
-    city: {
-      type: Number,
-      required: [true, 'Please provide city mileage'],
-      min: [0, 'Mileage cannot be negative']
-    },
-    highway: {
-      type: Number,
-      required: [true, 'Please provide highway mileage'],
-      min: [0, 'Mileage cannot be negative']
-    },
-    unit: {
-      type: String,
-      required: [true, 'Please specify mileage unit'],
-      enum: ['km/l', 'mpg', 'l/100km'],
-      default: 'km/l'
-    }
+    type: Number,
+    required: [true, 'Please provide mileage'],
+    min: [0, 'Mileage cannot be negative'],
+    default: 0
+  },
+  mileageUnit: {
+    type: String,
+    required: [true, 'Please specify mileage unit'],
+    enum: ['km/l', 'mpg', 'l/100km'],
+    default: 'km/l'
+  },
+  chassis: {
+    type: String,
+    required: [true, 'Please provide chassis'],
+    trim: true
+  },
+  color: {
+    type: String,
+    required: [true, 'Please provide color'],
+    trim: true
+  },
+  axleConfiguration: {
+    type: String,
+    required: [true, 'Please provide axle configuration'],
+    trim: true
+  },
+  vehicleGrade: {
+    type: String,
+    required: [true, 'Please provide vehicle grade'],
+    trim: true
   },
   features: {
     camera360: {
@@ -191,14 +189,13 @@ const ProductSchema = new mongoose.Schema({
       default: false
     }
   },
-  images: [{
-    type: String,
-    required: [true, 'Product images are required']
-  }],
   thumbnail: {
     type: String,
     required: [true, 'Thumbnail image is required']
   },
+  images: [{
+    type: String
+  }],
   createdAt: {
     type: Date,
     default: Date.now

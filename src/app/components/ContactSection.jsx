@@ -95,7 +95,7 @@ export default function ContactSection() {
             <div className="space-y-6 bg-white rounded-xl p-6 shadow-lg border border-gray-100">
               <h3 className="text-xl font-semibold text-gray-900">Our Location</h3>
               <p className="text-gray-600 leading-relaxed">
-                381-1 KANEOKA, Koga-shi, Ibaraki, Japan
+                3RP6+2R2 Sakai, Ibaraki, Japan
               </p>
               <div>
                 <h4 className="text-lg font-medium text-gray-800">Email</h4>
@@ -108,8 +108,8 @@ export default function ContactSection() {
               <div>
                 <h4 className="text-lg font-medium text-gray-800">Phone</h4>
                 <p className="text-gray-600 mt-1">
-                  <a href="tel:+819027801563" className="text-blue-600 hover:text-blue-800 transition-colors">
-                    +81 90-2780-1563
+                  <a href="tel:+818046646786" className="text-blue-600 hover:text-blue-800 transition-colors">
+                    +81 80-4664-6786
                   </a>
                 </p>
               </div>
