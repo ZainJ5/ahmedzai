@@ -6,10 +6,10 @@ import Link from 'next/link';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import { useParams, useRouter } from 'next/navigation';
-import { 
-  FaWhatsapp, 
-  FaChevronLeft, 
-  FaChevronRight, 
+import {
+  FaWhatsapp,
+  FaChevronLeft,
+  FaChevronRight,
   FaArrowLeft,
   FaSearch,
   FaDownload,
@@ -99,8 +99,8 @@ export default function ProductDetailsPage() {
 
   const handleWhatsAppClick = () => {
     if (!product) return;
-    const price = product.discountedPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) || 
-                 product.unitPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    const price = product.discountedPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) ||
+      product.unitPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     const message = encodeURIComponent(
       `Hello, I'm interested in the ${product.title} (${product.model}) that costs ${price}. Can you provide more information?`
     );
@@ -124,7 +124,7 @@ export default function ProductDetailsPage() {
     const newFavorites = isFavorite
       ? favorites.filter(favoriteId => favoriteId !== id)
       : [...favorites, id];
-    
+
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setIsFavorite(!isFavorite);
   };
@@ -148,7 +148,7 @@ export default function ProductDetailsPage() {
     return (
       <>
         <Navbar />
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -156,21 +156,21 @@ export default function ProductDetailsPage() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12">
             <div className="space-y-4">
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.4 }}
                 className="h-[300px] sm:h-[550px] bg-gray-200 rounded-lg animate-pulse"
               />
-              <motion.div 
+              <motion.div
                 className="flex gap-2 sm:gap-3 overflow-x-auto"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
               >
                 {[...Array(5)].map((_, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.3, delay: i * 0.1 }}
@@ -179,19 +179,19 @@ export default function ProductDetailsPage() {
                 ))}
               </motion.div>
             </div>
-            <motion.div 
+            <motion.div
               className="space-y-4 sm:space-y-6 pt-4"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.4 }}
             >
-              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }} className="h-6 sm:h-8 bg-gray-200 rounded w-3/4 animate-pulse"/>
-              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.1 }} className="h-4 sm:h-6 bg-gray-200 rounded w-1/2 animate-pulse"/>
-              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.2 }} className="h-8 sm:h-12 bg-gray-200 rounded w-1/3 animate-pulse my-4"/>
+              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }} className="h-6 sm:h-8 bg-gray-200 rounded w-3/4 animate-pulse" />
+              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.1 }} className="h-4 sm:h-6 bg-gray-200 rounded w-1/2 animate-pulse" />
+              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3, delay: 0.2 }} className="h-8 sm:h-12 bg-gray-200 rounded w-1/3 animate-pulse my-4" />
               <motion.div className="space-y-2 sm:space-y-3">
                 {[...Array(4)].map((_, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.1 }}
@@ -199,15 +199,15 @@ export default function ProductDetailsPage() {
                   />
                 ))}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="grid grid-cols-2 gap-3 sm:gap-4 mt-4 sm:mt-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
               >
                 {[...Array(4)].map((_, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3, delay: i * 0.05 }}
@@ -215,7 +215,7 @@ export default function ProductDetailsPage() {
                   />
                 ))}
               </motion.div>
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.4 }}
@@ -233,7 +233,7 @@ export default function ProductDetailsPage() {
     return (
       <>
         <Navbar />
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -244,7 +244,7 @@ export default function ProductDetailsPage() {
             animate={{ scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.1 }}
@@ -252,7 +252,7 @@ export default function ProductDetailsPage() {
             >
               Error
             </motion.p>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.2 }}
@@ -260,7 +260,7 @@ export default function ProductDetailsPage() {
             >
               Oops! Something went wrong.
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.3 }}
@@ -298,13 +298,13 @@ export default function ProductDetailsPage() {
       <div className='border-b border-gray-200'>
         <Navbar />
       </div>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         className="bg-white text-black"
       >
-        <motion.div 
+        <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -313,7 +313,7 @@ export default function ProductDetailsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center">
               <nav aria-label="Breadcrumb" className="text-sm sm:text-base">
-                <motion.ol 
+                <motion.ol
                   className="flex items-center space-x-2 sm:space-x-3 text-gray-500"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -330,7 +330,7 @@ export default function ProductDetailsPage() {
                   <motion.li initial={{ x: -10 }} animate={{ x: 0 }} transition={{ duration: 0.2, delay: 0.3 }} className="font-medium text-gray-800 truncate max-w-[150px] sm:max-w-[250px]">{product.title}</motion.li>
                 </motion.ol>
               </nav>
-              <motion.button 
+              <motion.button
                 onClick={() => router.back()}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -348,13 +348,13 @@ export default function ProductDetailsPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4 }}
             >
               <div className="space-y-4">
-                <motion.div 
+                <motion.div
                   className="relative h-[300px] sm:h-[450px] md:h-[550px] w-full bg-white rounded-xl overflow-hidden group border border-gray-100 shadow-sm"
                   initial={{ scale: 0.95 }}
                   animate={{ scale: 1 }}
@@ -368,7 +368,7 @@ export default function ProductDetailsPage() {
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Image 
+                      <Image
                         src={allImages[activeImage] || '/placeholder-image.jpg'}
                         alt={`${product.title} - view ${activeImage + 1}`}
                         fill
@@ -379,20 +379,20 @@ export default function ProductDetailsPage() {
                       />
                     </motion.div>
                   </AnimatePresence>
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-zoom-in flex items-center justify-center" 
+                    className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-zoom-in flex items-center justify-center"
                     onClick={() => setIsFullscreen(true)}
                   >
                     <div className="p-2 bg-white/90 rounded-full shadow-sm">
                       <FaSearch size={20} className="text-gray-800" />
                     </div>
                   </motion.div>
-                  
+
                   <div className="absolute top-4 right-4 flex items-center gap-3 print-hidden">
-                    <motion.button 
+                    <motion.button
                       onClick={toggleFavorite}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -403,13 +403,13 @@ export default function ProductDetailsPage() {
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {isFavorite ? 
-                          <IoMdHeart className="text-red-500" size={20} /> : 
+                        {isFavorite ?
+                          <IoMdHeart className="text-red-500" size={20} /> :
                           <IoMdHeartEmpty className="text-gray-600" size={20} />
                         }
                       </motion.div>
                     </motion.button>
-                    <motion.button 
+                    <motion.button
                       onClick={shareProduct}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -418,7 +418,7 @@ export default function ProductDetailsPage() {
                       <FaShareAlt className="text-gray-600" size={18} />
                       <AnimatePresence>
                         {copySuccess && (
-                          <motion.span 
+                          <motion.span
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
@@ -431,9 +431,9 @@ export default function ProductDetailsPage() {
                       </AnimatePresence>
                     </motion.button>
                   </div>
-                  
+
                   {allImages.length > 1 && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -442,9 +442,9 @@ export default function ProductDetailsPage() {
                       {activeImage + 1} / {allImages.length}
                     </motion.div>
                   )}
-                  
+
                   {hasDiscount && (
-                    <motion.div 
+                    <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -456,18 +456,18 @@ export default function ProductDetailsPage() {
                 </motion.div>
 
                 {allImages.length > 1 && (
-                  <motion.div 
+                  <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
                     className="relative"
                   >
-                    <div 
+                    <div
                       ref={thumbnailsRef}
                       className="flex gap-3 overflow-x-auto py-2 px-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth"
                     >
                       {allImages.map((image, index) => (
-                        <motion.button 
+                        <motion.button
                           key={index}
                           onClick={() => setActiveImage(index)}
                           whileHover={{ scale: 1.05 }}
@@ -475,26 +475,25 @@ export default function ProductDetailsPage() {
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.2, delay: index * 0.05 }}
-                          className={`relative h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 ${
-                            activeImage === index 
-                              ? 'ring-2 ring-offset-2 ring-blue-600' 
+                          className={`relative h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 ${activeImage === index
+                              ? 'ring-2 ring-offset-2 ring-blue-600'
                               : 'hover:opacity-80 border border-gray-200 hover:border-blue-300'
-                          }`}
+                            }`}
                         >
-                          <Image 
-                            src={image} 
-                            alt={`Thumbnail ${index + 1}`} 
-                            fill 
-                            className="object-cover transition-transform duration-200 hover:scale-105" 
-                            sizes="96px" 
+                          <Image
+                            src={image}
+                            alt={`Thumbnail ${index + 1}`}
+                            fill
+                            className="object-cover transition-transform duration-200 hover:scale-105"
+                            sizes="96px"
                           />
                         </motion.button>
                       ))}
                     </div>
-                    
+
                     {allImages.length > 4 && (
                       <>
-                        <motion.button 
+                        <motion.button
                           onClick={() => {
                             const container = thumbnailsRef.current;
                             container.scrollBy({ left: -150, behavior: 'smooth' });
@@ -508,7 +507,7 @@ export default function ProductDetailsPage() {
                         >
                           <FaChevronLeft size={14} />
                         </motion.button>
-                        <motion.button 
+                        <motion.button
                           onClick={() => {
                             const container = thumbnailsRef.current;
                             container.scrollBy({ left: 150, behavior: 'smooth' });
@@ -526,15 +525,15 @@ export default function ProductDetailsPage() {
                     )}
                   </motion.div>
                 )}
-                
-                <motion.div 
+
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                   className="flex items-center justify-between text-sm print-hidden"
                 >
-                  <motion.button 
-                    onClick={handleDownloadAll} 
+                  <motion.button
+                    onClick={handleDownloadAll}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
@@ -542,8 +541,8 @@ export default function ProductDetailsPage() {
                     <FaDownload size={14} />
                     <span>Download images</span>
                   </motion.button>
-                  <motion.button 
-                    onClick={handlePrint} 
+                  <motion.button
+                    onClick={handlePrint}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
@@ -555,7 +554,7 @@ export default function ProductDetailsPage() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.1 }}
@@ -566,13 +565,13 @@ export default function ProductDetailsPage() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="flex items-center gap-2 mb-2"
                     initial={{ y: 10 }}
                     animate={{ y: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Link 
+                    <Link
                       href={`/products`}
                       className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     >
@@ -581,8 +580,8 @@ export default function ProductDetailsPage() {
                     <span className="text-gray-400">•</span>
                     <span className="text-sm text-gray-500">Model: {product.model}</span>
                   </motion.div>
-                  
-                  <motion.h1 
+
+                  <motion.h1
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
@@ -592,7 +591,7 @@ export default function ProductDetailsPage() {
                   </motion.h1>
 
                   {product.quantity > 0 ? (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.2 }}
@@ -601,7 +600,7 @@ export default function ProductDetailsPage() {
                       <span>In Stock ({product.quantity} {product.quantity === 1 ? 'unit' : 'units'} available)</span>
                     </motion.div>
                   ) : (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.2 }}
@@ -612,7 +611,7 @@ export default function ProductDetailsPage() {
                   )}
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="flex items-baseline gap-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -622,7 +621,7 @@ export default function ProductDetailsPage() {
                     {productPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                   </span>
                   {hasDiscount && (
-                    <motion.span 
+                    <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.1 }}
@@ -632,7 +631,7 @@ export default function ProductDetailsPage() {
                     </motion.span>
                   )}
                   {hasDiscount && (
-                    <motion.span 
+                    <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.2 }}
@@ -643,19 +642,19 @@ export default function ProductDetailsPage() {
                   )}
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="grid grid-cols-2 gap-4 text-sm"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
                   {[
+                    { label: 'Make', value: product.make?.name || 'N/A' },
+                    { label: 'Model', value: product.model || 'N/A' },
                     { label: 'Year', value: product.year || 'N/A' },
-                    { label: 'Fuel', value: product.fuelType || 'N/A' },
-                    { label: 'Brand', value: product.make?.name || 'N/A' },
-                    { label: 'Availability', value: product.quantity > 0 ? 'In Stock' : 'Out of Stock' }
+                    { label: 'Mileage', value: product.mileage.city || 'NA' }
                   ].map((item, index) => (
-                    <motion.div 
+                    <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -672,7 +671,7 @@ export default function ProductDetailsPage() {
 
                 <motion.button
                   onClick={handleWhatsAppClick}
-                  whileHover={{ scale: 1.02 }} 
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -683,7 +682,7 @@ export default function ProductDetailsPage() {
                   <span>Inquire on WhatsApp</span>
                 </motion.button>
 
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
@@ -695,14 +694,14 @@ export default function ProductDetailsPage() {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
             className="mt-12 sm:mt-16"
           >
             <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
@@ -714,7 +713,7 @@ export default function ProductDetailsPage() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
@@ -743,7 +742,7 @@ export default function ProductDetailsPage() {
                         { label: 'Highway Mileage', value: product.mileage?.highway ? `${product.mileage.highway} ${product.mileage.unit || 'km/l'}` : 'N/A' },
                         { label: 'Weight', value: product.weight ? `${product.weight} kg` : 'N/A' }
                       ].map((item, index) => (
-                        <motion.tr 
+                        <motion.tr
                           key={index}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -792,119 +791,119 @@ export default function ProductDetailsPage() {
 
 
 
-<motion.div 
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.4, delay: 0.3 }}
-  className="mt-12 sm:mt-16"
->
-  <div className="border border-gray-200 overflow-hidden shadow-sm">
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white"
-    >
-      <div className="grid grid-cols-3 sm:grid-cols-6">
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.camera360 ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          360<br/>Camera
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.airBags ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Air Bags
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.airCondition ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Air<br/>Condition
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.alloyWheels ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Alloy<br/>Wheels
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.abs ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          ABS
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.sunRoof ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Sun<br/>Roof
-        </div>
-        
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.autoAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Auto A/C
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.backCamera ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Back<br/>Camera
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.backSpoiler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Back<br/>Spoiler
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleMuffler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Double<br/>Muffler
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.fogLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Fog Lights
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.tv ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          TV
-        </div>
-        
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.hidLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          HID<br/>Lights
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.keylessEntry ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Key-less<br/>Entry
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.leatherSeats ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Leather<br/>Seats
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.navigation ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Navigation
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.parkingSensors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Parking<br/>Sensors
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Double<br/>A/C
-        </div>
-        
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.powerSteering ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Power<br/>Steering
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.powerWindows ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Power<br/>Windows
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.pushStart ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Push<br/>Start
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.radio ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Radio
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.retractableMirrors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Retractable<br/>Mirrors
-        </div>
-        <div className={`border border-gray-300 p-3 text-center ${product.features?.roofRail ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
-          Roof<br/>Rail
-        </div>
-      </div>
-    </motion.div>
-  </div>
-</motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="mt-12 sm:mt-16"
+          >
+            <div className="border border-gray-200 overflow-hidden shadow-sm">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white"
+              >
+                <div className="grid grid-cols-3 sm:grid-cols-6">
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.camera360 ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    360<br />Camera
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.airBags ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Air Bags
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.airCondition ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Air<br />Condition
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.alloyWheels ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Alloy<br />Wheels
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.abs ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    ABS
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.sunRoof ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Sun<br />Roof
+                  </div>
+
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.autoAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Auto A/C
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.backCamera ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Back<br />Camera
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.backSpoiler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Back<br />Spoiler
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleMuffler ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Double<br />Muffler
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.fogLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Fog Lights
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.tv ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    TV
+                  </div>
+
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.hidLights ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    HID<br />Lights
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.keylessEntry ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Key-less<br />Entry
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.leatherSeats ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Leather<br />Seats
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.navigation ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Navigation
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.parkingSensors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Parking<br />Sensors
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.doubleAC ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Double<br />A/C
+                  </div>
+
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.powerSteering ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Power<br />Steering
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.powerWindows ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Power<br />Windows
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.pushStart ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Push<br />Start
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.radio ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Radio
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.retractableMirrors ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Retractable<br />Mirrors
+                  </div>
+                  <div className={`border border-gray-300 p-3 text-center ${product.features?.roofRail ? 'bg-gray-500 text-white' : 'bg-gray-100 text-gray-700'}`}>
+                    Roof<br />Rail
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
 
 
 
 
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 print-hidden"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               className="text-center mb-8 sm:mb-12"
             >
-              <motion.h2 
+              <motion.h2
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3 }}
@@ -912,7 +911,7 @@ export default function ProductDetailsPage() {
               >
                 How It Works
               </motion.h2>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
@@ -921,105 +920,105 @@ export default function ProductDetailsPage() {
                 We've made purchasing and receiving your product as simple as possible, just follow these steps.
               </motion.p>
             </motion.div>
-            
-<div 
-  ref={howItWorksRef}
-  className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 snap-x snap-mandatory py-4 px-4 sm:p-6 scrollbar-none scroll-smooth"
-  style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
->
-  {[
-    { 
-      icon: BsCarFrontFill, 
-      title: 'Select Vehicle', 
-      desc: 'Browse our premium collection and find your perfect match.', 
-      gradient: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/20', 
-      color: 'text-blue-700',
-      iconSize: 34
-    },
-    { 
-      icon: HiOutlineCreditCard, 
-      title: 'Secure Payment', 
-      desc: 'Enjoy our encrypted, safe payment processing system.', 
-      gradient: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/20', 
-      color: 'text-emerald-700',
-      iconSize: 34
-    },
-    { 
-      icon: LuPackageCheck, 
-      title: 'Track Order', 
-      desc: 'Monitor your purchase with our real-time tracking system.', 
-      gradient: 'bg-gradient-to-br from-amber-500/10 to-orange-500/20', 
-      color: 'text-amber-700',
-      iconSize: 34
-    },
-    { 
-      icon: PiHandshakeFill, 
-      title: 'Receive & Enjoy', 
-      desc: 'Experience white-glove delivery service and support.', 
-      gradient: 'bg-gradient-to-br from-violet-500/10 to-purple-500/20', 
-      color: 'text-violet-700',
-      iconSize: 34
-    }
-  ].map((step, index) => (
-    <motion.div 
-      key={index}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[180px] w-[80vw] max-w-[200px] sm:min-w-0 sm:w-auto flex-shrink-0 flex flex-col items-center h-auto group hover:shadow-lg transition-all duration-300 mx-1"
-    >
-      <motion.div 
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
-        className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-lg transform -translate-x-3 -translate-y-3 shadow-md"
-      >
-        {index + 1}
-      </motion.div>
-      <motion.div 
-        className={`w-14 h-14 sm:w-20 sm:h-20 ${step.gradient} ${step.color} rounded-full flex items-center justify-center mx-auto mb-4 mt-2 shadow-sm group-hover:shadow group-hover:scale-105 transition-all duration-300`}
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <step.icon size={step.iconSize * 0.7} className="group-hover:scale-110 transition-transform duration-300" />
-      </motion.div>
-      <motion.h3 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="font-bold text-sm sm:text-lg text-center mb-2 text-gray-800"
-      >
-        {step.title}
-      </motion.h3>
-      <motion.p 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-        className="text-gray-600 text-center text-xs sm:text-sm leading-relaxed"
-      >
-        {step.desc}
-      </motion.p>
-    </motion.div>
-  ))}
-</div>
+
+            <div
+              ref={howItWorksRef}
+              className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 snap-x snap-mandatory py-4 px-4 sm:p-6 scrollbar-none scroll-smooth"
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+            >
+              {[
+                {
+                  icon: BsCarFrontFill,
+                  title: 'Select Vehicle',
+                  desc: 'Browse our premium collection and find your perfect match.',
+                  gradient: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/20',
+                  color: 'text-blue-700',
+                  iconSize: 34
+                },
+                {
+                  icon: HiOutlineCreditCard,
+                  title: 'Secure Payment',
+                  desc: 'Enjoy our encrypted, safe payment processing system.',
+                  gradient: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/20',
+                  color: 'text-emerald-700',
+                  iconSize: 34
+                },
+                {
+                  icon: LuPackageCheck,
+                  title: 'Track Order',
+                  desc: 'Monitor your purchase with our real-time tracking system.',
+                  gradient: 'bg-gradient-to-br from-amber-500/10 to-orange-500/20',
+                  color: 'text-amber-700',
+                  iconSize: 34
+                },
+                {
+                  icon: PiHandshakeFill,
+                  title: 'Receive & Enjoy',
+                  desc: 'Experience white-glove delivery service and support.',
+                  gradient: 'bg-gradient-to-br from-violet-500/10 to-purple-500/20',
+                  color: 'text-violet-700',
+                  iconSize: 34
+                }
+              ].map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[180px] w-[80vw] max-w-[200px] sm:min-w-0 sm:w-auto flex-shrink-0 flex flex-col items-center h-auto group hover:shadow-lg transition-all duration-300 mx-1"
+                >
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute top-0 left-0 w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-lg transform -translate-x-3 -translate-y-3 shadow-md"
+                  >
+                    {index + 1}
+                  </motion.div>
+                  <motion.div
+                    className={`w-14 h-14 sm:w-20 sm:h-20 ${step.gradient} ${step.color} rounded-full flex items-center justify-center mx-auto mb-4 mt-2 shadow-sm group-hover:shadow group-hover:scale-105 transition-all duration-300`}
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <step.icon size={step.iconSize * 0.7} className="group-hover:scale-110 transition-transform duration-300" />
+                  </motion.div>
+                  <motion.h3
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="font-bold text-sm sm:text-lg text-center mb-2 text-gray-800"
+                  >
+                    {step.title}
+                  </motion.h3>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.1 }}
+                    className="text-gray-600 text-center text-xs sm:text-sm leading-relaxed"
+                  >
+                    {step.desc}
+                  </motion.p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="bg-white py-12 sm:py-16 border-t border-gray-100 print-hidden"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
               className="flex items-center justify-between mb-6"
             >
-              <motion.h2 
+              <motion.h2
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3 }}
@@ -1027,7 +1026,7 @@ export default function ProductDetailsPage() {
               >
                 Related Products
               </motion.h2>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
@@ -1037,7 +1036,7 @@ export default function ProductDetailsPage() {
                 </Link>
               </motion.div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1052,21 +1051,21 @@ export default function ProductDetailsPage() {
       <AnimatePresence>
         {isFullscreen && (
           <motion.div
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
             onClick={() => setIsFullscreen(false)}
           >
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
               className="absolute top-4 right-4 z-10 flex gap-4"
             >
-              <motion.button 
-                onClick={(e) => {e.stopPropagation(); handleDownloadAll();}}
+              <motion.button
+                onClick={(e) => { e.stopPropagation(); handleDownloadAll(); }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
@@ -1074,7 +1073,7 @@ export default function ProductDetailsPage() {
                 <FaDownload size={18} />
               </motion.button>
               <motion.button
-                onClick={(e) => {e.stopPropagation(); setIsFullscreen(false)}}
+                onClick={(e) => { e.stopPropagation(); setIsFullscreen(false) }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors duration-200"
@@ -1084,8 +1083,8 @@ export default function ProductDetailsPage() {
                 </svg>
               </motion.button>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -1100,8 +1099,8 @@ export default function ProductDetailsPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Image 
-                    src={allImages[activeImage]} 
+                  <Image
+                    src={allImages[activeImage]}
                     alt={product.title}
                     fill
                     className="object-contain"
@@ -1110,9 +1109,9 @@ export default function ProductDetailsPage() {
                   />
                 </motion.div>
               </AnimatePresence>
-              
+
               {product.title && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
@@ -1122,14 +1121,14 @@ export default function ProductDetailsPage() {
                 </motion.div>
               )}
             </motion.div>
-            
+
             {allImages.length > 1 && (
               <>
-                <motion.button 
+                <motion.button
                   onClick={(e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     setActiveImage(p => (p - 1 + allImages.length) % allImages.length);
-                  }} 
+                  }}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   initial={{ opacity: 0 }}
@@ -1139,11 +1138,11 @@ export default function ProductDetailsPage() {
                 >
                   <FaChevronLeft size={18} />
                 </motion.button>
-                <motion.button 
+                <motion.button
                   onClick={(e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     setActiveImage(p => (p + 1) % allImages.length);
-                  }} 
+                  }}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   initial={{ opacity: 0 }}
@@ -1155,18 +1154,18 @@ export default function ProductDetailsPage() {
                 </motion.button>
               </>
             )}
-            
+
             {allImages.length > 1 && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
                 className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-full px-4"
               >
                 {allImages.map((_, index) => (
-                  <motion.button 
+                  <motion.button
                     key={index}
-                    onClick={(e) => {e.stopPropagation(); setActiveImage(index)}}
+                    onClick={(e) => { e.stopPropagation(); setActiveImage(index) }}
                     whileHover={{ scale: 1.2 }}
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
@@ -1180,7 +1179,7 @@ export default function ProductDetailsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       <Footer />
     </>
   );
