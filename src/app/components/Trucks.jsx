@@ -5,38 +5,60 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { FaSearch, FaTruck, FaArrowRight } from 'react-icons/fa';
 
 export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [truckCategories, setTruckCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const router = useRouter();
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&tag=Trucks');
+                
+                // Fetch truck-specific categories
+                const categoriesResponse = await fetch('/api/categories?type=truck');
+                if (!categoriesResponse.ok) {
+                    throw new Error('Failed to fetch truck categories');
+                }
+                const categoriesData = await categoriesResponse.json();
+                setTruckCategories(categoriesData.data || []);
 
-                if (!response.ok) {
+                // Fetch truck products
+                const productsResponse = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&tag=Trucks');
+                if (!productsResponse.ok) {
                     throw new Error('Failed to fetch trucks');
                 }
-
-                const data = await response.json();
-                setProducts(data.data || []);
+                const productsData = await productsResponse.json();
+                setProducts(productsData.data || []);
+                
             } catch (err) {
-                console.error('Error fetching trucks:', err);
+                console.error('Error fetching data:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProducts();
+        fetchData();
     }, []);
 
     const handleProductClick = (productId) => {
         router.push(`/products/${productId}`);
+    };
+
+    const handleCategorySearch = (e) => {
+        e.preventDefault();
+        // Navigate directly without any unnecessary redirects
+        if (selectedCategory) {
+            router.push(`/products?tag=Trucks&category=${selectedCategory}`);
+        } else {
+            router.push('/products?tag=Trucks');
+        }
     };
 
     if (loading) {
@@ -107,13 +129,48 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         Explore Our Truck Collection
                     </motion.h2>
                     <motion.p
-                        className="sm:text-xl text-lg text-gray-600 max-w-2xl mx-auto"
+                        className="sm:text-xl text-lg text-gray-600 max-w-2xl mx-auto mb-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
                     >
                         Check out the newest trucks added to our collection
                     </motion.p>
+                    
+                    {/* Category Search Bar */}
+                    <motion.div
+                        className="max-w-md mx-auto mb-10"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        <form onSubmit={handleCategorySearch} className="flex flex-col sm:flex-row gap-3">
+                            <div className="relative flex-grow">
+                                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <FaTruck size={16} />
+                                </div>
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none shadow-sm"
+                                >
+                                    <option value="">All Truck Categories</option>
+                                    {truckCategories.map(category => (
+                                        <option key={category._id} value={category._id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <button 
+                                type="submit"
+                                className="py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300 shadow-md flex items-center justify-center"
+                            >
+                                <FaSearch className="mr-2" />
+                                Search Trucks
+                            </button>
+                        </form>
+                    </motion.div>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-5">
@@ -176,11 +233,10 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         className="text-gray-800 font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1"
                     >
                         View All Trucks
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 ml-1">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                        <FaArrowRight className="ml-1 w-4 h-4" />
                     </Link>
                 </div>
+
             </div>
         </section>
     );

@@ -24,6 +24,7 @@ export default function FilterSidebar({
     tag: true 
   });
   
+  // Dynamically determine which categories to show based on the selected tag
   const categoriesToShow = localFilters.tag === 'Trucks' ? truckCategories : productCategories;
   
   const fuelTypeOptions = [
@@ -59,11 +60,9 @@ export default function FilterSidebar({
   
   const handleFilterChange = (key, value) => {
     if (key === 'tag') {
-      const newFilters = { 
-        ...localFilters, 
-        [key]: value,
-        category: [] 
-      };
+      // When changing tag, don't clear categories immediately
+      // This allows categories to persist when navigating from truck search
+      const newFilters = { ...localFilters, [key]: value };
       setLocalFilters(newFilters);
       onFilterChange(newFilters);
     } else {

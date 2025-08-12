@@ -52,6 +52,31 @@ export default function ProductsPage() {
       try {
         const updatedFilters = { ...filters };
         
+        // Get categories and brands first to ensure we have them available
+        const [allCategoriesRes, brandsRes] = await Promise.all([
+          fetch('/api/categories'),
+          fetch('/api/brands')
+        ]);
+        
+        if (!allCategoriesRes.ok) throw new Error('Failed to fetch categories');
+        if (!brandsRes.ok) throw new Error('Failed to fetch brands');
+        
+        const allCategoriesData = await allCategoriesRes.json();
+        const brandsData = await brandsRes.json();
+        
+        const allCategories = allCategoriesData.data || [];
+        const productCats = allCategories.filter(category => !category.type || category.type === 'product');
+        const truckCats = allCategories.filter(category => category.type === 'truck');
+        
+        setProductCategories(productCats);
+        setTruckCategories(truckCats);
+        setBrands(brandsData.data);
+        
+        // Now handle URL parameters
+        if (searchParams.get('tag')) {
+          updatedFilters.tag = searchParams.get('tag');
+        }
+        
         if (searchParams.get('category')) {
           const categoryParam = searchParams.get('category');
           updatedFilters.category = categoryParam.split(',');
@@ -60,10 +85,6 @@ export default function ProductsPage() {
         if (searchParams.get('brand')) {
           const brandParam = searchParams.get('brand');
           updatedFilters.brand = brandParam.split(',');
-        }
-        
-        if (searchParams.get('tag')) {
-          updatedFilters.tag = searchParams.get('tag');
         }
         
         if (searchParams.get('yearFrom')) updatedFilters.yearFrom = searchParams.get('yearFrom');
@@ -80,31 +101,7 @@ export default function ProductsPage() {
           page: parseInt(searchParams.get('page')) 
         }));
         
-        if (updatedFilters.tag === 'Trucks') {
-          const validCategories = truckCategories.map(cat => cat._id);
-          updatedFilters.category = updatedFilters.category.filter(id => validCategories.includes(id));
-        } else {
-          const validCategories = productCategories.map(cat => cat._id);
-          updatedFilters.category = updatedFilters.category.filter(id => validCategories.includes(id));
-        }
-
         setFilters(updatedFilters);
-        
-        const [allCategoriesRes, brandsRes] = await Promise.all([
-          fetch('/api/categories'),
-          fetch('/api/brands')
-        ]);
-        
-        if (!allCategoriesRes.ok) throw new Error('Failed to fetch categories');
-        if (!brandsRes.ok) throw new Error('Failed to fetch brands');
-        
-        const allCategoriesData = await allCategoriesRes.json();
-        const brandsData = await brandsRes.json();
-        
-        const allCategories = allCategoriesData.data || [];
-        setProductCategories(allCategories.filter(category => !category.type || category.type === 'product'));
-        setTruckCategories(allCategories.filter(category => category.type === 'truck'));
-        setBrands(brandsData.data);
         
       } catch (err) {
         setError(err.message);
@@ -196,26 +193,17 @@ export default function ProductsPage() {
       
       isInitialMount.current = false;
     }
-  }, [filters, pagination.page, pagination.limit, router, productCategories, truckCategories]);
+  }, [filters, pagination.page, pagination.limit, router]);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   const handleFilterChange = useCallback((newFilters) => {
-    let validatedCategories = newFilters.category || [];
-    if (newFilters.tag === 'Trucks') {
-      const validCategories = truckCategories.map(cat => cat._id);
-      validatedCategories = validatedCategories.filter(id => validCategories.includes(id));
-    } else {
-      const validCategories = productCategories.map(cat => cat._id);
-      validatedCategories = validatedCategories.filter(id => validCategories.includes(id));
-    }
-
-    const updatedFilters = { ...newFilters, category: validatedCategories };
-    setFilters(updatedFilters);
+    // Set the filters directly without validation that was causing issues
+    setFilters(newFilters);
     setPagination(prev => ({ ...prev, page: 1 }));
-  }, [productCategories, truckCategories]);
+  }, []);
 
   const handlePageChange = (newPage) => {
     setPagination(prev => ({ ...prev, page: newPage }));
