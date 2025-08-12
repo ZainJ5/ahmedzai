@@ -88,7 +88,7 @@ const Navbar = () => {
             
             <nav className="hidden lg:block">
               <ul className="flex space-x-10">
-                {['Home', 'Products', 'Contact', 'About Us','Blogs'].map((item, index) => (
+                {['Home', 'Products', 'Contact', 'About Us','Blogs','Auto-Parts'].map((item, index) => (
                   <li key={index}>
                     <Link 
                       href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '')}`}

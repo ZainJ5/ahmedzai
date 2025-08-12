@@ -150,6 +150,7 @@ const Footer = () => {
                 { text: 'Blogs', href: '/blogs' },
                 { text: 'Services', href: '#services' },
                 { text: 'Products', href: '/products' },
+                { text: 'Auto Parts', href: '/auto-parts' },
               ].map((link, index) => (
                 <motion.li 
                   key={link.text}
