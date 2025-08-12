@@ -35,7 +35,8 @@ export default function ProductsPage() {
     chassis: '',
     color: '',
     minMileage: '',
-    maxMileage: ''
+    maxMileage: '',
+    tag: '' 
   });
   const [showFilters, setShowFilters] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
@@ -58,6 +59,10 @@ export default function ProductsPage() {
         if (searchParams.get('brand')) {
           const brandParam = searchParams.get('brand');
           updatedFilters.brand = brandParam.split(',');
+        }
+        
+        if (searchParams.get('tag')) {
+          updatedFilters.tag = searchParams.get('tag');
         }
         
         if (searchParams.get('yearFrom')) updatedFilters.yearFrom = searchParams.get('yearFrom');
@@ -150,6 +155,10 @@ export default function ProductsPage() {
       if (filters.maxMileage && filters.maxMileage !== '') {
         queryParams.append('maxMileage', filters.maxMileage);
       }
+
+      if (filters.tag && filters.tag !== '') {
+        queryParams.append('tag', filters.tag);
+      }
       
       if (filters.sortBy) queryParams.append('sortBy', filters.sortBy);
       if (filters.sortOrder) queryParams.append('sortOrder', filters.sortOrder);
@@ -229,6 +238,7 @@ export default function ProductsPage() {
     if (filters.chassis) count += 1;
     if (filters.color) count += 1;
     if (filters.minMileage || filters.maxMileage) count += 1;
+    if (filters.tag) count += 1; 
     return count;
   };
 
@@ -399,7 +409,8 @@ export default function ProductsPage() {
                         chassis: '',
                         color: '',
                         minMileage: '',
-                        maxMileage: ''
+                        maxMileage: '',
+                        tag: ''
                       })}
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-sm text-sm sm:text-base"
                     >

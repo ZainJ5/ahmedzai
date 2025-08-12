@@ -91,6 +91,10 @@ const ProductSchema = new mongoose.Schema({
     required: [true, 'Please provide vehicle grade'],
     trim: true
   },
+  tag: {
+    type: String,
+    enum: ['Trucks']
+  },
   features: {
     camera360: {
       type: Boolean,

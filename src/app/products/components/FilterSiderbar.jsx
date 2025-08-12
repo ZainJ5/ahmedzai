@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs, FaCar, FaTachometerAlt, FaPalette, FaCarSide } from 'react-icons/fa';
+import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs, FaCar, FaTachometerAlt, FaPalette, FaCarSide, FaTags, FaTruck } from 'react-icons/fa';
 
 export default function FilterSidebar({ 
   categories, 
@@ -19,7 +19,8 @@ export default function FilterSidebar({
     model: true,
     chassis: true,
     color: true,
-    mileage: true
+    mileage: true,
+    tag: true 
   });
   
   const fuelTypeOptions = [
@@ -30,6 +31,10 @@ export default function FilterSidebar({
     { value: 'CNG', label: 'CNG' },
     { value: 'LPG', label: 'LPG' },
     { value: 'Other', label: 'Other' }
+  ];
+
+  const tagOptions = [
+    { value: 'Trucks', label: 'Trucks' }
   ];
 
   const currentYear = new Date().getFullYear();
@@ -97,7 +102,8 @@ export default function FilterSidebar({
       chassis: '',
       color: '',
       minMileage: '',
-      maxMileage: ''
+      maxMileage: '',
+      tag: '' 
     };
     setLocalFilters(resetFilters);
     onFilterChange(resetFilters);
@@ -117,6 +123,62 @@ export default function FilterSidebar({
       </div>
       
       <div className="p-4">
+        <div className="mb-6">
+          <div 
+            className="flex items-center justify-between cursor-pointer mb-2" 
+            onClick={() => toggleSection('tag')}
+          >
+            <div className="flex items-center">
+              <FaTags className="text-gray-500 mr-2" size={12} />
+              <h3 className="text-md font-medium text-gray-700">Tag</h3>
+            </div>
+            <FaChevronDown 
+              className={`text-gray-400 transition-transform ${expandedSections.tag ? 'transform rotate-180' : ''}`} 
+              size={14}
+            />
+          </div>
+          
+          {expandedSections.tag && (
+            <div className="mt-2 space-y-2">
+              <div 
+                onClick={() => handleFilterChange('tag', '')}
+                className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                  !localFilters.tag ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                  !localFilters.tag 
+                    ? 'bg-blue-600 border-blue-600' 
+                    : 'border border-gray-300'
+                }`}>
+                  {!localFilters.tag && <FaCheck className="text-white text-xs" />}
+                </div>
+                <span className="text-sm text-gray-700">All Products</span>
+              </div>
+              
+              {tagOptions.map(option => (
+                <div key={option.value} className="flex items-center">
+                  <div 
+                    onClick={() => handleFilterChange('tag', option.value)}
+                    className={`flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors ${
+                      localFilters.tag === option.value ? 'bg-blue-50' : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                      localFilters.tag === option.value ? 'bg-blue-600 border-blue-600' : 'border border-gray-300'
+                    }`}>
+                      {localFilters.tag === option.value && <FaCheck className="text-white text-xs" />}
+                    </div>
+                    <span className="text-sm text-gray-700 flex items-center">
+                      <FaTruck className="mr-1" size={12} /> {option.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
         <div className="mb-6">
           <div 
             className="flex items-center justify-between cursor-pointer mb-2" 

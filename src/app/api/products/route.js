@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../lib/dbConnect';
 import Product from '../../models/Product';
-import Category from '../../models/Category';
-import Brand from '../../models/Brand';
 import path from 'path';
 import fs from 'fs';
 
@@ -50,6 +48,7 @@ export async function GET(request) {
     const model = searchParams.get('model');
     const minMileage = searchParams.get('minMileage');
     const maxMileage = searchParams.get('maxMileage');
+    const tag = searchParams.get('tag');
     
     let query = {};
     
@@ -111,6 +110,10 @@ export async function GET(request) {
       query.mileage = {};
       if (minMileage) query.mileage.$gte = parseFloat(minMileage);
       if (maxMileage) query.mileage.$lte = parseFloat(maxMileage);
+    }
+    
+    if (tag && tag !== '') {
+      query.tag = tag;
     }
     
     if (searchTerm) {
@@ -185,7 +188,9 @@ export async function POST(request) {
       chassis: formData.get('chassis'),
       color: formData.get('color'),
       axleConfiguration: formData.get('axleConfiguration'),
-      vehicleGrade: formData.get('vehicleGrade')
+      vehicleGrade: formData.get('vehicleGrade'),
+      
+      tag: formData.get('tag') || undefined
     };
     
     try {
@@ -241,6 +246,13 @@ export async function POST(request) {
           { status: 400 }
         );
       }
+    }
+    
+    if (productData.tag && productData.tag !== 'Trucks') {
+      return NextResponse.json(
+        { success: false, message: 'Tag must be "Trucks" if specified' },
+        { status: 400 }
+      );
     }
     
     const thumbnailFile = formData.get('thumbnail');

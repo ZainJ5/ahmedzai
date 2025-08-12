@@ -16,8 +16,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                // Fetch 12 products (4x3 grid)
-                const response = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&category=6890ae47d1f3719edf5910a9');
+                const response = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&tag=Trucks');
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch trucks');
@@ -52,7 +51,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         </p>
                     </div>
 
-                    {/* Updated grid columns for loading state - now 4 columns on large screens */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-4">
                         {[...Array(12)].map((_, index) => (
                             <div key={index} className="w-full flex flex-col">
@@ -118,7 +116,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                     </motion.p>
                 </div>
 
-                {/* Updated grid columns for content - now 4 columns on large screens */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-5">
                     {products.map((product) => (
                         <motion.div
@@ -175,7 +172,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
 
                 <div className="flex justify-center mt-8">
                     <Link
-                        href="/products?category=6890ae47d1f3719edf5910a9"
+                        href="/products?tag=Trucks"
                         className="text-gray-800 font-medium flex items-center hover:text-[#1a3760] transition-colors border-b-2 border-transparent hover:border-[#1a3760] pb-1"
                     >
                         View All Trucks

@@ -39,7 +39,7 @@ function deleteFile(filePath) {
 export async function GET(request, { params }) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = params;
     
     const product = await Product.findById(id)
       .populate('category', 'name')
@@ -68,7 +68,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = params;
     
     const existingProduct = await Product.findById(id);
     if (!existingProduct) {
@@ -92,6 +92,20 @@ export async function PUT(request, { params }) {
     for (const field of textFields) {
       if (formData.has(field)) {
         updateData[field] = formData.get(field) || '';
+      }
+    }
+    
+    if (formData.has('tag')) {
+      const tagValue = formData.get('tag');
+      if (tagValue === '' || tagValue === 'null' || tagValue === 'undefined') {
+        updateData.tag = undefined;
+      } else if (tagValue === 'Trucks') {
+        updateData.tag = tagValue;
+      } else {
+        return NextResponse.json(
+          { success: false, message: 'Tag must be "Trucks" if specified' },
+          { status: 400 }
+        );
       }
     }
     
@@ -201,7 +215,7 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await dbConnect();
-    const { id } = await params;
+    const { id } = params;
     
     const product = await Product.findById(id);
     if (!product) {

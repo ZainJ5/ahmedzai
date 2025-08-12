@@ -36,7 +36,9 @@ import {
   FaTachometerAlt,
   FaPalette,
   FaTruckLoading,
-  FaCheck
+  FaCheck,
+  FaTruck,
+  FaTags
 } from 'react-icons/fa';
 
 const CustomEditor = ({ value, onChange }) => {
@@ -142,6 +144,7 @@ export default function CarManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedMake, setSelectedMake] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
@@ -171,6 +174,7 @@ export default function CarManagement() {
     color: '',
     axleConfiguration: '',
     vehicleGrade: '',
+    tag: '', // New tag field
     // Features object
     features: {
       camera360: false,
@@ -221,6 +225,7 @@ export default function CarManagement() {
       if (selectedMake) params.append('brand', selectedMake);
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
+      if (selectedTag) params.append('tag', selectedTag);
       
       const response = await fetch(`/api/products?${params}`);
       const data = await response.json();
@@ -264,7 +269,7 @@ export default function CarManagement() {
     if (view === 'list') {
       fetchProducts();
     }
-  }, [currentPage, searchTerm, selectedCategory, selectedMake, minPrice, maxPrice, view]);
+  }, [currentPage, searchTerm, selectedCategory, selectedMake, selectedTag, minPrice, maxPrice, view]);
 
   useEffect(() => {
     fetchCategoriesAndMakes();
@@ -291,6 +296,7 @@ export default function CarManagement() {
       color: '',
       axleConfiguration: '',
       vehicleGrade: '',
+      tag: '', // Reset tag
       // Reset all features to false
       features: {
         camera360: false,
@@ -405,6 +411,7 @@ export default function CarManagement() {
       color: product.color || '',
       axleConfiguration: product.axleConfiguration || '',
       vehicleGrade: product.vehicleGrade || '',
+      tag: product.tag || '', // Set tag from product
       features: featuresObj
     });
     
@@ -511,6 +518,11 @@ const handleSubmit = async (e) => {
       }
     });
     
+    // Add tag field if it has a value
+    if (formData.tag) {
+      formDataToSend.append('tag', formData.tag);
+    }
+    
     // Description field
     formDataToSend.append('description', formData.description || '');
     
@@ -585,6 +597,7 @@ const handleSubmit = async (e) => {
     setSearchTerm('');
     setSelectedCategory('');
     setSelectedMake('');
+    setSelectedTag('');
     setMinPrice('');
     setMaxPrice('');
     setCurrentPage(1);
@@ -697,6 +710,23 @@ const handleSubmit = async (e) => {
                         {make.name}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                {/* New Tag Field */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center">
+                    <FaTags className="mr-1" /> Tag
+                    <span className="ml-1 text-xs text-gray-500">(Optional)</span>
+                  </label>
+                  <select
+                    name="tag"
+                    value={formData.tag}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">No Tag</option>
+                    <option value="Trucks">Trucks</option>
                   </select>
                 </div>
                 
@@ -1507,13 +1537,29 @@ const handleSubmit = async (e) => {
                   </select>
                 </div>
                 
+                {/* New Tag filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <FaTags className="inline mr-1" /> Tag
+                  </label>
+                  <select
+                    value={selectedTag}
+                    onChange={(e) => setSelectedTag(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Tags</option>
+                    <option value="Trucks">Trucks</option>
+                  </select>
+                </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
                   <input
                     type="number"
                     placeholder="$0"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    value={minPrice}                    onChange={(e) => setMinPrice(e.target.value)}
+                    value={minPrice}                    
+                    onChange={(e) => setMinPrice(e.target.value)}
                   />
                 </div>
                 
@@ -1575,6 +1621,7 @@ const handleSubmit = async (e) => {
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inventory</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tag</th>
                     <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
@@ -1635,6 +1682,15 @@ const handleSubmit = async (e) => {
                         <td className="px-6 py-4 text-sm text-gray-700">
                           {product.year}
                         </td>
+                        <td className="px-6 py-4 text-sm text-gray-700">
+                          {product.tag ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <FaTruck className="mr-1" /> {product.tag}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">—</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex justify-end space-x-2">
                             <button 
@@ -1657,7 +1713,7 @@ const handleSubmit = async (e) => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="7" className="px-6 py-16 text-center">
+                      <td colSpan="8" className="px-6 py-16 text-center">
                         <div className="flex flex-col items-center">
                           <FaExclamationCircle className="h-12 w-12 text-gray-300 mb-4" />
                           <p className="text-gray-500 font-medium mb-2">No cars found</p>
