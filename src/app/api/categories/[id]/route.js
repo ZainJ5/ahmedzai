@@ -44,10 +44,21 @@ export async function PUT(request, { params }) {
     
     const formData = await request.formData();
     const name = formData.get('name');
+    const type = formData.get('type');
     const thumbnailFile = formData.get('thumbnail');
     
     const updateData = { updatedAt: Date.now() };
     if (name) updateData.name = name;
+    
+    if (type) {
+      if (type !== 'product' && type !== 'truck') {
+        return NextResponse.json(
+          { success: false, message: 'Category type must be either "product" or "truck"' },
+          { status: 400 }
+        );
+      }
+      updateData.type = type;
+    }
     
     if (thumbnailFile && thumbnailFile.size > 0) {
       if (category.thumbnail && !category.thumbnail.includes('placeholder-category')) {

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProductCard from './components/ProductCard';
 import FilterSidebar from './components/FilterSiderbar';
-import { FaFilter, FaTimes, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaFilter, FaTimes, FaChevronDown, FaChevronUp, FaTruck, FaCarSide } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -13,7 +13,8 @@ export default function ProductsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [productCategories, setProductCategories] = useState([]);
+  const [truckCategories, setTruckCategories] = useState([]); 
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,20 +80,30 @@ export default function ProductsPage() {
           page: parseInt(searchParams.get('page')) 
         }));
         
+        if (updatedFilters.tag === 'Trucks') {
+          const validCategories = truckCategories.map(cat => cat._id);
+          updatedFilters.category = updatedFilters.category.filter(id => validCategories.includes(id));
+        } else {
+          const validCategories = productCategories.map(cat => cat._id);
+          updatedFilters.category = updatedFilters.category.filter(id => validCategories.includes(id));
+        }
+
         setFilters(updatedFilters);
         
-        const [categoriesRes, brandsRes] = await Promise.all([
+        const [allCategoriesRes, brandsRes] = await Promise.all([
           fetch('/api/categories'),
           fetch('/api/brands')
         ]);
         
-        if (!categoriesRes.ok) throw new Error('Failed to fetch categories');
+        if (!allCategoriesRes.ok) throw new Error('Failed to fetch categories');
         if (!brandsRes.ok) throw new Error('Failed to fetch brands');
         
-        const categoriesData = await categoriesRes.json();
+        const allCategoriesData = await allCategoriesRes.json();
         const brandsData = await brandsRes.json();
         
-        setCategories(categoriesData.data);
+        const allCategories = allCategoriesData.data || [];
+        setProductCategories(allCategories.filter(category => !category.type || category.type === 'product'));
+        setTruckCategories(allCategories.filter(category => category.type === 'truck'));
         setBrands(brandsData.data);
         
       } catch (err) {
@@ -185,16 +196,26 @@ export default function ProductsPage() {
       
       isInitialMount.current = false;
     }
-  }, [filters, pagination.page, pagination.limit, router]);
+  }, [filters, pagination.page, pagination.limit, router, productCategories, truckCategories]);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   const handleFilterChange = useCallback((newFilters) => {
-    setFilters(newFilters);
+    let validatedCategories = newFilters.category || [];
+    if (newFilters.tag === 'Trucks') {
+      const validCategories = truckCategories.map(cat => cat._id);
+      validatedCategories = validatedCategories.filter(id => validCategories.includes(id));
+    } else {
+      const validCategories = productCategories.map(cat => cat._id);
+      validatedCategories = validatedCategories.filter(id => validCategories.includes(id));
+    }
+
+    const updatedFilters = { ...newFilters, category: validatedCategories };
+    setFilters(updatedFilters);
     setPagination(prev => ({ ...prev, page: 1 }));
-  }, []);
+  }, [productCategories, truckCategories]);
 
   const handlePageChange = (newPage) => {
     setPagination(prev => ({ ...prev, page: newPage }));
@@ -264,7 +285,8 @@ export default function ProductsPage() {
       <div className="flex flex-1 overflow-hidden">
         <div className="hidden lg:block w-64 bg-white border-r border-gray-200 overflow-y-auto">
           <FilterSidebar
-            categories={categories}
+            productCategories={productCategories}
+            truckCategories={truckCategories}
             brands={brands}
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -288,7 +310,8 @@ export default function ProductsPage() {
             {showFilters && (
               <div className="mt-4">
                 <FilterSidebar
-                  categories={categories}
+                  productCategories={productCategories}
+                  truckCategories={truckCategories}
                   brands={brands}
                   filters={filters}
                   onFilterChange={handleFilterChange}
@@ -301,9 +324,27 @@ export default function ProductsPage() {
           
           <div className="z-10 bg-white border-b border-gray-200 px-3 sm:px-4 py-3 lg:py-4">
             <div className="flex justify-between items-center">
-              <div className="text-xs sm:text-sm text-gray-500">
-                <span className="font-medium text-gray-900">{products.length}</span> of 
-                <span className="font-medium text-gray-900"> {pagination.total}</span> products
+              <div className="flex items-center space-x-2">
+                <div className="text-xs sm:text-sm text-gray-500">
+                  <span className="font-medium text-gray-900">{products.length}</span> of 
+                  <span className="font-medium text-gray-900"> {pagination.total}</span> products
+                </div>
+                
+                {filters.tag && (
+                  <div className="bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                    {filters.tag === 'Trucks' ? (
+                      <>
+                        <FaTruck className="mr-1" size={10} />
+                        Trucks Only
+                      </>
+                    ) : (
+                      <>
+                        <FaCarSide className="mr-1" size={10} />
+                        All Vehicles
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
               
               <div className="flex items-center gap-2">

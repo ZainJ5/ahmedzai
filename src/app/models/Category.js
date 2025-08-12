@@ -7,6 +7,12 @@ const CategorySchema = new mongoose.Schema({
     trim: true,
     maxlength: [50, 'Category name cannot be more than 50 characters']
   },
+  type: {
+    type: String,
+    enum: ['product', 'truck'],
+    default: 'product',
+    required: [true, 'Please specify the category type']
+  },
   thumbnail: {
     type: String,
     required: true

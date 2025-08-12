@@ -12,7 +12,9 @@ import {
   FaSpinner,
   FaSave,
   FaTimes,
-  FaImage
+  FaImage,
+  FaCarSide,
+  FaTruck
 } from 'react-icons/fa';
 import Image from 'next/image';
 import { toast, ToastContainer } from 'react-toastify';
@@ -27,8 +29,10 @@ export default function CategoryManagement() {
   const [modalMode, setModalMode] = useState('add');
   const [currentCategory, setCurrentCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('all'); 
   const [formData, setFormData] = useState({
     name: '',
+    type: 'product',
   });
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState('');
@@ -58,14 +62,19 @@ export default function CategoryManagement() {
     }
   };
   
-  const filteredCategories = categories.filter(category => 
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCategories = categories.filter(category => {
+    const matchesSearch = category.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesType = typeFilter === 'all' || category.type === typeFilter;
+    
+    return matchesSearch && matchesType;
+  });
   
   const handleAddCategory = () => {
     setModalMode('add');
     setFormData({
       name: '',
+      type: 'product',
     });
     setThumbnail(null);
     setThumbnailPreview('');
@@ -77,6 +86,7 @@ export default function CategoryManagement() {
     setCurrentCategory(category);
     setFormData({
       name: category.name,
+      type: category.type || 'product', 
     });
     setThumbnailPreview(category.thumbnail);
     setThumbnail(null);
@@ -151,6 +161,7 @@ export default function CategoryManagement() {
     try {
       const formDataObj = new FormData();
       formDataObj.append('name', formData.name);
+      formDataObj.append('type', formData.type);
       
       if (thumbnail) {
         formDataObj.append('thumbnail', thumbnail);
@@ -198,6 +209,24 @@ export default function CategoryManagement() {
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  const getCategoryTypeDisplay = (type) => {
+    switch (type) {
+      case 'truck':
+        return (
+          <span className="flex items-center text-orange-700 bg-orange-100 px-2.5 py-0.5 rounded-full text-xs font-medium">
+            <FaTruck className="mr-1" /> Truck
+          </span>
+        );
+      case 'product':
+      default:
+        return (
+          <span className="flex items-center text-blue-700 bg-blue-100 px-2.5 py-0.5 rounded-full text-xs font-medium">
+            <FaCarSide className="mr-1" /> Product
+          </span>
+        );
+    }
+  };
   
   if (isLoading) {
     return (
@@ -239,6 +268,40 @@ export default function CategoryManagement() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
+          <div className="flex space-x-2">
+            <button 
+              onClick={() => setTypeFilter('all')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                typeFilter === 'all' 
+                ? 'bg-gray-200 text-gray-800' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              All
+            </button>
+            <button 
+              onClick={() => setTypeFilter('product')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center ${
+                typeFilter === 'product' 
+                ? 'bg-blue-100 text-blue-700' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              <FaCarSide className="mr-1" /> Products
+            </button>
+            <button 
+              onClick={() => setTypeFilter('truck')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center ${
+                typeFilter === 'truck' 
+                ? 'bg-orange-100 text-orange-700' 
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              <FaTruck className="mr-1" /> Trucks
+            </button>
+          </div>
+          
           <div>
             <span className="text-sm text-gray-500 font-medium">
               Showing {filteredCategories.length} of {categories.length} categories
@@ -264,6 +327,7 @@ export default function CategoryManagement() {
             <thead className="bg-gray-50">
               <tr>
                 <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
+                <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>
                 <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Created At</th>
                 <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Last Updated</th>
                 <th scope="col" className="px-8 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
@@ -288,6 +352,9 @@ export default function CategoryManagement() {
                           <div className="text-sm font-semibold text-gray-900">{category.name}</div>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-8 py-6 whitespace-nowrap">
+                      {getCategoryTypeDisplay(category.type)}
                     </td>
                     <td className="px-8 py-6 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(category.createdAt)}
@@ -315,16 +382,19 @@ export default function CategoryManagement() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="px-8 py-12 text-center text-sm text-gray-500">
+                  <td colSpan="5" className="px-8 py-12 text-center text-sm text-gray-500">
                     <div className="flex flex-col items-center py-6">
                       <FaExclamationCircle className="h-10 w-10 text-gray-400 mb-3" />
                       <p className="text-gray-600 font-medium">No categories found matching your search criteria</p>
-                      {categories.length > 0 && searchTerm && (
+                      {categories.length > 0 && (searchTerm || typeFilter !== 'all') && (
                         <button 
-                          onClick={() => setSearchTerm('')}
+                          onClick={() => {
+                            setSearchTerm('');
+                            setTypeFilter('all');
+                          }}
                           className="mt-4 text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200 cursor-pointer"
                         >
-                          Clear search
+                          Clear filters
                         </button>
                       )}
                       {categories.length === 0 && (
@@ -373,6 +443,39 @@ export default function CategoryManagement() {
                     required
                     placeholder="Enter category name"
                   />
+                </div>
+
+                <div>
+                  <label htmlFor="categoryType" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Category Type <span className="text-red-500">*</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, type: 'product'})}
+                      className={`px-4 py-3 rounded-lg flex items-center justify-center ${
+                        formData.type === 'product'
+                          ? 'bg-blue-100 border-2 border-blue-500 text-blue-700'
+                          : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
+                      } transition-all duration-200`}
+                    >
+                      <FaCarSide className="mr-2" /> Product
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, type: 'truck'})}
+                      className={`px-4 py-3 rounded-lg flex items-center justify-center ${
+                        formData.type === 'truck'
+                          ? 'bg-orange-100 border-2 border-orange-500 text-orange-700'
+                          : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
+                      } transition-all duration-200`}
+                    >
+                      <FaTruck className="mr-2" /> Truck
+                    </button>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    This determines where this category will appear on the website.
+                  </p>
                 </div>
                 
                 <div>

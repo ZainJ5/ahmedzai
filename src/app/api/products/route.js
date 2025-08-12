@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../lib/dbConnect';
 import Product from '../../models/Product';
+import Category from '../../models/Category';
 import path from 'path';
 import fs from 'fs';
 
@@ -52,7 +53,19 @@ export async function GET(request) {
     
     let query = {};
     
-    if (categoryParam) {
+    if (tag && tag !== '') {
+      query.tag = tag;
+      const categories = await Category.find({ type: tag === 'Trucks' ? 'truck' : 'product' });
+      const validCategoryIds = categories.map(cat => cat._id.toString());
+      if (categoryParam) {
+        const categories = categoryParam.split(',').filter(id => validCategoryIds.includes(id));
+        if (categories.length > 1) {
+          query.category = { $in: categories };
+        } else if (categories.length === 1) {
+          query.category = categories[0];
+        }
+      }
+    } else if (categoryParam) {
       const categories = categoryParam.split(',');
       if (categories.length > 1) {
         query.category = { $in: categories };
@@ -110,10 +123,6 @@ export async function GET(request) {
       query.mileage = {};
       if (minMileage) query.mileage.$gte = parseFloat(minMileage);
       if (maxMileage) query.mileage.$lte = parseFloat(maxMileage);
-    }
-    
-    if (tag && tag !== '') {
-      query.tag = tag;
     }
     
     if (searchTerm) {

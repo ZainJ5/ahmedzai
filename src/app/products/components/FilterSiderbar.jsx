@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCogs, FaCar, FaTachometerAlt, FaPalette, FaCarSide, FaTags, FaTruck } from 'react-icons/fa';
+import { FaTimes, FaChevronDown, FaCheck, FaGasPump, FaCar, FaTachometerAlt, FaPalette, FaCarSide, FaTags, FaTruck } from 'react-icons/fa';
 
 export default function FilterSidebar({ 
-  categories, 
+  productCategories,
+  truckCategories,
   brands, 
   filters, 
   onFilterChange,
@@ -22,6 +23,8 @@ export default function FilterSidebar({
     mileage: true,
     tag: true 
   });
+  
+  const categoriesToShow = localFilters.tag === 'Trucks' ? truckCategories : productCategories;
   
   const fuelTypeOptions = [
     { value: 'Diesel', label: 'Diesel' },
@@ -55,9 +58,19 @@ export default function FilterSidebar({
   }, [filters]);
   
   const handleFilterChange = (key, value) => {
-    const newFilters = { ...localFilters, [key]: value };
-    setLocalFilters(newFilters);
-    onFilterChange(newFilters);
+    if (key === 'tag') {
+      const newFilters = { 
+        ...localFilters, 
+        [key]: value,
+        category: [] 
+      };
+      setLocalFilters(newFilters);
+      onFilterChange(newFilters);
+    } else {
+      const newFilters = { ...localFilters, [key]: value };
+      setLocalFilters(newFilters);
+      onFilterChange(newFilters);
+    }
   };
 
   const toggleSection = (section) => {
@@ -130,7 +143,7 @@ export default function FilterSidebar({
           >
             <div className="flex items-center">
               <FaTags className="text-gray-500 mr-2" size={12} />
-              <h3 className="text-md font-medium text-gray-700">Tag</h3>
+              <h3 className="text-md font-medium text-gray-700">Vehicle Type</h3>
             </div>
             <FaChevronDown 
               className={`text-gray-400 transition-transform ${expandedSections.tag ? 'transform rotate-180' : ''}`} 
@@ -153,7 +166,9 @@ export default function FilterSidebar({
                 }`}>
                   {!localFilters.tag && <FaCheck className="text-white text-xs" />}
                 </div>
-                <span className="text-sm text-gray-700">All Products</span>
+                <span className="text-sm text-gray-700 flex items-center">
+                  <FaCarSide className="mr-1" size={12} /> All Vehicles
+                </span>
               </div>
               
               {tagOptions.map(option => (
@@ -170,7 +185,7 @@ export default function FilterSidebar({
                       {localFilters.tag === option.value && <FaCheck className="text-white text-xs" />}
                     </div>
                     <span className="text-sm text-gray-700 flex items-center">
-                      <FaTruck className="mr-1" size={12} /> {option.label}
+                      <FaTruck className="mr-1" size={12} /> {option.label} Only
                     </span>
                   </div>
                 </div>
@@ -184,7 +199,9 @@ export default function FilterSidebar({
             className="flex items-center justify-between cursor-pointer mb-2" 
             onClick={() => toggleSection('categories')}
           >
-            <h3 className="text-md font-medium text-gray-700">Categories (Body Type)</h3>
+            <h3 className="text-md font-medium text-gray-700">
+              {localFilters.tag === 'Trucks' ? 'Truck Categories' : 'Vehicle Categories'}
+            </h3>
             <FaChevronDown 
               className={`text-gray-400 transition-transform ${expandedSections.categories ? 'transform rotate-180' : ''}`} 
               size={14}
@@ -193,23 +210,29 @@ export default function FilterSidebar({
           
           {expandedSections.categories && (
             <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1 styled-scrollbar">
-              {categories.map((category) => (
-                <div key={category._id} className="flex items-center">
-                  <div 
-                    onClick={() => handleCheckboxChange('category', category._id)}
-                    className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
-                  >
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${
-                      isItemSelected('category', category._id) 
-                        ? 'bg-blue-600 border-blue-600' 
-                        : 'border border-gray-300'
-                    }`}>
-                      {isItemSelected('category', category._id) && <FaCheck className="text-white text-xs" />}
+              {categoriesToShow.length > 0 ? (
+                categoriesToShow.map((category) => (
+                  <div key={category._id} className="flex items-center">
+                    <div 
+                      onClick={() => handleCheckboxChange('category', category._id)}
+                      className="flex items-center gap-2 cursor-pointer py-1 px-2 rounded-md w-full transition-colors hover:bg-gray-50"
+                    >
+                      <div className={`w-5 h-5 rounded flex items-center justify-center ${
+                        isItemSelected('category', category._id) 
+                          ? 'bg-blue-600 border-blue-600' 
+                          : 'border border-gray-300'
+                      }`}>
+                        {isItemSelected('category', category._id) && <FaCheck className="text-white text-xs" />}
+                      </div>
+                      <span className="text-sm text-gray-700">{category.name}</span>
                     </div>
-                    <span className="text-sm text-gray-700">{category.name}</span>
                   </div>
+                ))
+              ) : (
+                <div className="text-sm text-gray-500 py-2 italic">
+                  No categories available
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
