@@ -11,7 +11,6 @@ import SearchBar from './SearchBar';
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -19,25 +18,8 @@ const Navbar = () => {
       setScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
-    
-    if (typeof window !== 'undefined') {
-      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      setIsDarkMode(darkModeMediaQuery.matches);
-      
-      const darkModeChangeHandler = (e) => {
-        setIsDarkMode(e.matches);
-      };
-      
-      darkModeMediaQuery.addEventListener('change', darkModeChangeHandler);
-      
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-        darkModeMediaQuery.removeEventListener('change', darkModeChangeHandler);
-      };
-    }
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const logoSrc = isDarkMode ? '/logo-2.jpg' : '/logo-3.jpg';
 
   return (
     <header className="w-full z-50">
@@ -89,7 +71,7 @@ const Navbar = () => {
                   scrolled ? 'h-14 w-24' : 'h-16 w-28'
                 }`}>
                   <Image
-                    src={logoSrc}
+                    src="/logo-3.png"
                     alt="Company Logo"
                     fill
                     style={{ objectFit: "contain" }}
