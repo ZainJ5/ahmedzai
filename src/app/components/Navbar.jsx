@@ -148,7 +148,7 @@ const Navbar = () => {
                     closed: {}
                   }}
                 >
-                  {['Home', 'Products', 'Contact', 'About Us','Blogs'].map((item, index) => (
+                  {['Home', 'Products', 'Contact', 'About Us','Blogs','Auto-Parts'].map((item, index) => (
                     <motion.li 
                       key={index}
                       variants={{
