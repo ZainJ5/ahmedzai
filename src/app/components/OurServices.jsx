@@ -2,13 +2,13 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { 
-  HiOutlineTruck, 
-  HiOutlineBanknotes,
-  HiOutlineUserGroup, 
-  HiOutlineWrenchScrewdriver, 
-  HiOutlineGlobeAmericas, 
-  HiOutlineShieldCheck, 
-  HiOutlineCube 
+  HiTruck, 
+  HiBanknotes,
+  HiUserGroup, 
+  HiWrenchScrewdriver, 
+  HiGlobeAmericas, 
+  HiShieldCheck, 
+  HiCube 
 } from "react-icons/hi2";
 import { 
   MdKeyboardArrowLeft, 
@@ -23,43 +23,43 @@ export default function OurServices() {
 
   const services = [
     {
-      icon: <HiOutlineTruck size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiTruck size={42} className="text-[#3e6db5]" />,
       title: "Stock Buying & Export",
       description:
         "Seamlessly purchase vehicles from our curated stock and export them globally with ease.",
     },
     {
-      icon: <HiOutlineBanknotes size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiBanknotes size={42} className="text-[#3e6db5]" />,
       title: "Auction Buying Access",
       description:
         "Gain exclusive access to premium car auctions to discover your perfect vehicle.",
     },
     {
-      icon: <HiOutlineUserGroup size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiUserGroup size={42} className="text-[#3e6db5]" />,
       title: "Auction with Assistance",
       description:
         "Benefit from expert guidance to confidently navigate and bid at vehicle auctions.",
     },
     {
-      icon: <HiOutlineWrenchScrewdriver size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiWrenchScrewdriver size={42} className="text-[#3e6db5]" />,
       title: "Car Buying for Parts",
       description:
         "Source high-quality vehicles specifically for parts and components with precision.",
     },
     {
-      icon: <HiOutlineGlobeAmericas size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiGlobeAmericas size={42} className="text-[#3e6db5]" />,
       title: "Third-Party Outsourcing",
       description:
         "Leverage our expertise for streamlined logistics and procurement outsourcing.",
     },
     {
-      icon: <HiOutlineShieldCheck size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiShieldCheck size={42} className="text-[#3e6db5]" />,
       title: "RORO Buying & Export",
       description:
         "Efficient Roll-on/Roll-off vehicle buying and export services tailored to your needs.",
     },
     {
-      icon: <HiOutlineCube size={42} strokeWidth={1.5} className="text-[#3e6db5]" />,
+      icon: <HiCube size={42} className="text-[#3e6db5]" />,
       title: "Container Buying",
       description:
         "Comprehensive solutions for full container vehicle buying and global export.",
