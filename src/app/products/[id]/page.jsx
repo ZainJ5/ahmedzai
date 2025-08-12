@@ -104,7 +104,7 @@ export default function ProductDetailsPage() {
     const message = encodeURIComponent(
       `Hello, I'm interested in the ${product.title} (${product.model}) that costs ${price}. Can you provide more information?`
     );
-    window.open(`https://wa.me/923334928431?text=${message}`, '_blank');
+    window.open(`https://wa.me/+818046646786?text=${message}`, '_blank');
   };
 
   const handleDownloadAll = () => {
