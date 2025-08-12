@@ -651,7 +651,7 @@ export default function ProductDetailsPage() {
                 >
                   {[
                     { label: 'Make', value: product.make?.name || 'N/A' },
-                    { label: 'Fuel', value: product.fuelType || 'N/A' },
+                    { label: 'Model', value: product.model || 'N/A' },
                     { label: 'Year', value: product.year || 'N/A' },
                     { label: 'Mileage', value: `${product.mileage || 'N/A'} ${product.mileageUnit || ''}` }
                   ].map((item, index) => (

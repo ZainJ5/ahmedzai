@@ -13,6 +13,7 @@ import Trucks from './components/Trucks';
 import ContactSection from './components/ContactSection';
 import ClientReviews from './components/ClientReviews';
 import NewsBlogSection from './components/NewsBlogSection';
+import AutoParts from './components/AutoParts';
 
 export default function Home() {
   return (
@@ -33,6 +34,9 @@ export default function Home() {
         </div>
         <HowToBuy />
         <OurServices/>
+        <div className='py-6 w-full h-full bg-white'>
+        <AutoParts/>
+        </div>
       </div>
       <ContactSection/>
       {/* <FaqSection /> */}

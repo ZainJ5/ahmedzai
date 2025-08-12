@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { FaSearch, FaTruck, FaArrowRight } from 'react-icons/fa';
+import { FaSearch, FaTruck, FaArrowRight, FaChevronDown, FaWhatsapp } from 'react-icons/fa';
 
 export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
     const [products, setProducts] = useState([]);
@@ -13,14 +13,30 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
     const [error, setError] = useState(null);
     const [truckCategories, setTruckCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategoryName, setSelectedCategoryName] = useState('All Truck Categories');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const router = useRouter();
+    const dropdownRef = useRef(null);
+
+    // Handle clicking outside dropdown to close it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
                 
-                // Fetch truck-specific categories
                 const categoriesResponse = await fetch('/api/categories?type=truck');
                 if (!categoriesResponse.ok) {
                     throw new Error('Failed to fetch truck categories');
@@ -28,7 +44,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                 const categoriesData = await categoriesResponse.json();
                 setTruckCategories(categoriesData.data || []);
 
-                // Fetch truck products
                 const productsResponse = await fetch('/api/products?limit=12&sortBy=createdAt&sortOrder=desc&tag=Trucks');
                 if (!productsResponse.ok) {
                     throw new Error('Failed to fetch trucks');
@@ -53,7 +68,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
 
     const handleCategorySearch = (e) => {
         e.preventDefault();
-        // Navigate directly without any unnecessary redirects
         if (selectedCategory) {
             router.push(`/products?tag=Trucks&category=${selectedCategory}`);
         } else {
@@ -61,10 +75,16 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         }
     };
 
+    const handleCategorySelect = (categoryId, categoryName) => {
+        setSelectedCategory(categoryId);
+        setSelectedCategoryName(categoryName || 'All Truck Categories');
+        setDropdownOpen(false);
+    };
+
     if (loading) {
         return (
             <section className="bg-white">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="container mx-auto sm:px-4 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-gray-900 mb-3">Discover Top Picks</h2>
                         <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-4"></div>
@@ -116,9 +136,73 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
         return null;
     }
 
+    const ProductCard = ({ product }) => {
+        const [isHovered, setIsHovered] = useState(false);
+        
+        const handleWhatsAppClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          const message = encodeURIComponent(`Hello, I'm interested in the ${product.title} (${product.model}).`);
+          window.open(`https://wa.me/+818046646786?text=${message}`, '_blank');
+        };
+      
+        return (
+          <div 
+            className="bg-white rounded-lg shadow-sm border text-black border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-96"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="relative h-48 w-full overflow-hidden">
+              <Image 
+                src={product.thumbnail || '/placeholder-product.jpg'} 
+                alt={product.title}
+                fill
+                className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+              />
+            </div>
+            
+            <div className="p-3 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 className="font-bold text-center text-gray-900 text-sm sm:text-lg mb-2 line-clamp-2 h-14 overflow-hidden">
+                  {product.make?.name} {product.title} {product.year || ""}
+                </h3>
+                
+                <div className="flex justify-between text-sm mb-3">
+                  <span className="font-medium">Ref#</span>
+                  <span>{product.model}</span>
+                </div>
+                
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium">FOB Price</span>
+                  <span className="text-red-600 font-medium">ASK</span>
+                </div>
+              </div>
+              
+              <div className="flex gap-2 mt-3">
+                <Link href={`/products/${product._id}`} className="flex-1">
+                  <button 
+                    className="w-full bg-[#0d6cfe] hover:bg-blue-600 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
+                  >
+                    More Details
+                  </button>
+                </Link>
+                
+                <button 
+                  onClick={handleWhatsAppClick}
+                  className="w-10 sm:w-12 flex items-center p-1 cursor-pointer justify-center bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-colors"
+                  aria-label="Contact via WhatsApp"
+                >
+                  <FaWhatsapp size={30} />
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
     return (
         <section className="py-4 bg-white">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto sm:px-4  lg:px-8">
                 <div className="text-center mb-8 md:mb-12">
                     <motion.h2
                         className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3"
@@ -137,7 +221,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         Check out the newest trucks added to our collection
                     </motion.p>
                     
-                    {/* Category Search Bar */}
                     <motion.div
                         className="max-w-md mx-auto mb-10"
                         initial={{ opacity: 0, y: 20 }}
@@ -145,22 +228,55 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         transition={{ duration: 0.6, delay: 0.4 }}
                     >
                         <form onSubmit={handleCategorySearch} className="flex flex-col sm:flex-row gap-3">
-                            <div className="relative flex-grow">
-                                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                    <FaTruck size={16} />
-                                </div>
-                                <select
-                                    value={selectedCategory}
-                                    onChange={(e) => setSelectedCategory(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none shadow-sm"
+                            <div className="relative flex-grow" ref={dropdownRef}>
+                                <div 
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm flex items-center justify-between cursor-pointer"
                                 >
-                                    <option value="">All Truck Categories</option>
-                                    {truckCategories.map(category => (
-                                        <option key={category._id} value={category._id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <div className="flex items-center">
+                                        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                            <FaTruck size={16} />
+                                        </div>
+                                        <span>{selectedCategoryName}</span>
+                                    </div>
+                                    <FaChevronDown className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+                                </div>
+                                
+                                {dropdownOpen && (
+                                    <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                                        <div 
+                                            className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                                            onClick={() => handleCategorySelect('', 'All Truck Categories')}
+                                        >
+                                            <FaTruck className="text-gray-500" size={16} />
+                                            <span>All Truck Categories</span>
+                                        </div>
+                                        
+                                        {truckCategories.map(category => (
+                                            <div 
+                                                key={category._id} 
+                                                className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                                                onClick={() => handleCategorySelect(category._id, category.name)}
+                                            >
+                                                <div className="relative w-6 h-6 flex-shrink-0">
+                                                    <Image
+                                                        src={category.thumbnail || '/placeholder-category.png'}
+                                                        alt={category.name}
+                                                        fill
+                                                        className="object-contain"
+                                                    />
+                                                </div>
+                                                <span>{category.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                
+                                <input 
+                                    type="hidden" 
+                                    name="category"
+                                    value={selectedCategory}
+                                />
                             </div>
                             <button 
                                 type="submit"
@@ -177,52 +293,11 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                     {products.map((product) => (
                         <motion.div
                             key={product._id}
-                            className="cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out border border-slate-100 h-full flex flex-col"
-                            onClick={() => handleProductClick(product._id)}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4 }}
                         >
-                            <div className="relative w-full aspect-square md:aspect-auto md:h-48 bg-slate-100">
-                                <Image
-                                    src={product.thumbnail || '/placeholder-product.jpg'}
-                                    alt={product.title}
-                                    fill
-                                    className="object-cover rounded-t-xl"
-                                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                                    loading="eager"
-                                />
-                            </div>
-
-                            <div className="p-2 md:p-3 flex-grow flex flex-col">
-                                <div className="flex flex-wrap items-baseline gap-1 mb-1">
-                                    {product.discountPercentage > 0 ? (
-                                        <>
-                                            <h3 className="text-sm md:text-base font-semibold text-slate-800">
-                                                ${product.discountedPrice.toLocaleString()}
-                                            </h3>
-                                            <p className="text-xs text-slate-400 line-through">
-                                                ${product.unitPrice.toLocaleString()}
-                                            </p>
-                                            <p className="text-xs text-amber-600 font-medium">
-                                                {product.discountPercentage}% OFF
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <h3 className="text-sm md:text-base font-semibold text-slate-800">
-                                            ${product.unitPrice.toLocaleString()}
-                                        </h3>
-                                    )}
-                                </div>
-
-                                <h4 className="text-xs md:text-sm font-medium text-slate-700 mb-1 line-clamp-1">
-                                    {product.make?.name} {product.title}
-                                </h4>
-
-                                <p className="text-xs text-slate-500 tracking-tight mt-auto line-clamp-1">
-                                    {product.category?.name} | {product.year} | {product.model}
-                                </p>
-                            </div>
+                            <ProductCard product={product} />
                         </motion.div>
                     ))}
                 </div>
@@ -236,7 +311,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                         <FaArrowRight className="ml-1 w-4 h-4" />
                     </Link>
                 </div>
-
             </div>
         </section>
     );

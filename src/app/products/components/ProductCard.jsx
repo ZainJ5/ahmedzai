@@ -12,7 +12,7 @@ export default function ProductCard({ product }) {
     e.stopPropagation();
     e.preventDefault();
     const message = encodeURIComponent(`Hello, I'm interested in the ${product.title} (${product.model}).`);
-    window.open(`https://wa.me/923334928431?text=${message}`, '_blank');
+    window.open(`https://wa.me/+818046646786?text=${message}`, '_blank');
   };
 
   return (
@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
       
       <div className="p-3 flex flex-col flex-grow justify-between">
         <div>
-          <h3 className="font-bold text-center text-gray-900 text-lg mb-2 line-clamp-2 h-14 overflow-hidden">
+          <h3 className="font-bold text-center text-gray-900 text-sm sm:text-lg mb-2 line-clamp-2 h-14 overflow-hidden">
             {product.make?.name} {product.title} {product.year || ""}
           </h3>
           
