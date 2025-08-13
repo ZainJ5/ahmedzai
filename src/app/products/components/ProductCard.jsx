@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -22,7 +21,7 @@ export default function ProductCard({ product }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative h-48 w-full overflow-hidden">
-        <Image 
+        <img
           src={product.thumbnail || '/placeholder-product.jpg'} 
           alt={product.title}
           fill

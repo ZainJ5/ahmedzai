@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import Image from 'next/image';
 
 const HeroManagement = () => {
   const [slides, setSlides] = useState([]);
@@ -19,7 +18,7 @@ const HeroManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get('/api/hero');
-      console.log('Fetched slides:', response.data.data); // Add logging to check data
+      console.log('Fetched slides:', response.data.data); 
       setSlides(response.data.data);
       setError(null);
     } catch (err) {
@@ -165,16 +164,16 @@ const HeroManagement = () => {
           {slides.map((slide) => (
             <div key={slide._id} className="relative bg-gray-100 rounded-lg overflow-hidden group">
               <div className="aspect-w-16 aspect-h-9 relative h-48">
-                <Image 
+                <img
                   src={slide.mediaUrl} 
                   alt="Hero image" 
                   fill
                   className="object-cover"
                   onError={(e) => {
                     console.error('Failed to load image:', slide.mediaUrl);
-                    e.target.src = '/placeholder-image.jpg'; // Use a fallback image
+                    e.target.src = '/placeholder-image.jpg'; 
                   }}
-                  unoptimized // Add this if there are issues with image optimization
+                  unoptimized 
                 />
               </div>
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -244,7 +243,7 @@ const HeroManagement = () => {
                     <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
                     <div className="bg-gray-100 rounded-lg p-2 w-full">
                       <div className="relative w-full h-40">
-                        <Image 
+                        <img
                           src={mediaPreview || currentSlide?.mediaUrl || ''} 
                           alt="Preview" 
                           fill

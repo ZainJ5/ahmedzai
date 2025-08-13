@@ -22,9 +22,7 @@ import {
   FaTable
 } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 
-// Custom Editor Component
 const CustomEditor = ({ value, onChange }) => {
   const editorRef = useRef(null);
 
@@ -169,7 +167,6 @@ export default function BlogManagement() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    // Clear error for this field when changed
     if (formErrors[name]) {
       setFormErrors({ ...formErrors, [name]: '' });
     }
@@ -178,7 +175,6 @@ export default function BlogManagement() {
   const handleContentChange = (e) => {
     setFormData({ ...formData, content: e.target.value });
     
-    // Clear error for content when changed
     if (formErrors.content) {
       setFormErrors({ ...formErrors, content: '' });
     }
@@ -193,7 +189,7 @@ export default function BlogManagement() {
       return;
     }
     
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+    if (file.size > 5 * 1024 * 1024) { 
       setFormErrors({ ...formErrors, thumbnail: 'Image size should be less than 5MB' });
       return;
     }
@@ -201,7 +197,6 @@ export default function BlogManagement() {
     setFormData({ ...formData, thumbnail: file });
     setPreviewUrl(URL.createObjectURL(file));
     
-    // Clear error for thumbnail when changed
     if (formErrors.thumbnail) {
       setFormErrors({ ...formErrors, thumbnail: '' });
     }
@@ -310,9 +305,8 @@ export default function BlogManagement() {
       
       if (data.success) {
         setSubmitSuccess(true);
-        fetchBlogs(pagination.page); // Refresh the blog list
+        fetchBlogs(pagination.page); 
         
-        // Close the form after a short delay
         setTimeout(() => {
           closeForm();
         }, 2000);
@@ -421,7 +415,7 @@ export default function BlogManagement() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="h-16 w-24 relative rounded-md overflow-hidden bg-gray-100">
                         {blog.thumbnail ? (
-                          <Image 
+                          <img 
                             src={blog.thumbnail} 
                             alt={blog.title} 
                             fill
@@ -642,7 +636,7 @@ export default function BlogManagement() {
                         <div className="w-32 h-32 border rounded-md overflow-hidden bg-gray-50 flex items-center justify-center relative">
                           {previewUrl ? (
                             <>
-                              <Image 
+                              <img
                                 src={previewUrl} 
                                 alt="Thumbnail preview" 
                                 fill

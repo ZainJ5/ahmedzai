@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { FaArrowRight } from 'react-icons/fa';
 
 export default function FeaturedBlogs() {
@@ -93,7 +92,7 @@ export default function FeaturedBlogs() {
             <div key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <Link href={`/blogs/${blog._id}`} className="block relative h-56 overflow-hidden">
                 {blog.thumbnail ? (
-                  <Image
+                  <img
                     src={blog.thumbnail}
                     alt={blog.title}
                     fill

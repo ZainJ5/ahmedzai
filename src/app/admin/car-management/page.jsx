@@ -343,7 +343,6 @@ export default function CarManagement() {
     setFormMode('edit');
     setCurrentProduct(product);
     
-    // Create a features object with default values if no features present
     const featuresObj = {
       camera360: false,
       airBags: false,
@@ -403,15 +402,13 @@ export default function CarManagement() {
       weight: product.weight,
       description: descriptionText, 
       fuelType: product.fuelType || '',
-      // Updated for the new schema
       mileage: product.mileage || '',
       mileageUnit: product.mileageUnit || 'km/l',
-      // New fields
       chassis: product.chassis || '',
       color: product.color || '',
       axleConfiguration: product.axleConfiguration || '',
       vehicleGrade: product.vehicleGrade || '',
-      tag: product.tag || '', // Set tag from product
+      tag: product.tag || '', 
       features: featuresObj
     });
     
@@ -505,7 +502,6 @@ const handleSubmit = async (e) => {
   try {
     const formDataToSend = new FormData();
     
-    // Basic fields
     const simpleFields = [
       'title', 'model', 'year', 'unitPrice', 'discountPercentage', 
       'quantity', 'weight', 'category', 'make', 'fuelType', 
@@ -518,24 +514,17 @@ const handleSubmit = async (e) => {
       }
     });
     
-    // Add tag field if it has a value
     if (formData.tag) {
       formDataToSend.append('tag', formData.tag);
     }
     
-    // Description field
     formDataToSend.append('description', formData.description || '');
     
-    // Features as JSON string
     formDataToSend.append('features', JSON.stringify(formData.features));
-    
-    // Ensure mileage is sent as a non-empty value
-    // Converting to string and ensuring it's at least '0' if empty
     const mileageValue = formData.mileage ? formData.mileage.toString() : '0';
     formDataToSend.append('mileage', mileageValue);
     formDataToSend.append('mileageUnit', formData.mileageUnit || 'km/l');
     
-    // Thumbnail and images
     if (thumbnailFile) {
       formDataToSend.append('thumbnail', thumbnailFile);
     }
@@ -544,14 +533,12 @@ const handleSubmit = async (e) => {
       formDataToSend.append('images', file);
     });
 
-    // Handle existing images
     if (formMode === 'edit') {
       existingImages.forEach(image => {
         formDataToSend.append('existingImages', image);
       });
     }
     
-    // Debug: Log form data being sent
     console.log("Form data being sent:");
     for (let [key, value] of formDataToSend.entries()) {
       console.log(`${key}: ${value instanceof File ? value.name : value}`);

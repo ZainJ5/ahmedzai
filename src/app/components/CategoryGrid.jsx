@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -174,7 +173,7 @@ export default function CategoryGrid() {
                 >
                   <div className="relative overflow-hidden rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 group-hover:shadow-blue-500/20">
                     <div className="relative aspect-square overflow-hidden">
-                      <Image
+                      <img
                         src={category.thumbnail || '/placeholder-category.png'}
                         alt={`${category.name} category`}
                         fill
@@ -216,7 +215,7 @@ export default function CategoryGrid() {
               >
                 <div className="relative overflow-hidden rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 group-hover:shadow-blue-500/20">
                   <div className="relative aspect-square overflow-hidden">
-                    <Image
+                    <img
                       src={category.thumbnail || '/placeholder-category.png'}
                       alt={`${category.name} category`}
                       fill

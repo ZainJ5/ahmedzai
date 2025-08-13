@@ -14,7 +14,6 @@ import {
   FaTimes,
   FaImage
 } from 'react-icons/fa';
-import Image from 'next/image';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -276,7 +275,7 @@ export default function BrandManagement() {
                     <td className="px-8 py-6 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
-                          <Image 
+                          <img
                             src={brand.thumbnail || '/placeholder-brand.png'}
                             alt={brand.name}
                             width={48}
@@ -383,7 +382,7 @@ export default function BrandManagement() {
                     {thumbnailPreview ? (
                       <div className="relative">
                         <div className="relative h-48 w-48 overflow-hidden rounded-lg shadow-inner">
-                          <Image 
+                          <img 
                             src={thumbnailPreview} 
                             alt="Brand Logo"
                             layout="fill"

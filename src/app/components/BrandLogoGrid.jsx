@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,27 +15,22 @@ export default function BrandLogoGrid() {
   const carouselRef = useRef(null);
   const router = useRouter();
 
-  // Adjust items per page based on screen size
   const getItemsPerPage = () => {
     if (screenSize === 'small') {
-      return 4; // 2 rows x 2 columns for small screens
+      return 4; 
     }
-    return 10; // Keep 10 for larger screens
+    return 10;
   };
 
-  // Update screen size state based on window width
   useEffect(() => {
     const handleResize = () => {
       setScreenSize(window.innerWidth < 640 ? 'small' : 'large');
     };
 
-    // Set initial size
     handleResize();
     
-    // Add event listener
     window.addEventListener('resize', handleResize);
     
-    // Cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -66,7 +60,6 @@ export default function BrandLogoGrid() {
   }, []);
 
   useEffect(() => {
-    // Reset to first page when screen size changes (and thus itemsPerPage)
     setCurrentPage(0);
   }, [screenSize]);
 
@@ -188,7 +181,7 @@ export default function BrandLogoGrid() {
                     flex flex-col items-center justify-center p-3 sm:p-6 h-full
                     border-2 border-gray-200 hover:border-[#1a3760] cursor-pointer">
                     <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mb-3 sm:mb-5">
-                      <Image
+                      <img
                         src={brand.thumbnail}
                         alt={`${brand.name} logo`}
                         fill

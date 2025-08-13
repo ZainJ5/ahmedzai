@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
@@ -368,7 +367,7 @@ export default function ProductDetailsPage() {
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Image 
+                      <img 
                         src={allImages[activeImage] || '/placeholder-image.jpg'}
                         alt={`${product.title} - view ${activeImage + 1}`}
                         fill
@@ -481,7 +480,7 @@ export default function ProductDetailsPage() {
                               : 'hover:opacity-80 border border-gray-200 hover:border-blue-300'
                           }`}
                         >
-                          <Image 
+                          <img
                             src={image} 
                             alt={`Thumbnail ${index + 1}`} 
                             fill 
@@ -1096,7 +1095,7 @@ export default function ProductDetailsPage() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Image 
+                  <img
                     src={allImages[activeImage]} 
                     alt={product.title}
                     fill

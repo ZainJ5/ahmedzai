@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -18,7 +17,6 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
     const router = useRouter();
     const dropdownRef = useRef(null);
 
-    // Handle clicking outside dropdown to close it
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -153,7 +151,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
             onMouseLeave={() => setIsHovered(false)}
           >
             <div className="relative h-48 w-full overflow-hidden">
-              <Image 
+              <img
                 src={product.thumbnail || '/placeholder-product.jpg'} 
                 alt={product.title}
                 fill
@@ -259,7 +257,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                                                 onClick={() => handleCategorySelect(category._id, category.name)}
                                             >
                                                 <div className="relative w-6 h-6 flex-shrink-0">
-                                                    <Image
+                                                    <img
                                                         src={category.thumbnail || '/placeholder-category.png'}
                                                         alt={category.name}
                                                         fill

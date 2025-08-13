@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -91,7 +90,7 @@ export default function RelatedProducts({ categoryId, currentProductId }) {
             className="flex-shrink-0 w-60 sm:w-64 bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition snap-start"
           >
             <div className="relative h-40 sm:h-48 bg-gray-100">
-              <Image
+              <img
                 src={product.thumbnail || product.images?.[0] || '/placeholder-image.jpg'}
                 alt={product.title}
                 fill

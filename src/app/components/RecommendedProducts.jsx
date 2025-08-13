@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -106,7 +105,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="relative h-48 w-full overflow-hidden">
-          <Image 
+          <img
             src={product.thumbnail || '/placeholder-product.jpg'} 
             alt={product.title}
             fill
