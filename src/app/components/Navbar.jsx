@@ -71,7 +71,7 @@ const Navbar = () => {
                   scrolled ? 'h-14 w-24' : 'h-16 w-28'
                 }`}>
                   <Image
-                    src="/logo-2.png"
+                    src="/logo1.png"
                     alt="Company Logo"
                     fill
                     style={{ objectFit: "contain" }}
