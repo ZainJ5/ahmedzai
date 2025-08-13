@@ -87,11 +87,11 @@ export default function AutoPartsPage() {
                 Looking for quality parts for your automotive needs?
               </h2>
               <h2 className="text-2xl md:text-3xl font-bold mb-5" style={{ color: primaryColor }}>
-                Ahmedzai Trading Japan Is Your One Stop for Quality Scrap Cars and Parts
+                Ahmadzai Trading Japan Is Your One Stop for Quality Scrap Cars and Parts
               </h2>
               <div className="space-y-4 text-gray-700 text-base">
                 <p>
-                  At Ahmedzai Trading Japan, we offer an extensive range of scrap cars from
+                  At Ahmadzai Trading Japan, we offer an extensive range of scrap cars from
                   which you can purchase spare parts or complete engine sets.
                 </p>
                 <p>
@@ -107,7 +107,7 @@ export default function AutoPartsPage() {
                 </p>
                 <p>
                   Dismantling, packaging parts and loading them into containers is conducted
-                  in Toyama dismantling yard of Ahmedzai Trading.
+                  in Toyama dismantling yard of Ahmadzai Trading.
                 </p>
               </div>
 

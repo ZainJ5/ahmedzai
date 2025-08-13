@@ -88,9 +88,9 @@ const Footer = () => {
             </p>
             <div className="flex space-x-3 pt-2">
               {[
-                { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd', label: 'Facebook'},
+                { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmadzai%20trading%20japan%20co%20ltd', label: 'Facebook'},
                 { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd', label: 'YouTube' },
-                { icon: FaInstagram, href: 'https://www.instagram.com/ahmedzaitradingjapan/', label: 'Instagram' },
+                { icon: FaInstagram, href: 'https://www.instagram.com/ahmadzaitradingjapan/', label: 'Instagram' },
               ].map((social) => (
                 <motion.a 
                   key={social.label}
@@ -202,8 +202,8 @@ const Footer = () => {
                 whileHover={{ x: 5 }}
               >
                 <FaEnvelope className="mr-4 text-gray-500 group-hover:text-blue-400 transition-colors duration-300" size={14} />
-                <a href="mailto:ahmedzai.trading@gmail.com" className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
-                  ahmedzai.trading@gmail.com
+                <a href="mailto:ahmadzai.trading@gmail.com" className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
+                  ahmadzai.trading@gmail.com
                 </a>
               </motion.li>
             </ul>

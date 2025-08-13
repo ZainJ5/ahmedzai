@@ -27,11 +27,11 @@ const Navbar = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
           <div className="flex items-center space-x-6 text-sm font-light tracking-wide">
             <a 
-              href="mailto:ahmedzai.trading@gmail.com" 
+              href="mailto:ahmadzai.trading@gmail.com" 
               className="flex items-center hover:text-amber-400 transition duration-300 ease-in-out group"
             >
               <FaEnvelope className="mr-2 text-amber-400 group-hover:text-amber-400 transition duration-300" />
-              <span>ahmedzai.trading@gmail.com</span>
+              <span>ahmadzai.trading@gmail.com</span>
             </a>
             <a 
               href="https://wa.me/+818046646786" 
@@ -44,9 +44,9 @@ const Navbar = () => {
           
           <div className="flex items-center space-x-5">
             {[
-              { icon: FaFacebook, href: 'https://www.facebook.com/search/top?q=ahmedzai%20trading%20japan%20co%20ltd'},
+              { icon: FaFacebook, href: 'https://www.facebook.com/search/top?q=ahmadzai%20trading%20japan%20co%20ltd'},
               { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd'},
-              { icon: FaInstagram, href: 'https://www.instagram.com/ahmedzaitradingjapan/' },
+              { icon: FaInstagram, href: 'https://www.instagram.com/ahmadzaitradingjapan/' },
             ].map((social, index) => (
               <a 
                 key={index}
@@ -71,7 +71,7 @@ const Navbar = () => {
                   scrolled ? 'h-14 w-24' : 'h-16 w-28'
                 }`}>
                   <Image
-                    src="/logo1.png"
+                    src="/logo-123.png"
                     alt="Company Logo"
                     fill
                     style={{ objectFit: "contain" }}

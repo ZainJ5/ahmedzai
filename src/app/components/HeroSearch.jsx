@@ -141,7 +141,6 @@ const HeroSection = () => {
               />
             </div>
             
-            {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none"></div>
           </div>
         ))}
@@ -149,7 +148,6 @@ const HeroSection = () => {
 
       {banners.length > 1 && (
         <>
-          {/* Prev Button */}
           <button
             onClick={goToPrevBanner}
             className="absolute left-2 md:left-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/20 hover:bg-black/40 text-white rounded-full p-1 md:p-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white"
@@ -160,7 +158,6 @@ const HeroSection = () => {
             </svg>
           </button>
 
-          {/* Next Button */}
           <button
             onClick={goToNextBanner}
             className="absolute right-2 md:right-8 top-1/2 transform -translate-y-1/2 z-20 bg-black/20 hover:bg-black/40 text-white rounded-full p-1 md:p-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white"
@@ -171,7 +168,6 @@ const HeroSection = () => {
             </svg>
           </button>
 
-          {/* Dots */}
           <div className="pagination-dots flex justify-center z-20 space-x-2">
             {banners.map((_, index) => (
               <button
