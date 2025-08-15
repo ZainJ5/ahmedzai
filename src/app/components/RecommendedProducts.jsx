@@ -108,7 +108,6 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
           <img
             src={product.thumbnail || '/placeholder-product.jpg'} 
             alt={product.title}
-            fill
             className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
           />
         </div>

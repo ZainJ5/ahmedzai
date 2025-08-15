@@ -82,14 +82,7 @@ export default function ContactSection() {
             transition={{ duration: 0.6 }}
           >
             <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100 transform hover:scale-[1.01] transition-transform duration-300">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.733!2d139.833!3d36.058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDAzJzI4LjgiTiAxMznCsDUwJzAwLjAiRQ!5e0!3m2!1sen!2sjp!4v1631234567890!5m2!1sen!2sjp" width="100%"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                title="Business Location"
-              ></iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3224.347902900406!2d139.8120486!3d36.0850064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018b08a25d678d7%3A0x96d67439a17e4e98!2zQUhNQURaQUkgVFJBRElORyDjgqLjg4_jg57jg4njgrbjgqTvvIjmoKrvvIkg6Iyo5Z-O5Za25qWt5omA!5e0!3m2!1sen!2s!4v1755274093403!5m2!1sen!2s" width="100%" height="300" style={{ border: 0 }} allowFullScreen="" loading="lazy" title="Business Location" ></iframe>
             </div>
 
             <div className="space-y-6 bg-white rounded-xl p-6 shadow-lg border border-gray-100">
