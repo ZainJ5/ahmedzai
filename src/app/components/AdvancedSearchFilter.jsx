@@ -446,7 +446,7 @@ export default function AdvancedSearchFilter() {
                     </button>
                     <button
                       type="submit"
-                      className="w-full md:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                      className="w-full md:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-lg text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer transition-all duration-200"
                       disabled={loading}
                     >
                       <FaSearch className="mr-2 h-5 w-5" />

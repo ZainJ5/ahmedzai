@@ -278,7 +278,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                             </div>
                             <button 
                                 type="submit"
-                                className="py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300 shadow-md flex items-center justify-center"
+                                className="py-3 px-6 bg-red-700 hover:bg-red-800 cursor-pointer text-white font-medium rounded-lg transition duration-300 shadow-md flex items-center justify-center"
                             >
                                 <FaSearch className="mr-2" />
                                 Search Trucks
