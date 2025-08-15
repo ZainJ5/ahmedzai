@@ -181,7 +181,7 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium py-3 px-4 rounded-md hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'
+                className={`w-full bg-red-700 text-white font-medium py-3 px-4 rounded-md hover:bg-red-800 cursor-pointer transition-all duration-300 shadow-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg'
                   }`}
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}

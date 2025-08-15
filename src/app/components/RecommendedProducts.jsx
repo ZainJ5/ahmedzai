@@ -132,7 +132,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
           <div className="flex gap-2 mt-3">
             <Link href={`/products/${product._id}`} className="flex-1">
               <button 
-                className="w-full bg-[#0d6cfe] hover:bg-blue-600 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
+                className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
               >
                 More Details
               </button>

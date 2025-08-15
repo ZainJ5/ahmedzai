@@ -212,18 +212,19 @@ export default function BrandLogoGrid() {
           </button>
         </div>
 
-        <div className="flex justify-center mt-6 sm:mt-8 mb-4 sm:mb-6 space-x-1.5 sm:space-x-2">
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i)}
-              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ${
-                currentPage === i ? 'w-6 sm:w-8 bg-black' : 'w-2 sm:w-2.5 bg-gray-300 hover:bg-gray-500'
-              }`}
-              aria-label={`Go to page ${i + 1}`}
-            />
-          ))}
-        </div>
+<div className="flex justify-center mt-6 sm:mt-8 mb-4 sm:mb-6 space-x-2">
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      onClick={() => setCurrentPage(i)}
+      className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+        currentPage === i ? 'bg-black' : 'bg-gray-300'
+      }`}
+      aria-label={`Go to page ${i + 1}`}
+    />
+  ))}
+</div>
+
 
         <div className="flex justify-center mt-4">
           <Link 

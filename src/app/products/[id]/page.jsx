@@ -16,9 +16,19 @@ import {
   FaShareAlt,
   FaShieldAlt,
   FaTruckMoving,
+  FaInfoCircle,
   FaCar,
-  FaInfoCircle
+  FaPhoneVolume,
+  FaCreditCard,
+  FaFileInvoice,
+  FaShip
 } from 'react-icons/fa';
+
+import {
+  FaMagnifyingGlassChart,
+  FaMoneyBillTransfer,
+  FaBoxesPacking
+} from 'react-icons/fa6';
 import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsCarFrontFill } from "react-icons/bs";
@@ -705,7 +715,7 @@ export default function ProductDetailsPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="bg-gradient-to-r from-gray-700 to-gray-900 p-5 border-b border-gray-200"
+                className="bg-red-800 p-5 border-b border-gray-200"
               >
                 <div className="flex items-center">
                   <FaInfoCircle className="text-white mr-2" size={20} />
@@ -919,41 +929,73 @@ export default function ProductDetailsPage() {
             
 <div 
   ref={howItWorksRef}
-  className="flex overflow-x-auto sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 snap-x snap-mandatory py-4 px-4 sm:p-6 scrollbar-none scroll-smooth"
+  className="flex overflow-x-auto gap-3 snap-x snap-mandatory py-4 px-4 scrollbar-none scroll-smooth"
   style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
 >
   {[
     { 
-      icon: BsCarFrontFill, 
+      icon: FaCar, 
       title: 'Select Vehicle', 
-      desc: 'Browse our premium collection and find your perfect match.', 
+      desc: 'Browse and select your desired vehicle.', 
       gradient: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/20', 
       color: 'text-blue-700',
-      iconSize: 34
+      iconSize: 38
     },
     { 
-      icon: HiOutlineCreditCard, 
-      title: 'Secure Payment', 
-      desc: 'Enjoy our encrypted, safe payment processing system.', 
+      icon: FaPhoneVolume, 
+      title: 'Contact & Reserve', 
+      desc: 'Contact us to reserve your chosen car.', 
+      gradient: 'bg-gradient-to-br from-green-500/10 to-lime-500/20', 
+      color: 'text-green-700',
+      iconSize: 38
+    },
+    { 
+      icon: FaCreditCard, 
+      title: 'Down Payment', 
+      desc: 'Make a down payment and send receipt.', 
       gradient: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/20', 
       color: 'text-emerald-700',
-      iconSize: 34
+      iconSize: 38
     },
     { 
-      icon: LuPackageCheck, 
-      title: 'Track Order', 
-      desc: 'Monitor your purchase with our real-time tracking system.', 
+      icon: FaMagnifyingGlassChart, 
+      title: 'Inspection & Port', 
+      desc: 'Vehicle inspection and move to port.', 
+      gradient: 'bg-gradient-to-br from-red-500/10 to-rose-500/20', 
+      color: 'text-red-700',
+      iconSize: 38
+    },
+    { 
+      icon: FaFileInvoice, 
+      title: 'Booking Confirmed', 
+      desc: 'Receive booking confirmation.', 
+      gradient: 'bg-gradient-to-br from-yellow-500/10 to-amber-500/20', 
+      color: 'text-yellow-700',
+      iconSize: 38
+    },
+    { 
+      icon: FaShip, 
+      title: 'Track Shipment', 
+      desc: 'Receive Bill of Lading and track shipment.', 
       gradient: 'bg-gradient-to-br from-amber-500/10 to-orange-500/20', 
       color: 'text-amber-700',
-      iconSize: 34
+      iconSize: 38
     },
     { 
-      icon: PiHandshakeFill, 
-      title: 'Receive & Enjoy', 
-      desc: 'Experience white-glove delivery service and support.', 
+      icon: FaMoneyBillTransfer, 
+      title: 'Final Payment', 
+      desc: 'Complete the final payment.', 
+      gradient: 'bg-gradient-to-br from-teal-500/10 to-cyan-500/20', 
+      color: 'text-teal-700',
+      iconSize: 38
+    },
+    { 
+      icon: FaBoxesPacking, 
+      title: 'Receive Documents', 
+      desc: 'Get documents and release papers via DHL.', 
       gradient: 'bg-gradient-to-br from-violet-500/10 to-purple-500/20', 
       color: 'text-violet-700',
-      iconSize: 34
+      iconSize: 38
     }
   ].map((step, index) => (
     <motion.div 
@@ -961,7 +1003,7 @@ export default function ProductDetailsPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[180px] w-[80vw] max-w-[200px] sm:min-w-0 sm:w-auto flex-shrink-0 flex flex-col items-center h-auto group hover:shadow-lg transition-all duration-300 mx-1"
+      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative snap-start min-w-[200px] flex-shrink-0 flex flex-col items-center h-auto group hover:shadow-lg transition-all duration-300"
     >
       <motion.div 
         initial={{ scale: 0.8 }}
