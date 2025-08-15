@@ -6,7 +6,8 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
 export default function AutoPartsPage() {
-  const primaryColor = "#162135";
+  // const primaryColor = "#162135";
+  const primaryColor = "#a52500";
   
   const componentParts = [
     {
@@ -178,7 +179,7 @@ export default function AutoPartsPage() {
                         alt={part.title}
                         fill
                         sizes="80px"
-                        className="object-contain p-1 transition-all duration-300 filter invert-[25%] sepia-[25%] hue-rotate-[198deg] saturate-[1200%] brightness-[80%] contrast-[90%] group-hover:brightness-[90%]"
+                        className="object-contain p-1 transition-all duration-300 group-hover:brightness-[90%]"
                       />
                     </div>
                   </div>
