@@ -56,7 +56,6 @@ export default function AdvancedSearchFilter() {
   const yearFromOptions = generateYears('From');
   const yearToOptions = generateYears('To');
 
-  // Set isClient to true once component mounts (client-side only)
   useEffect(() => {
     setIsClient(true);
     const checkIfMobile = () => {
@@ -127,13 +126,11 @@ export default function AdvancedSearchFilter() {
     
     const queryParams = new URLSearchParams();
     
-    // Set default pagination and sorting
     queryParams.append('page', '1');
     queryParams.append('limit', '12');
     queryParams.append('sortBy', 'createdAt');
     queryParams.append('sortOrder', 'desc');
     
-    // Apply filters
     if (filters.make) queryParams.append('brand', filters.make);
     if (filters.model && filters.model.trim() !== '') queryParams.append('model', filters.model.trim());
     if (filters.category) queryParams.append('category', filters.category);
@@ -146,7 +143,6 @@ export default function AdvancedSearchFilter() {
     if (filters.maxMileage) queryParams.append('maxMileage', filters.maxMileage);
     if (filters.axleConfiguration) queryParams.append('axleConfiguration', filters.axleConfiguration);
     
-    // Navigate to products page with search parameters
     router.push(`/products?${queryParams.toString()}`);
   };
   
@@ -202,7 +198,7 @@ export default function AdvancedSearchFilter() {
           >
             <div className="flex items-center">
               <div className="bg-blue-50 p-2 rounded-lg mr-3">
-                <HiAdjustments className="text-blue-600 w-5 h-5" />
+                <HiAdjustments className="text-red-700 w-5 h-5" />
               </div>
               <h3 className="font-semibold text-gray-800">Advanced Search</h3>
               {loading && <span className="ml-3 text-sm text-gray-500">Loading...</span>}
@@ -231,7 +227,7 @@ export default function AdvancedSearchFilter() {
                   <div className="space-y-6">
                     <div className="hidden lg:block mb-2">
                       <div className="flex items-center">
-                        <FaFilter className="text-blue-500 mr-2" />
+                        <FaFilter className="text-red-700 mr-2" />
                         <h3 className="text-lg font-semibold text-gray-800">Search Filters</h3>
                       </div>
                       <p className="text-sm text-gray-500 mt-1">Refine your search with precise criteria</p>

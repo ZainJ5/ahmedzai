@@ -100,7 +100,7 @@ const SearchBar = ({ className = '', isMobile = false }) => {
           <input
             type="text"
             placeholder="Search products..."
-            className="w-full px-4 py-2.5 text-sm font-medium text-black bg-white border border-slate-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-300 ease-in-out"
+            className="w-full px-4 py-2.5 text-sm font-medium text-black bg-white border border-slate-200 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-red-700 focus:border-red-700 transition-all duration-300 ease-in-out"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={handleSearchFocus}
@@ -117,7 +117,7 @@ const SearchBar = ({ className = '', isMobile = false }) => {
         </div>
         <button 
           type="submit"
-          className="bg-amber-600 text-white px-4 py-2.5 rounded-r-lg hover:bg-amber-700 focus:outline-none focus:ring-2  transition-all duration-300 ease-in-out"
+          className="bg-red-700 text-white px-4 py-2.5 rounded-r-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-700 cursor-pointer  transition-all duration-300 ease-in-out"
         >
           <FaSearch className="w-4 h-4" />
         </button>
