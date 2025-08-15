@@ -29,14 +29,14 @@ export default function Home() {
         </div>
         <div className="mt-12">
         <Trucks/>
+      <div className='py-6 w-full h-full bg-white'>
+        <AutoParts/>
+        </div>
         {/* <ClientReviews/> */}
         <NewsBlogSection/>
         </div>
         <HowToBuy />
         <OurServices/>
-        <div className='py-6 w-full h-full bg-white'>
-        <AutoParts/>
-        </div>
       </div>
       <ContactSection/>
       {/* <FaqSection /> */}
