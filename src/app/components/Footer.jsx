@@ -4,12 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { 
-  FaFacebookF, 
-  FaInstagram, 
-  FaYoutube, 
-  FaPhoneAlt, 
-  FaEnvelope, 
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaPhoneAlt,
+  FaEnvelope,
   FaMapMarkerAlt,
 } from 'react-icons/fa';
 
@@ -59,9 +59,9 @@ const Footer = () => {
       }
     }
   };
-  
+
   return (
-    <motion.footer 
+    <motion.footer
       className="bg-black text-white sm:pt-15 pt-8 pb-10 font-sans"
       initial="hidden"
       whileInView="visible"
@@ -69,15 +69,15 @@ const Footer = () => {
       variants={containerVariants}
     >
       <div className="container mx-auto px-6">
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12"
           variants={containerVariants}
         >
           <motion.div className="space-y-6" variants={itemVariants}>
             <div className="h-20 w-40 relative">
-              <Image 
-                src="/footer-logo.jpg" 
-                alt="ATJ Automotive" 
+              <Image
+                src="/footer-logo.jpg"
+                alt="ATJ Automotive"
                 fill
                 style={{ objectFit: "contain" }}
                 className="brightness-110"
@@ -88,13 +88,13 @@ const Footer = () => {
             </p>
             <div className="flex space-x-3 pt-2">
               {[
-                { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmadzai%20trading%20japan%20co%20ltd', label: 'Facebook'},
+                { icon: FaFacebookF, href: 'https://www.facebook.com/search/top?q=ahmadzai%20trading%20japan%20co%20ltd', label: 'Facebook' },
                 { icon: FaYoutube, href: 'https://www.youtube.com/@AlmashriqTradingJapanCoLtd', label: 'YouTube' },
                 { icon: FaInstagram, href: 'https://www.instagram.com/ahmadzaitradingjapan/', label: 'Instagram' },
               ].map((social) => (
-                <motion.a 
+                <motion.a
                   key={social.label}
-                  href={social.href} 
+                  href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 text-gray-300 p-3 rounded-full transition-colors duration-300 border border-gray-700"
@@ -107,9 +107,9 @@ const Footer = () => {
               ))}
             </div>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
-            <motion.h3 
+            <motion.h3
               className="text-xl font-bold mb-5 tracking-wide text-left relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-26 after:bg-white"
               variants={headingVariants}
               custom={1}
@@ -122,7 +122,7 @@ const Footer = () => {
                 { text: 'About Us', href: '/about' },
                 { text: 'Contact Us', href: '/contact' },
               ].map((link, index) => (
-                <motion.li 
+                <motion.li
                   key={link.text}
                   variants={itemVariants}
                   custom={index}
@@ -138,7 +138,7 @@ const Footer = () => {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <motion.h3 
+            <motion.h3
               className="text-xl font-bold mb-5 tracking-wide text-left relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-26 after:bg-white"
               variants={headingVariants}
               custom={2}
@@ -152,7 +152,7 @@ const Footer = () => {
                 { text: 'Products', href: '/products' },
                 { text: 'Auto Parts', href: '/auto-parts' },
               ].map((link, index) => (
-                <motion.li 
+                <motion.li
                   key={link.text}
                   variants={itemVariants}
                   custom={index}
@@ -160,15 +160,15 @@ const Footer = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors duration-300">
-                      {link.text}
+                    {link.text}
                   </Link>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
-            <motion.h3 
+            <motion.h3
               className="text-xl font-bold mb-5 tracking-wide text-center md:text-left relative pb-2 md:after:content-[''] md:after:absolute md:after:left-0 md:after:bottom-0 md:after:h-1 md:after:w-33 md:after:bg-white"
               variants={headingVariants}
               custom={3}
@@ -176,17 +176,23 @@ const Footer = () => {
               CONTACT US
             </motion.h3>
             <ul className="space-y-4">
-              <motion.li 
+              <motion.li
                 className="flex items-start group"
                 variants={itemVariants}
                 whileHover={{ x: 5 }}
               >
                 <FaMapMarkerAlt className="mt-1 mr-4 text-gray-500 group-hover:text-blue-400 transition-colors duration-300 flex-shrink-0" size={16} />
-                <span className="text-gray-400 text-sm">
-                  123 Business Avenue, Technology Park, Karachi, Pakistan
-                </span>
+                <a
+                  href="https://maps.app.goo.gl/aTLf2GcWqfAySZt59?g_st=iw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 text-sm"
+                >
+                  381-1 Kaneoka, Sakai, Sashima District, Ibaraki 306-0426, Japan
+                </a>
+
               </motion.li>
-              <motion.li 
+              <motion.li
                 className="flex items-center group"
                 variants={itemVariants}
                 whileHover={{ x: 5 }}
@@ -196,7 +202,7 @@ const Footer = () => {
                   +81 90-2780-1563
                 </a>
               </motion.li>
-              <motion.li 
+              <motion.li
                 className="flex items-center group"
                 variants={itemVariants}
                 whileHover={{ x: 5 }}
@@ -209,8 +215,8 @@ const Footer = () => {
             </ul>
           </motion.div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           className="border-t border-gray-800 pt-8 mt-10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

@@ -316,13 +316,13 @@ export default function AutoPartsPage() {
                 <tbody>
                   <tr className="hover:bg-gray-50 transition-colors">
                     <td className="border p-3 md:p-4 font-bold text-center bg-gray-50">FULL CAR DISMANTLE</td>
-                    <td className="border p-3 md:p-4 text-center">12-15 Cars</td>
-                    <td className="border p-3 md:p-4 text-center">9 Cars</td>
+                    <td className="border p-3 md:p-4 text-center">25-33 Cars</td>
+                    <td className="border p-3 md:p-4 text-center">18 Cars</td>
                   </tr>
                   <tr className="hover:bg-gray-50 transition-colors">
                     <td className="border p-3 md:p-4 font-bold text-center bg-gray-50">HALF CUT</td>
-                    <td className="border p-3 md:p-4 text-center">25-33 Cars</td>
-                    <td className="border p-3 md:p-4 text-center">18 Cars</td>
+                    <td className="border p-3 md:p-4 text-center">12-15 Cars</td>
+                    <td className="border p-3 md:p-4 text-center">9 Cars</td>
                   </tr>
                 </tbody>
               </table>

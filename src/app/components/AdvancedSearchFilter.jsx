@@ -191,7 +191,6 @@ export default function AdvancedSearchFilter() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-white rounded-2xl shadow-xl border border-gray-100/50 overflow-hidden transition-all"
         >
-          {/* Mobile Header */}
           <div 
             className="lg:hidden flex items-center justify-between p-5 border-b border-gray-100 cursor-pointer bg-white"
             onClick={() => setIsExpanded(!isExpanded)}
