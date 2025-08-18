@@ -495,6 +495,33 @@ export default function CarManagement() {
     setNewImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
+  const generateRandomModel = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let randomPart;
+    do {
+      randomPart = '';
+      for (let i = 0; i < 6; i++) {
+        randomPart += chars[Math.floor(Math.random() * chars.length)];
+      }
+    } while (!/[A-Z]/.test(randomPart) || !/[0-9]/.test(randomPart));
+    return `ATJ-${randomPart}`;
+  };
+
+  const checkModelUnique = async (model) => {
+    try {
+      const params = new URLSearchParams({
+        search: model,
+        limit: 1
+      });
+      const response = await fetch(`/api/products?${params}`);
+      const data = await response.json();
+      return data.success && data.data.length === 0;
+    } catch (error) {
+      console.error('Error checking model uniqueness:', error);
+      return true; // Assume unique if error
+    }
+  };
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   setSubmitting(true);
@@ -503,7 +530,7 @@ const handleSubmit = async (e) => {
     const formDataToSend = new FormData();
     
     const simpleFields = [
-      'title', 'model', 'year', 'unitPrice', 'discountPercentage', 
+      'title', 'year', 'unitPrice', 'discountPercentage', 
       'quantity', 'weight', 'category', 'make', 'fuelType', 
       'chassis', 'color', 'axleConfiguration', 'vehicleGrade'
     ];
@@ -524,6 +551,23 @@ const handleSubmit = async (e) => {
     const mileageValue = formData.mileage ? formData.mileage.toString() : '0';
     formDataToSend.append('mileage', mileageValue);
     formDataToSend.append('mileageUnit', formData.mileageUnit || 'km/l');
+    
+    if (formMode === 'add') {
+      let model;
+      let attempts = 0;
+      do {
+        model = generateRandomModel();
+        const isUnique = await checkModelUnique(model);
+        if (isUnique) break;
+        attempts++;
+        if (attempts > 10) {
+          throw new Error('Could not generate unique model number');
+        }
+      } while (true);
+      formDataToSend.append('model', model);
+    } else {
+      formDataToSend.append('model', formData.model);
+    }
     
     if (thumbnailFile) {
       formDataToSend.append('thumbnail', thumbnailFile);
@@ -715,20 +759,6 @@ const handleSubmit = async (e) => {
                     <option value="">No Tag</option>
                     <option value="Trucks">Trucks</option>
                   </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">
-                    Model *
-                  </label>
-                  <input
-                    type="text"
-                    name="model"
-                    value={formData.model}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
                 </div>
                 
                 <div>
