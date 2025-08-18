@@ -100,9 +100,12 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="text-lg font-medium text-gray-800">Phone</h4>
-                <p className="text-gray-600 mt-1">
+                <p className="text-gray-600 mt-1 flex flex-col">
                   <a href="tel:+818046646786" className="text-blue-600 hover:text-blue-800 transition-colors">
                     +81 80-4664-6786
+                  </a>
+                  <a href="tel:+818030026786" className="text-blue-600 hover:text-blue-800 transition-colors">
+                    +81 80-3002-6786
                   </a>
                 </p>
               </div>
