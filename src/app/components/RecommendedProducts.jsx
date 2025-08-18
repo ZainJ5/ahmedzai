@@ -97,12 +97,17 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
       const message = encodeURIComponent(`Hello, I'm interested in the ${product.title} (${product.model}) Link:https://ahmadzaitrading.com/products/${product._id}`);
       window.open(`https://wa.me/+818046646786?text=${message}`, '_blank');
     };
+
+    const handleCardClick = () => {
+      window.location.href = `/products/${product._id}`;
+    };
   
     return (
       <div 
-        className="bg-white rounded-lg shadow-sm border text-black border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-96"
+        className="bg-white rounded-lg shadow-sm border text-black border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-96 cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={handleCardClick}
       >
         <div className="relative h-48 w-full overflow-hidden">
           <img
@@ -130,13 +135,11 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
           </div>
           
           <div className="flex gap-2 mt-3">
-            <Link href={`/products/${product._id}`} className="flex-1">
-              <button 
-                className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
-              >
-                More Details
-              </button>
-            </Link>
+            <button 
+              className="flex-1 bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm text-white font-medium rounded py-2 transition-colors"
+            >
+              More Details
+            </button>
             
             <button 
               onClick={handleWhatsAppClick}
@@ -153,7 +156,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
 
   return (
     <section className="py-4 bg-white">
-      <div className="container mx-auto sm:px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto sm:px-4  lg:px-8">
         <div className="text-center mb-8 md:mb-12">
           <motion.h2 
             className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3"

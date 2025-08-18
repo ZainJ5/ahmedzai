@@ -2,11 +2,17 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaWhatsapp } from 'react-icons/fa';
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
   
+  const handleCardClick = () => {
+    router.push(`/products/${product._id}`);
+  };
+
   const handleWhatsAppClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -20,7 +26,10 @@ export default function ProductCard({ product }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative h-48 w-full overflow-hidden">
+      <div 
+        className={`relative h-48 w-full overflow-hidden cursor-pointer`}
+        onClick={handleCardClick}
+      >
         <img
           src={product.thumbnail || '/placeholder-product.jpg'} 
           alt={product.title}
@@ -30,7 +39,7 @@ export default function ProductCard({ product }) {
       </div>
       
       <div className="p-3 flex flex-col flex-grow justify-between">
-        <div>
+        <div onClick={handleCardClick} className="cursor-pointer">
           <h3 className="font-bold text-center text-gray-900 text-sm sm:text-lg mb-2 line-clamp-2 h-14 overflow-hidden">
             {product.make?.name} {product.title} {product.year || ""}
           </h3>
@@ -57,7 +66,7 @@ export default function ProductCard({ product }) {
           
           <button 
             onClick={handleWhatsAppClick}
-            className="w-10 sm:w-12 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-colors"
+            className="w-10 sm:w-12 flex items-center justify-center cursor-pointer bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-colors"
             aria-label="Contact via WhatsApp"
           >
             <FaWhatsapp size={30} />
