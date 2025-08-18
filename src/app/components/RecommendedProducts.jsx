@@ -119,7 +119,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
             </h3>
             
             <div className="flex justify-between text-sm mb-3">
-              <span className="font-medium">Ref#</span>
+              <span className="font-medium">Stock Id#</span>
               <span>{product.model}</span>
             </div>
             
