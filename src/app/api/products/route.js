@@ -234,7 +234,7 @@ export async function POST(request) {
     }
     
     const requiredFields = [
-      'title', 'category', 'make', 'unitPrice', 'year', 'model', 
+      'title', 'category', 'make', 'year', 'model', 
       'quantity', 'weight', 'fuelType', 'mileage', 'chassis',
       'color', 'axleConfiguration', 'vehicleGrade'
     ];

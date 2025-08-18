@@ -158,7 +158,7 @@ export default function CarManagement() {
     title: '',
     category: '',
     make: '',
-    unitPrice: '',
+    unitPrice: '0',
     discountPercentage: 0,
     year: new Date().getFullYear(),
     model: '',
@@ -280,7 +280,7 @@ export default function CarManagement() {
       title: '', 
       category: '', 
       make: '', 
-      unitPrice: '',
+      unitPrice: '0', // Default to 0
       discountPercentage: 0, 
       year: new Date().getFullYear(),
       model: '', 
@@ -394,7 +394,7 @@ export default function CarManagement() {
       title: product.title,
       category: product.category._id || product.category,
       make: product.make._id || product.make,
-      unitPrice: product.unitPrice,
+      unitPrice: product.unitPrice || 0,
       discountPercentage: product.discountPercentage || 0,
       year: product.year,
       model: product.model,
@@ -529,17 +529,29 @@ const handleSubmit = async (e) => {
   try {
     const formDataToSend = new FormData();
     
-    const simpleFields = [
-      'title', 'year', 'unitPrice', 'discountPercentage', 
-      'quantity', 'weight', 'category', 'make', 'fuelType', 
-      'chassis', 'color', 'axleConfiguration', 'vehicleGrade'
+    // Handle required fields
+    const requiredFields = [
+      'title', 'year', 'quantity', 'weight', 'category', 
+      'make', 'fuelType', 'chassis', 'color', 
+      'axleConfiguration', 'vehicleGrade'
     ];
     
-    simpleFields.forEach(field => {
-      if (formData[field] !== undefined) {
+    requiredFields.forEach(field => {
+      if (formData[field] !== undefined && formData[field] !== '') {
         formDataToSend.append(field, formData[field]);
+      } else if (field !== 'unitPrice') { // Skip unitPrice validation here
+        throw new Error(`${field} is required`);
       }
     });
+    
+    // Handle unitPrice - ensure it's always sent as at least 0
+    const unitPrice = formData.unitPrice === '' || formData.unitPrice === undefined ? 0 : formData.unitPrice;
+    formDataToSend.append('unitPrice', unitPrice);
+    
+    // Handle optional fields
+    if (formData.discountPercentage !== undefined) {
+      formDataToSend.append('discountPercentage', formData.discountPercentage);
+    }
     
     if (formData.tag) {
       formDataToSend.append('tag', formData.tag);
@@ -551,7 +563,7 @@ const handleSubmit = async (e) => {
     const mileageValue = formData.mileage ? formData.mileage.toString() : '0';
     formDataToSend.append('mileage', mileageValue);
     formDataToSend.append('mileageUnit', formData.mileageUnit || 'km/l');
-    
+        
     if (formMode === 'add') {
       let model;
       let attempts = 0;
@@ -602,8 +614,8 @@ const handleSubmit = async (e) => {
     }
     
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Server responded with ${response.status}: ${errorText}`);
+      const errorData = await response.json();
+      throw new Error(`Server responded with ${response.status}: ${errorData.message || 'Unknown error'}`);
     }
     
     const data = await response.json();
@@ -613,12 +625,11 @@ const handleSubmit = async (e) => {
       setView('list');
       fetchProducts();
     } else {
-      console.error('Error saving product:', data.message);
-      alert(`Error: ${data.message}`);
+      throw new Error(data.message || 'Unknown error occurred');
     }
   } catch (error) {
     console.error('Error saving product:', error);
-    alert(`An unexpected error occurred: ${error.message}`);
+    alert(`An error occurred: ${error.message}`);
   } finally {
     setSubmitting(false);
   }

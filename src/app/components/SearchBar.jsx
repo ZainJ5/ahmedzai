@@ -160,9 +160,9 @@ const SearchBar = ({ className = '', isMobile = false }) => {
                           {product.make?.name} · {product.model}
                         </p>
                       </div>
-                      <div className="ml-4 text-amber-600 font-semibold text-sm">
+                      {/* <div className="ml-4 text-amber-600 font-semibold text-sm">
                          ${product.unitPrice.toLocaleString()}
-                      </div>
+                      </div> */}
                     </button>
                   </li>
                 ))}
