@@ -94,7 +94,7 @@ export default function RecommendedProducts({ title = "Explore Our Latest Arriva
     const handleWhatsAppClick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      const message = encodeURIComponent(`Hello, I'm interested in the ${product.title} (${product.model}).`);
+      const message = encodeURIComponent(`Hello, I'm interested in the ${product.title} (${product.model}) Link:https://ahmadzaitrading.com/products/${product._id}.`);
       window.open(`https://wa.me/+818046646786?text=${message}`, '_blank');
     };
   
