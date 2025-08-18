@@ -621,7 +621,7 @@ export default function ProductDetailsPage() {
                   )}
                 </motion.div>
 
-                <motion.div 
+                {/* <motion.div 
                   className="flex items-baseline gap-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -650,7 +650,7 @@ export default function ProductDetailsPage() {
                       Save {(product.unitPrice - product.discountedPrice)?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                     </motion.span>
                   )}
-                </motion.div>
+                </motion.div> */}
 
                 <motion.div 
                   className="grid grid-cols-2 gap-4 text-sm"
