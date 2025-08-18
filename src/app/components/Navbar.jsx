@@ -105,7 +105,7 @@ const Navbar = () => {
             <div className="lg:hidden">
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-lg hover:bg-slate-100 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="p-2 rounded-lg hover:bg-slate-100 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-700"
                 aria-label="Toggle menu"
               >
                 <svg 

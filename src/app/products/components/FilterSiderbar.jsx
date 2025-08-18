@@ -528,7 +528,7 @@ export default function FilterSidebar({
         <div className="px-4 pb-4 pt-2">
           <button
             onClick={onClose}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors text-sm"
+            className="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white font-medium rounded-md transition-colors text-sm"
           >
             Apply Filters
           </button>
