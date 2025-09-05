@@ -2,7 +2,38 @@ import { NextResponse } from 'next/server';
 import dbConnect from '../../lib/dbConnect';
 import HeroSlide from '../../models/HeroSlider';
 import path from 'path';
-import fs from 'fs';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+const s3Client = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
+});
+
+async function saveFile(file, folder = 'hero') {
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+  
+  const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+  const fileExtension = path.extname(file.name);
+  const filename = `hero-${uniqueSuffix}${fileExtension}`;
+  
+  const key = `${folder}/${filename}`;
+  
+  const params = {
+    Bucket: process.env.R2_BUCKET_NAME,
+    Key: key,
+    Body: buffer,
+    ContentType: file.type,
+  };
+  
+  await s3Client.send(new PutObjectCommand(params));
+  
+  return `${process.env.R2_PUBLIC_BASE_URL}${key}`;
+}
 
 export async function GET() {
   try {
@@ -35,7 +66,6 @@ export async function POST(request) {
       );
     }
     
-    // Verify it's an image
     if (!mediaFile.type.startsWith('image/')) {
       return NextResponse.json(
         { success: false, message: 'Only images are allowed' },
@@ -43,21 +73,7 @@ export async function POST(request) {
       );
     }
     
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const fileExtension = path.extname(mediaFile.name);
-    const fileName = `hero-${uniqueSuffix}${fileExtension}`;
-    
-    const uploadDir = path.join(process.cwd(), 'public', 'hero');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    
-    const filePath = path.join(uploadDir, fileName);
-    const arrayBuffer = await mediaFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    fs.writeFileSync(filePath, buffer);
-    
-    const mediaUrl = `/hero/${fileName}`;
+    const mediaUrl = await saveFile(mediaFile);
     
     const heroSlide = await HeroSlide.create({
       mediaUrl,
