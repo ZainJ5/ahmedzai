@@ -146,8 +146,8 @@ const SearchBar = ({ className = '', isMobile = false }) => {
                       className="w-full flex items-center p-4 hover:bg-amber-50 text-left transition-colors duration-200"
                     >
                       <div className="relative w-12 h-12 mr-4 flex-shrink-0">
-                        <Image
-                          src={product.thumbnail || '/placeholder-product.jpg'}
+                        <img
+                          src={product.thumbnail}
                           alt={product.title}
                           fill
                           className="object-contain rounded-sm"
