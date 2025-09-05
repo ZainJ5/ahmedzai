@@ -2,7 +2,16 @@ import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import Product from '../../../models/Product';
 import path from 'path';
-import fs from 'fs';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+
+const s3Client = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
+});
 
 async function saveFile(file, folder = 'products') {
   const bytes = await file.arrayBuffer();
@@ -12,27 +21,34 @@ async function saveFile(file, folder = 'products') {
   const fileExtension = path.extname(file.name);
   const filename = `${uniqueSuffix}${fileExtension}`;
   
-  const publicPath = path.join(process.cwd(), 'public', folder);
-  if (!fs.existsSync(publicPath)) {
-    fs.mkdirSync(publicPath, { recursive: true });
-  }
+  const key = `${folder}/${filename}`;
   
-  const filePath = path.join(publicPath, filename);
-  fs.writeFileSync(filePath, buffer);
+  const params = {
+    Bucket: process.env.R2_BUCKET_NAME,
+    Key: key,
+    Body: buffer,
+    ContentType: file.type,
+  };
   
-  return `/${folder}/${filename}`;
+  await s3Client.send(new PutObjectCommand(params));
+  
+  return `${process.env.R2_PUBLIC_BASE_URL}${key}`;
 }
 
-function deleteFile(filePath) {
+async function deleteFile(filePath) {
   try {
     if (!filePath) return;
     
-    const fullPath = path.join(process.cwd(), 'public', filePath);
-    if (fs.existsSync(fullPath)) {
-      fs.unlinkSync(fullPath);
-    }
+    const key = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+    
+    const params = {
+      Bucket: process.env.R2_BUCKET_NAME,
+      Key: key,
+    };
+    
+    await s3Client.send(new DeleteObjectCommand(params));
   } catch (error) {
-    console.error('Error deleting file:', error);
+    console.error('Error deleting file from R2:', error);
   }
 }
 
@@ -150,7 +166,7 @@ export async function PUT(request, { params }) {
     const thumbnailFile = formData.get('thumbnail');
     if (thumbnailFile && thumbnailFile.size > 0) {
       if (existingProduct.thumbnail) {
-        deleteFile(existingProduct.thumbnail);
+        await deleteFile(existingProduct.thumbnail);
       }
       updateData.thumbnail = await saveFile(thumbnailFile);
     }
@@ -161,7 +177,9 @@ export async function PUT(request, { params }) {
     const imagesToDelete = existingProduct.images.filter(
       (img) => !existingImagePaths.includes(img)
     );
-    imagesToDelete.forEach(deleteFile);
+    for (const img of imagesToDelete) {
+      await deleteFile(img);
+    }
     
     const newImagePaths = [];
     for (const imageFile of newImageFiles) {
@@ -226,13 +244,13 @@ export async function DELETE(request, { params }) {
     }
     
     if (product.thumbnail) {
-      deleteFile(product.thumbnail);
+      await deleteFile(product.thumbnail);
     }
     
     if (product.images && product.images.length > 0) {
-      product.images.forEach(imagePath => {
-        deleteFile(imagePath);
-      });
+      for (const imagePath of product.images) {
+        await deleteFile(imagePath);
+      }
     }
     
     await Product.findByIdAndDelete(id);

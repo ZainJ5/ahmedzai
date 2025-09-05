@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../lib/dbConnect';
 import Product from '../../models/Product';
+import Category from '@/app/models/Category';
 import path from 'path';
-import fs from 'fs';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+const s3Client = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+  },
+});
 
 async function saveFile(file, folder = 'products') {
   const bytes = await file.arrayBuffer();
@@ -12,15 +22,18 @@ async function saveFile(file, folder = 'products') {
   const fileExtension = path.extname(file.name);
   const filename = `${uniqueSuffix}${fileExtension}`;
   
-  const publicPath = path.join(process.cwd(), 'public', folder);
-  if (!fs.existsSync(publicPath)) {
-    fs.mkdirSync(publicPath, { recursive: true });
-  }
+  const key = `${folder}/${filename}`;
   
-  const filePath = path.join(publicPath, filename);
-  fs.writeFileSync(filePath, buffer);
+  const params = {
+    Bucket: process.env.R2_BUCKET_NAME,
+    Key: key,
+    Body: buffer,
+    ContentType: file.type,
+  };
   
-  return `/${folder}/${filename}`;
+  await s3Client.send(new PutObjectCommand(params));
+  
+  return `${process.env.R2_PUBLIC_BASE_URL}${key}`;
 }
 
 export async function GET(request) {
