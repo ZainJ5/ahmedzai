@@ -94,13 +94,14 @@ export async function GET(request) {
     
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
+    const skip = parseInt(searchParams.get('skip') || '0');
     
     const productsToUpdate = await Product.find({
       $or: [
-        { thumbnail: { $regex: '^/products/' } }, 
-        { images: { $elemMatch: { $regex: '^/products/' } } }
+        { thumbnail: { $regex: '^/?products/' } }, 
+        { images: { $elemMatch: { $regex: '^/?products/' } } }
       ]
-    }).limit(limit);
+    }).skip(skip).limit(limit);
     
     if (productsToUpdate.length === 0) {
       return NextResponse.json({
@@ -125,11 +126,12 @@ export async function GET(request) {
         
         if (isVpsPath(product.thumbnail)) {
           try {
+            const oldThumbnail = product.thumbnail;
             const newThumbnailUrl = await migrateFileToR2(product.thumbnail);
             product.thumbnail = newThumbnailUrl;
             productResult.migratedImages.push({
               type: 'thumbnail',
-              oldPath: product.thumbnail,
+              oldPath: oldThumbnail,
               newPath: newThumbnailUrl
             });
           } catch (error) {
@@ -145,14 +147,15 @@ export async function GET(request) {
           for (let i = 0; i < product.images.length; i++) {
             if (isVpsPath(product.images[i])) {
               try {
+                const oldImage = product.images[i];
                 const newImageUrl = await migrateFileToR2(product.images[i]);
+                product.images[i] = newImageUrl;
                 productResult.migratedImages.push({
                   type: 'image',
                   index: i,
-                  oldPath: product.images[i],
+                  oldPath: oldImage,
                   newPath: newImageUrl
                 });
-                product.images[i] = newImageUrl;
               } catch (error) {
                 productResult.migratedImages.push({
                   type: 'image',
@@ -165,7 +168,7 @@ export async function GET(request) {
           }
         }
         
-        await product.save();
+        await product.save({ validateBeforeSave: false });
         
         results.successful.push(productResult);
       } catch (error) {
@@ -201,13 +204,14 @@ export async function POST(request) {
     
     const body = await request.json();
     const limit = parseInt(body.limit || 10);
+    const skip = parseInt(body.skip || 0);
     
     const productsToUpdate = await Product.find({
       $or: [
-        { thumbnail: { $regex: '^/products/' } }, 
-        { images: { $elemMatch: { $regex: '^/products/' } } }
+        { thumbnail: { $regex: '^/?products/' } }, 
+        { images: { $elemMatch: { $regex: '^/?products/' } } }
       ]
-    }).limit(limit);
+    }).skip(skip).limit(limit);
     
     if (productsToUpdate.length === 0) {
       return NextResponse.json({
@@ -232,11 +236,12 @@ export async function POST(request) {
         
         if (isVpsPath(product.thumbnail)) {
           try {
+            const oldThumbnail = product.thumbnail;
             const newThumbnailUrl = await migrateFileToR2(product.thumbnail);
             product.thumbnail = newThumbnailUrl;
             productResult.migratedImages.push({
               type: 'thumbnail',
-              oldPath: product.thumbnail,
+              oldPath: oldThumbnail,
               newPath: newThumbnailUrl
             });
           } catch (error) {
@@ -252,14 +257,15 @@ export async function POST(request) {
           for (let i = 0; i < product.images.length; i++) {
             if (isVpsPath(product.images[i])) {
               try {
+                const oldImage = product.images[i];
                 const newImageUrl = await migrateFileToR2(product.images[i]);
+                product.images[i] = newImageUrl;
                 productResult.migratedImages.push({
                   type: 'image',
                   index: i,
-                  oldPath: product.images[i],
+                  oldPath: oldImage,
                   newPath: newImageUrl
                 });
-                product.images[i] = newImageUrl;
               } catch (error) {
                 productResult.migratedImages.push({
                   type: 'image',
@@ -272,7 +278,7 @@ export async function POST(request) {
           }
         }
         
-        await product.save();
+        await product.save({ validateBeforeSave: false });
         
         results.successful.push(productResult);
       } catch (error) {
