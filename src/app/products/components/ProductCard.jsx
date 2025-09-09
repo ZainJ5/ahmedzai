@@ -27,14 +27,13 @@ export default function ProductCard({ product }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div 
-        className={`relative h-48 w-full overflow-hidden cursor-pointer`}
+        className="relative h-48 w-full overflow-hidden cursor-pointer"
         onClick={handleCardClick}
       >
         <img
           src={product.thumbnail} 
           alt={product.title}
-          fill
-          className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
         />
       </div>
       
