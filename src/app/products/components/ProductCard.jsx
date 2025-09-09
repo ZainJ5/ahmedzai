@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image'; 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -27,15 +28,18 @@ export default function ProductCard({ product }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div 
-        className={`relative h-48 w-full overflow-hidden cursor-pointer`}
+        className="relative h-48 w-full overflow-hidden cursor-pointer"
         onClick={handleCardClick}
       >
-        <img
-          src={product.thumbnail || '/placeholder-product.jpg'} 
-          alt={product.title}
-          fill
-          className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={product.thumbnail || '/placeholder-product.jpg'} 
+            alt={product.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          />
+        </div>
       </div>
       
       <div className="p-3 flex flex-col flex-grow justify-between">
