@@ -264,7 +264,7 @@ export default function Trucks({ title = "Explore Our Latest Arrivals" }) {
                                                         src={category.thumbnail || '/placeholder-category.png'}
                                                         alt={category.name}
                                                         fill
-                                                        className="object-contain"
+                                                        className="object-cover"
                                                     />
                                                 </div>
                                                 <span>{category.name}</span>
