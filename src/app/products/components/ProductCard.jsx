@@ -1,7 +1,6 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image'; 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -28,20 +27,15 @@ export default function ProductCard({ product }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div 
-        className="relative h-48 w-full overflow-hidden cursor-pointer"
+        className={`relative h-48 w-full overflow-hidden cursor-pointer`}
         onClick={handleCardClick}
-        style={{ height: '192px' }} // Fixed exact pixel height
       >
-        <div className="absolute inset-0">
-          <Image
-            src={product.thumbnail || '/placeholder-product.jpg'} 
-            alt={product.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className={`object-cover w-full h-full transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
-            priority
-          />
-        </div>
+        <img
+          src={product.thumbnail} 
+          alt={product.title}
+          fill
+          className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+        />
       </div>
       
       <div className="p-3 flex flex-col flex-grow justify-between">
@@ -64,7 +58,7 @@ export default function ProductCard({ product }) {
         <div className="flex gap-2 mt-3">
           <Link href={`/products/${product._id}`} className="flex-1">
             <button 
-              className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm text-white font-medium rounded py-2 transition-colors"
+              className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
             >
               More Details
             </button>
