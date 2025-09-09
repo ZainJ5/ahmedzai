@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image'; // Changed to Next.js Image component
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -30,10 +31,13 @@ export default function ProductCard({ product }) {
         className="relative h-48 w-full overflow-hidden cursor-pointer"
         onClick={handleCardClick}
       >
-        <img
-          src={product.thumbnail} 
+        <Image
+          src={product.thumbnail || '/placeholder-product.jpg'} 
           alt={product.title}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={`object-cover transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          priority={false}
         />
       </div>
       
@@ -57,7 +61,7 @@ export default function ProductCard({ product }) {
         <div className="flex gap-2 mt-3">
           <Link href={`/products/${product._id}`} className="flex-1">
             <button 
-              className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm   text-white font-medium rounded py-2 transition-colors"
+              className="w-full bg-red-700 hover:bg-red-800 cursor-pointer sm:text-lg text-sm text-white font-medium rounded py-2 transition-colors"
             >
               More Details
             </button>
