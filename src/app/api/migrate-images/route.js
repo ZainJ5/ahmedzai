@@ -5,7 +5,6 @@ import path from 'path';
 import fs from 'fs';
 import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 
-// Initialize R2 client
 const s3Client = new S3Client({
   region: 'auto',
   endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
@@ -15,49 +14,37 @@ const s3Client = new S3Client({
   },
 });
 
-// Function to check if a path is a VPS path
 function isVpsPath(path) {
   return path && (path.startsWith('/products/') || path.startsWith('products/'));
 }
 
-// Function to upload a file from VPS to R2
 async function migrateFileToR2(vpsPath, folder = 'products') {
   try {
-    // Remove leading slash if present
     const relativePath = vpsPath.startsWith('/') ? vpsPath.slice(1) : vpsPath;
     
-    // Construct the full file path on VPS
     const filePath = path.join(process.cwd(), 'public', relativePath);
     
-    // Check if file exists
     if (!fs.existsSync(filePath)) {
       throw new Error(`File not found: ${filePath}`);
     }
     
-    // Read file content
     const fileBuffer = fs.readFileSync(filePath);
     
-    // Get file name from path
     const filename = path.basename(filePath);
     const fileExtension = path.extname(filename);
     const contentType = getContentTypeFromExtension(fileExtension);
     
-    // Set target key in R2 (keep the same file name for consistency)
     const key = `${folder}/${filename}`;
     
-    // Check if file already exists in R2 to avoid redundant uploads
     try {
       await s3Client.send(new HeadObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
         Key: key
       }));
-      // File exists, just return the URL
       return `${process.env.R2_PUBLIC_BASE_URL}${key}`;
     } catch (error) {
-      // File doesn't exist, proceed with upload
     }
     
-    // Upload to R2
     const params = {
       Bucket: process.env.R2_BUCKET_NAME,
       Key: key,
